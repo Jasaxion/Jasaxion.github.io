@@ -9,4 +9,5 @@
 - 自律、充满求知欲望
 
 [GitHub](https://github.com/Jasaxion)
-[Get Started](#README)
+[Get Started](./guide.md)
+
