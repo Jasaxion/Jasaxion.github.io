@@ -22,9 +22,11 @@
 
 ---
 
-
+本博客创建时间：2021年6月25日20点03分
 
 ### 分支：
+
+#### [算法Algorithm思想](Algorithm/Algorithm算法思想.md)
 
 #### [Acwing 题记](Acwing/acwing题记.md)
 
@@ -34,5 +36,4 @@
 
 #### [Luogu 题记](Luogu/Luogu题记.md)
 
-#### [乱七八糟的比赛总结]()
-
+#### [乱七八糟的比赛总结](
