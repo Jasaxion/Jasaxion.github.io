@@ -175,7 +175,7 @@ int main()
 >
 > 要确保找准题干中的关键字，要耐得住寂寞，坐得下板凳。
 >
-> <img src=".\acwing题记.assets\image-20210630153938471.png" alt="image-20210630153938471" style="zoom:65%;" />
+> <img src=".\blob\main\docs\Acwing\acwing题记.assets\image-20210630153938471.png" alt="image-20210630153938471" style="zoom:65%;" />
 
 ```C++
 #include <iostream>
