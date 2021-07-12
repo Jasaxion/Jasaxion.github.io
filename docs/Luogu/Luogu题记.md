@@ -296,3 +296,68 @@ int main()
 }
 ```
 
+#### P6878 [JOI 2020 Final] JJOOII 2 [?]
+
+> https://www.luogu.com.cn/problem/P6878
+
+> 思路题解：
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+const int MAXN=2e5+5;
+char s[MAXN];
+int n,k,ne[MAXN][3]; 
+//ne数组存放删除了多少
+int main(){
+	scanf("%d%d%s",&n,&k,s+1);
+    //s+1目的是为了让字符串从1开始
+	int cur=1,num=0;
+    //计算"J"有多少个
+	while(cur<=n && num<k) num+=(s[cur++]=='J');
+    cur--;
+	for(int i=1;i<=n+1;i++){
+		ne[i][0]=cur;
+		if(s[i]=='J'){
+			if(cur!=n+1) cur++;
+			while(cur<=n&&s[cur]!='J') cur++;
+		}
+	}
+	cur=1,num=0;
+	while(cur<=n&&num<k) num+=(s[cur++]=='O');
+    cur--;
+	for(int i=1;i<=n+1;i++){
+		ne[i][1]=cur;
+		if(s[i]=='O'){
+			if(cur!=n+1) cur++;
+			while(cur<=n&&s[cur]!='O') cur++;
+		}
+	}
+	cur=1,num=0;
+	while(cur<=n&&num<k) num+=(s[cur++]=='I');
+    cur--;
+	for(int i=1;i<=n+1;i++){
+		ne[i][2]=cur;
+		if(s[i]=='I'){
+			if(cur!=n+1) cur++;
+			while(cur<=n&&s[cur]!='I') cur++;
+		}
+	}
+	int ans=n+1;
+	for(int i=1;i<=n;i++){
+		int r=ne[i][0];
+		if(r!=n+1) r=ne[r+1][1];
+		if(r!=n+1) r=ne[r+1][2];
+		if(r!=n+1) ans=min(ans,r-i+1-(k*3));
+	}
+    if(ans == n + 1)
+    {
+        printf("%d",-1);
+    }
+    else
+    {
+        printf("%d",ans);
+    }
+}
+```
+
