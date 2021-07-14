@@ -586,3 +586,111 @@ int main()
 }
 ```
 
+#### 3763.数字矩阵 [思维题] 2021年7月14日
+
+> https://www.acwing.com/problem/content/3766/
+
+> 思路与题解：
+>
+> 对矩阵的相邻元素的操作 
+>
+> |               |      |              |      |
+> | ------------- | ---- | ------------ | ---- |
+> | x <--乘一次 √ | xx   | xx           |      |
+> |               |      | xx           |      |
+> |               |      | x<--乘一次 √ |      |
+>
+> 发现对任意相邻元素进行x(-1)操作后，实际上可以对矩阵中任意两个元素都进行一次x(-1)操作。
+>
+> 故此，可以这样做，
+>
+> a[N]存放负数的值
+> b[N]存放正数的值
+>
+> 如果a中的长度是偶数，那么将a中的负数全部转化为正数+=ans，再将b中的元素累加+=ans;
+> 如果a中的长度是奇数，先进行排序，找a,b中最小的元素，将最小的元素置为负数，在进行累加即可。
+>
+> 当然还有许多可以优化的地方，例如寻找a,b最小的元素可以无需排序，可以在存入的时候加个判断即可。
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 210;
+int a[N];
+int b[N];
+int main()
+{
+    int T;
+    scanf("%d", &T);
+    int n,m;
+    while(T --)
+    {
+        memset(a, 0, sizeof(a));
+        memset(b, 0, sizeof(b));
+        scanf("%d%d", &n,&m);
+        int x;
+        int len_a = 0;
+        int len_b = 0;
+        int min_a = 0x3f3f3f3f;
+        int min_b = 0x3f3f3f3f;
+        int min_x;
+        for(int i = 1; i <= n; i ++)
+        {
+            for(int j = 1; j <= m; j ++)
+            {
+                scanf("%d",&x);
+                if(x <= 0)
+                {
+                    a[++len_a] = -x;
+                    min_a = min(min_a,-x);
+                }
+                else
+                {
+                    b[++len_b] = x;
+                    min_b = min(min_b,x);
+                }
+            }
+        }
+        int ans = 0;
+        if(len_a % 2 == 0)
+        {
+            for(int i = 1; i <= n*m; i ++)
+            {
+                if(len_a > 0)
+                {
+                    ans = ans + a[len_a--];
+                }
+                if(len_b > 0)
+                {
+                    ans = ans + b[len_b--];
+                }
+            }
+        }
+        else
+        {
+            //sort(a+1,a+1+len_a);
+            //sort(b+1,b+1+len_b);
+            min_x = min(min_a,min_b);
+            for(int i = 1; i <= n*m; i ++)
+            {
+                if(len_a > 0)
+                {
+                    ans = ans + a[len_a--];
+                }
+                if(len_b > 0)
+                {
+                    ans = ans + b[len_b--];
+                }
+            }
+            ans = ans - 2 * min_x;
+        }
+        printf("%d\n",ans);
+    }
+    return 0;
+}
+```
+
+#### 3764.三元数异或
+
+> https://www.acwing.com/problem/content/3767/
+
