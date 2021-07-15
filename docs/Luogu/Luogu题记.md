@@ -6,6 +6,8 @@
 
 #### P1090 [NOIP2004 提高组] 合并果子 / [USACO06NOV] Fence Repair G
 
+> 该题升级版P6033 [NOIP2004 提高组] 合并果子 加强版
+
 > https://www.luogu.com.cn/problem/P1090
 
 > 思路：
@@ -1073,8 +1075,8 @@ int main()
 }
 ```
 
-> > 2021年7月14日 今日反思：
-> >
+##### 2021年7月14日 今日反思：
+
 > > 做人一定不可好高骛远，一定要耐下心来，脸皮厚点没问题，毕竟我啥也不知道做。只能沉下心来努力积累。
 > >
 > > 当积累多了，日积月累，当量多了，量变一定会促成质变。你要相信自己！相信自己一定会有所收获！！！！！
@@ -1082,4 +1084,378 @@ int main()
 > > TODO：有时间的话，一定要找时间去再去练一下二分题。找准分界点，写好check()函数真的很重要！！！
 > >
 > > 每天一定要做到最晚出地下室的那一人！！！
+
+### 2021年7月15日
+
+#### P1044 栈的应用
+
+> https://www.luogu.com.cn/problem/P1044
+
+> 这道题就是一道卡特兰数的应用题，递推后发现规律，注意运用卡特兰数的递推
+>
+> > 递归公式1.
+> > h(0)=h(1)=1h(0)=h(1)=1
+> > h(n)=h(0)∗h(n−1)+h(1)∗h(n−2)+...+h(n−1)∗h(0)(n>=2)
+> >
+> > 递推公式2.
+> > h(n)=h(n−1)∗(4∗n−2)/(n+1)
+> >
+> > 对于数据过大的情况可以采用组合数学的方式（组合数学也就是杨辉三角的情况）
+> > 组合数公式1
+> > h(n)=C(2n,n)/(n+1)(n=0,1,2,...)h(n)=C(2n,n)/(n+1)(n=0,1,2,...)
+> > 卡特兰数可以与组合数联系起来，得到上面的公式
+> >
+> > 组合数公式2
+> > h(n)=c(2n,n)−c(2n,n−1)(n=0,1,2,...)h(n)=c(2n,n)−c(2n,n−1)(n=0,1,2,...)
+> > 与组合数公式1不同这个是两个组合数的减法
+
+#### P1996 约瑟夫问题
+
+> https://www.luogu.com.cn/problem/P1996
+
+> 就是一道约瑟夫环问题，
+>
+> > 常规数据结构的解法，可以使用一个循环链表，不断更新值，如果报数=m的话，则删除该结点
+>
+> > 既然学算法了，于是用像个算法er的解法做了一次
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 110;
+
+//i表示编号
+//j表示报的号
+int main()
+{
+    int n, m;
+    cin >> n >> m;
+    bool *out = new bool[N + 1];
+    for(int i = 1; i <= n; i ++) *(out + i) = true;
+    int i = 1;
+    int j = 0;
+    int count = 0;
+    while(1)
+    {
+        if(*(out + i))
+        {
+            j ++;
+            if(j == m)
+            {
+                *(out + i) = false;
+                j = 0;
+                cout << i << " ";
+                count ++;
+            }
+            if(count == n)//如果所有人都出来了，那就结束
+            {
+                break;
+            }
+        }
+        i ++;
+        if(i > n) //复位一下~
+        {
+            i = 1;
+        }
+    }
+    return 0;
+}
+```
+
+#### P1631 序列合并
+
+> https://www.luogu.com.cn/problem/P1631
+
+> 善于利用原数组是递增的前提条件
+>
+> 利用堆排序（优先队列）的方式进行选取
+>
+> > > 自己想的那个方式无法过的样例信息
+> > > 5
+> > > 1 1 2 3 4
+> > > 1 1 2 3 4
+
+```C++
+#include <bits/stdc++.h>
+#include <queue>
+using namespace std;
+const int N = 100010;
+typedef long long LL;
+LL minx[N];
+LL a[N];
+LL b[N];
+
+int main()
+{
+    int n;
+    priority_queue<int> q;
+    scanf("%d", &n);
+    for(int i = 1; i <= n; i ++)
+    {
+        scanf("%lld",&a[i]);
+    }
+    for(int i = 1; i <= n; i ++)
+    {
+        scanf("%lld",&b[i]);
+    }
+    for(int i = 1; i <= n; i ++)
+    {
+        for(int j = 1; j <= n; j ++)
+        {
+            int x = a[i] + b[j];
+            if(q.size() < n)
+            {
+                q.push(x);
+            }
+            else
+            {
+                if(q.top() > x)
+                {
+                    q.pop();
+                    q.push(x);
+                }
+                else break;
+            }
+        }
+    }
+    for(int i = n; i >= 1; i--)
+    {
+        minx[i] = q.top();
+        q.pop();
+    }
+    /*
+    //TODO:分析一下我到底哪里错了
+    minx[1] = a[1] + b[1];
+    int j = 2;
+    int pos = 2;
+    for(int i = 2; i <= n; i ++)
+    {
+        LL res = a[i-1] +b[j];
+        if(a[i] + b[j - 1] < res)
+        {
+            minx[pos++] = a[i] + b[j - 1];
+            continue;
+        }
+        else
+        {
+            minx[pos++] = res;
+            int k = j;
+            k ++;
+            res = a[i-1]+b[k];
+            while(a[i] + b[j - 1] >= res && k <= n)
+            {
+                minx[pos++] = res;
+                res = a[i-1]+b[k];
+                k++;
+            }
+        }
+    }
+    */
+    for(int i = 1; i <= n; i ++)
+    {
+        printf("%lld ", minx[i]);
+    }
+    return 0;
+}
+```
+
+#### P1575 正误问题
+
+> https://www.luogu.com.cn/problem/P1575
+
+> 表达式求值问题
+> <u>双栈进行处理，数栈和运算符栈</u>
+>
+> 首先得看看运算符的优先性、运算符是几元运算符等等..
+>
+> 很多需要特判的情况，然后可能存在的ERROR的情况
+
+```C++
+#include<bits/stdc++.h>
+using namespace std;
+
+string str;
+stack<int> op;
+stack<bool> num;
+bool t,t1,t2;
+
+//这类题之前先想想，运算符的次序
+//同时也要想想运算符的性质
+//比如这里not是一元运算符，故需要特判一下
+//凡是不满足的时候，都要注意返回ERROR错误值
+//exit(0)可以在某个地方直接停止程序
+//while(cin >> str)也是一种很好的通过字符串的空格分隔字符的功能 <---发现C++内在的奥妙很重要！
+void calc() 
+{
+	if(op.empty()) return;
+	if(op.top()==3) //处理not的计算
+    {
+		if(num.size()<1)  //一元运算符，只需要看数栈里面是否有1个
+        {
+			printf("error\n");
+			exit(0);
+		}
+		t=num.top();
+		num.pop();
+		t=!t;
+		num.push(t);
+	}
+    else if(op.top()==2) //处理and的计算
+    {
+		if(num.size()<2) 
+        { //二元运算符，需要看数栈里面是否有两个
+			printf("error\n");
+			exit(0);
+		}
+		t2=num.top();
+		num.pop();
+		t1=num.top();
+		num.pop();
+		t=(t1 && t2);
+		num.push(t);
+	}
+    else if(op.top()==1)
+    {
+		if(num.size()<2) 
+        {
+			printf("error\n");
+			exit(0);
+		}
+		t2=num.top();
+		num.pop();
+		t1=num.top();
+		num.pop();
+		t=(t1 || t2);
+		num.push(t);
+	}
+	op.pop();//计算完毕后，记得运算符栈要出一次
+}
+
+int main() 
+{
+    //优先性 not > and > or
+    //        3     2    1
+    //发现优先性高的，那就进行出栈运算，计算完后再将新的运算符入栈
+	while(cin>>str) //这种输入方式可以被空格隔断，故此可以提取出每个单独的内容
+    {
+		if(str=="not") op.push(3);
+		else if(str=="and") 
+        {
+			if(num.empty())
+            {
+				printf("error\n");
+				return 0;
+			}
+			while(!op.empty() && op.top() >= 2) calc();
+			op.push(2);
+		}
+        else if(str=="or") 
+        {
+			if(num.empty())
+            {
+				printf("error\n");
+				return 0;
+			}
+			while(!op.empty()) calc();
+			op.push(1);
+		}
+        else if(str=="true") num.push(true);
+		else if(str=="false") num.push(false);
+	}
+    //计算的时候是，每次存入运算符栈的时候，进行判断，如果运算符的优先性更大的话，则进行一次计算
+    //最后再看运算符栈，如果运算符栈还没空的话，则继续计算，直到运算符栈空了
+	while(!op.empty()) calc(); //如果运算符栈还没空的话，则继续进行计算
+	if(num.size()==1)
+    {
+		if(num.top()) printf("true\n");
+		else printf("false\n");
+    }
+	else printf("error\n");
+	return 0;
+}
+```
+
+#### P6033 [NOIP2004 提高组] 合并果子 加强版
+
+> 升级版，数据范围更大了，堆排序、优先队列已经不再适用了，总的来说，需要在O(n)的时间复杂度内实现问题。 在O(n)时间复杂度内求解哈夫曼最小值
+>
+> > 思想不难，但处处设限
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long LL;
+const int N = 1e5+100;
+const int M = 1e7+100;
+//设置两个队列
+//用两个队列来模拟优先队列操作
+//一个队列放数组中的数，另外一个放之和的数
+//每次操作比较两个队列中对头元素的大小
+//桶排序+两个队列来模拟优先队列
+queue<LL> q1,q2;
+LL a[N];
+LL readnum[M];
+LL n;
+//!这么大的数据一定要开long long
+//因为数据量实在是太大了 10^7   10e7的巨大数据量
+//所以使用快读函数进行数据的读取
+inline int read(){
+    int x=0,f=1;
+    char ch=getchar();
+    while(ch<'0'||ch>'9'){
+        if(ch=='-')
+            f=-1;
+        ch=getchar();
+    }
+    while(ch>='0'&&ch<='9'){
+        x=(x<<1)+(x<<3)+(ch^48);
+        ch=getchar();
+    }
+    return x*f;
+}
+
+//作为内联函数访问更快
+inline LL getnum()
+{
+    if(q2.empty() || (q1.front() < q2.front() && !q1.empty()))
+    {
+        LL x = q1.front();
+        q1.pop();
+        return x;
+    }
+    else
+    {
+        LL x = q2.front();
+        q2.pop();
+        return x;
+    }
+}
+
+int main()
+{
+    n = read();
+    LL ans = 0ll;
+    memset(a, 0, sizeof a);
+    for(int i = 1; i <= n; i ++)
+    {
+        a[readnum[i] = read()]++;
+    }
+    for(int i = 1; i <= 100000; i ++)
+    {
+        for(int j = 1; j <= a[i]; j ++)
+        {
+            q1.push(i);
+        }
+    }
+    for(LL i = 1; i < n; i ++)
+    {
+        LL x = getnum();
+        LL y = getnum();
+        ans += (x+y);
+        q2.push(x+y);
+    }
+    printf("%lld",ans);
+    return 0;
+}
+```
 
