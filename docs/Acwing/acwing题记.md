@@ -694,3 +694,69 @@ int main()
 
 > https://www.acwing.com/problem/content/3767/
 
+> 思路&解题思路：
+>
+> 异或运算———> 不进位的加法
+
+
+
+
+
+
+
+#### 3767.最小的值
+
+> https://www.acwing.com/problem/content/3770/
+
+> 思路&解题  贪心模拟归纳题
+>
+> 将题目要求进行一定转化，善于利用题目$x_i\in[0,1]$的性质
+>
+> $\sum_{i=1}^na_i*p_i - \sum_{i=1}^nb_i*p_i > 0$
+>
+> > 若：$a_i$ = $b_i$  $p_i = 1$ ①
+> > 若：$a_i > b_i \ \  p_i = 1$ ②
+> > 若：$a_i<b_i \ p_i = -1$ ③
+> >
+> > 考虑对$\sum_{i=1}^na_i*p_i - \sum_{i=1}^nb_i*p_i > 0$ ④ 的贡献值
+> > ①对④的贡献值是0
+> > ②对④的贡献值是sum1
+> > ③对④的贡献值是sum2
+> >
+> > 假设满足条件的$p_i=t$ 则，$sum1*t > sum2+1$时也就是$t = \lceil sum2+1/sum1\rceil$
+> >
+> > 统计$a$大于$b$的次数sum1，b大于等于a的次数sum2
+> > 如果sum1 == 0  则输出 -1
+> > 如果sum1 > sum2 则输出 1
+> > 如果sum1 < = sum2 则输出 $\lceil(sum1+sum2)/sum1\rceil$ 
+> >
+> > > 关于取整
+> > >
+> > > $\lceil\frac{a}{b}\rceil  = \lfloor\frac{a+b-1}{b}\rfloor$
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 110;
+int a[N],b[N];
+//贪心+分析模拟
+int main()
+{
+    int n;
+    cin >> n;
+    int sum1 = 0;
+    int sum2 = 0;
+    for(int i = 1 ; i <= n; i ++) cin >> a[i];
+    for(int i = 1 ; i <= n; i ++) cin >> b[i];
+    for(int i = 1 ; i <= n; i ++)
+    {
+        if(a[i] > b[i]) sum1 ++;
+        if(a[i] < b[i]) sum2 ++;
+    }
+    if(sum1 == 0) cout << -1 <<endl;
+    else if (sum1 > sum2) cout << 1 << endl;
+    else cout<<ceil((sum1 + sum2)/sum1) <<endl;
+    return 0;
+}
+```
+

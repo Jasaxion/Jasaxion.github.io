@@ -1459,3 +1459,467 @@ int main()
 }
 ```
 
+
+
+### 2021年7月16日
+
+> 搜索算法：BFS、DFS
+
+#### P1219 [USACO1.5]八皇后 Checker Challenge
+
+> https://www.luogu.com.cn/problem/P1219
+
+> 又一典型的BFS、DFS
+>
+> > DFS关键的一步是找准次序，也就是把握好顺序，也要注意恢复现场
+> >
+> > 该题有两种DFS搜索方式：
+> > 1、模板搜索
+> > 2、根据本题题意进行的搜索
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 1000;
+bool line[N],col[N];
+bool lefteg[N],righteg[N];
+int path[N];
+int n;
+int flag = 1;
+int counts = 0;
+//!搜索最重要的一步就是要想清楚顺序！！
+void dfs(int u) //u表示第几层
+{
+    if(u == n)
+    {
+        if(flag == 1)
+        {
+            for(int i = 0; i < n; i ++)
+            {
+                cout << path[i] << " ";
+            }
+            if(counts == 2) flag = 0;
+            cout << endl;
+        }
+        counts ++;
+        return;
+    }
+    for(int i = 0; i < n; i ++)
+    {
+        if(!line[i] && !lefteg[u + i] && !righteg[n - u + i])
+        {
+            path[u] = i + 1;
+            line[i] = lefteg[u + i] = righteg[n - u + i] = 1;
+            dfs(u + 1);
+            //恢复现场
+            line[i] = lefteg[u + i] = righteg[n - u + i] = 0;
+        }
+    }
+}
+
+void dfs2(int x, int y, int s)
+//更原始的搜索方式，从左上角开始进行搜索，s表示当前有多少个皇后
+{
+    if(y == n) y = 0, x ++;
+    //表示到达最后一列了，现在返回到第一个位置
+
+    if(x == n)//已经到达最后一行了
+    {
+        if(s == n) //当前皇后都摆完了
+        {
+            for(int i = 0; i < n; i ++ ) cout << path[i] << " ";
+            counts ++;
+            cout << endl;
+        }
+        return;
+    }
+
+    //如果这里不放皇后的话
+    dfs2(x, y+1,s);//到下一个位置去放
+
+    //如果放的话
+    if(!line[x] && !col[y] && !lefteg[x + y] && !righteg[x - y + n])
+    {
+        path[x] = y + 1;
+        line[x] = col[y] = lefteg[x + y] = righteg[x - y + n] = 1;
+        dfs2(x, y + 1, s + 1);
+        line[x] = col[y] = lefteg[x + y] = righteg[x - y + n] = 0;
+    }
+}
+
+int main()
+{
+    memset(line, 0, sizeof line);
+    memset(col, 0, sizeof col);
+    memset(lefteg, 0, sizeof lefteg); //左对角线
+    memset(righteg, 0, sizeof righteg); //右对角线
+    cin >> n;
+    dfs(0); //方法一
+    dfs2(0,0,0); //更原始的方法
+    cout << counts << endl;
+    return 0;
+}
+```
+
+#### P1443 马的遍历
+
+> https://www.luogu.com.cn/problem/P1443
+
+> DFS会出现超时，求最短路可换采用BFS
+
+```C++
+#include <bits/stdc++.h>
+#include <queue>
+using namespace std;
+const int N = 500;
+int n, m, x, y;
+int st[N][N];
+bool vis[N][N];
+typedef pair<int, int> PII;
+PII q[N*N];
+int dx[9]={0,2,-2,2,-2,-1,1,-1,1};
+int dy[9]={0,1,1,-1,-1,2,2,-2,-2};
+
+/*
+广度优先搜索dfs会有TLE，可以换采用宽度bfs
+回溯、剪枝
+int dfs(int x, int y, int s)
+{
+    st[x][y] = s;
+    int nx,ny;
+    for(int i = 1; i <= 8; i ++) //八个方向都走一走
+    {
+        nx = x + dx[i];
+        ny = y + dy[i];
+        //枚举下一个位置
+        //检查一下下一个位置是否合法
+        if((nx >= 1 && nx <= n && ny >= 1 && ny <= m)&& (s + 1 < st[nx][ny] || st[nx][ny] == -1))
+        {
+            //cout << "current position: " << nx << " " << ny <<endl;
+            dfs(nx, ny, s + 1);
+        }
+    }
+}
+*/
+
+void bfs(int x, int y, int s)
+{
+    st[x][y] = 0;
+    int hh = 0, tt = 0;
+    q[0] = {x,y};
+    vis[x][y] = true;
+    while(hh <= tt)
+    {
+        auto t = q[hh++];
+        for(int i = 1; i <= 8; i ++)
+        {
+            int nx = t.first + dx[i];
+            int ny = t.second + dy[i];
+            if((nx > 0 && nx <= n && ny > 0 && ny <= m) && !vis[nx][ny])
+            {
+                st[nx][ny] = st[t.first][t.second] + 1;//为上一个位置多一个
+                q[++ tt] = {nx,ny};
+                vis[nx][ny] = true;
+            }
+        }
+    }
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin >>n >> m >> x >> y;
+    memset(st, -1, sizeof st);
+    memset(vis, false, sizeof vis);
+    //dfs(x,y,0);
+    bfs(x,y,0);
+    for(int i = 1; i <= n; i ++)
+    {
+        for(int j = 1; j <= m; j ++)
+        {
+            cout << left << setw(4) << st[i][j] << " ";
+        }
+        cout << endl;
+    }
+    return 0;
+}
+```
+
+#### P1135 奇怪的电梯
+
+> https://www.luogu.com.cn/problem/P1135
+
+> 与上题一样，不过该题BFS和DFS应该都可以撒
+> spfa...还有好多算法没好好学好呢！！！
+
+```C++
+#include  <bits/stdc++.h>
+using namespace std;
+const int N = 2000;
+int q[N];
+int l[N];
+int da[3] = {0,1,-1};
+bool vis[N];
+int n,a,b;
+
+//最少按键次数，最小问题——>bfs
+void bfs(int sa)
+{
+    int hh = 0, tt = 0;
+    q[0] = sa; // 入队
+    vis[sa] = true;
+    int dis[N];
+    int flag = 0;
+    memset(dis, 0, sizeof dis);
+    dis[0] = 0; //从sa开始到达每个点的距离
+    while(hh <= tt)
+    {
+        int t = q[hh ++];
+        if (t == b)
+        {
+            flag = 1;
+            break;
+        }
+        for(int i = 1; i <= 2; i ++)
+        {
+            int na = t + da[i]*l[t];
+            if(na > 0 && na <= n && vis[na] == false)
+            {
+                dis[na] = dis[t] + 1;
+                q[++ tt] = na;
+                vis[na] = true;
+            }
+        }
+    }
+    if(flag == 1) cout << dis[b];
+    else cout << -1;
+    return;
+}
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin >> n >> a >> b;
+    memset(vis, false, sizeof vis);
+    for(int i = 1; i <= n; i ++) cin >> l[i];
+    bfs(a);
+    return 0;
+}
+```
+
+#### P1605 迷宫
+
+> https://www.luogu.com.cn/problem/P1605
+
+> 迷宫问题的DFS&BFS
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 110;
+typedef pair<int,int> PII;
+int g[N][N];
+int n,m,x;
+int stx,sty,enx,eny;
+int dx[5] = {0, -1, 0, 1, 0};
+int dy[5] = {0, 0, 1, 0, -1};
+PII q[N*N];
+int d[N][N];
+int counts = 0;
+
+//宽度优先搜索
+void dfs(int xx, int yy)
+{
+    if(xx == enx && yy == eny)
+    {
+        counts++;
+        return;
+    }
+    else
+    {
+        for(int i = 1; i <= 4; i ++)
+        {
+            int nx = xx + dx[i];
+            int ny = yy + dy[i];
+            if(nx > 0 && nx <= n && ny > 0 && ny <= m && g[nx][ny] == 0 && d[nx][ny] == -1)
+            {
+                d[xx][yy] = 1;
+                dfs(xx+dx[i],yy+dy[i]);
+                d[xx][yy] = -1;
+            }
+        }
+    }
+}
+int bfs()
+{
+    int hh = 0, tt = 0;
+    q[0] = {stx, sty};
+    memset(d, -1, sizeof(d));
+    d[1][1] = 1;
+    while(hh <= tt)
+    {
+        auto t = q[hh++];
+        for(int i = 1; i <= 4; i ++)
+        {
+            int x = t.first + dx[i];
+            int y = t.second + dy[i];
+            if(x > 0 && x <= n && y > 0 && y <= m && g[x][y] == 0 && d[x][y] == -1)
+            {
+                d[x][y] = 1;
+                if(x == enx && y == eny)
+                {
+                    counts++;
+                }
+                q[++ tt] = {x,y};
+            }
+        }
+    }
+    return counts;
+}
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin >> n >> m >> x;
+    cin >> stx >> sty >> enx >> eny;
+    memset(g, 0, sizeof 0);
+    memset(d, -1, sizeof(d));
+    for(int i = 1; i <= x; i ++)
+    {
+        int t,p;
+        cin >> t >> p;
+        g[t][p] = 1;
+    }
+    //cout << bfs();
+    dfs(stx, sty);
+    cout << counts;
+    return 0;
+}
+```
+
+#### ?P1379 八数码难题
+
+> https://www.luogu.com.cn/problem/P1379
+
+> 这是一道难度高的题
+>
+> 思路与想法:
+>
+> 
+>
+> 我们需要一种更为抽象化的思维方式：
+>
+> 可以把每一种状态看作 一个点
+> 从而，从初始状态到最终状态可以转化为，在图中找最短路问题
+> 难点：1、如何记录每个状态
+> 			2、如何记录所走的距离
+> 1状态表示可以使用字符串 
+> 比如初始 283104765 ---> 203184765 ------> ..... --------> 最终状态
+>
+> 2对于如何记录所走的距离
+> 可以采用哈希图hash_map、map、unorder_map、字典等数据结构进行保存
+>
+> `unordered_map<string,int> dist` 表示 状态string 的当前距离 int
+>
+> 3状态转移，可以以那个空位为研究对象，空位有4个移动方式，分别进行枚举
+>
+> > 启示：灵活运用STL库，可以事半功倍！STL也一定要花时间去好好了解
+> > 关于unordered_map:
+> > https://www.cnblogs.com/langyao/p/8823092.html
+> >
+> > ```C++
+> > 成员函数：
+> > =================迭代器========================= 
+> > begin 　　返回指向容器起始位置的迭代器（iterator） 
+> > end 　　   返回指向容器末尾位置的迭代器 
+> > cbegin　   返回指向容器起始位置的常迭代器（const_iterator） 
+> > cend 　　 返回指向容器末尾位置的常迭代器 
+> > =================Capacity================ 
+> > size  　　 返回有效元素个数 
+> > max_size  返回 unordered_map 支持的最大元素个数 
+> > empty        判断是否为空 
+> > =================元素访问================= 
+> > operator[]  　　   访问元素 
+> > at  　　 　　　　访问元素 
+> > =================元素修改================= 
+> > insert  　　插入元素 
+> > erase　　 删除元素 
+> > swap 　　 交换内容 
+> > clear　　   清空内容 
+> > emplace 　构造及插入一个元素 
+> > emplace_hint 按提示构造及插入一个元素 
+> > ================操作========================= 
+> > find 　　　　　　通过给定主键查找元素,没找到：返回unordered_map::end
+> > count 　　　　　返回匹配给定主键的元素的个数 
+> > equal_range 　　返回值匹配给定搜索值的元素组成的范围 
+> > ================Buckets====================== 
+> > bucket_count 　　　返回槽（Bucket）数 
+> > max_bucket_count    返回最大槽数 
+> > bucket_size 　　　   返回槽大小 
+> > bucket 　　　　　　返回元素所在槽的序号 
+> > load_factor　　　　 返回载入因子，即一个元素槽（Bucket）的最大元素数 
+> > max_load_factor 　  返回或设置最大载入因子 
+> > rehash　　　　　　 设置槽数 
+> > reserve 　　　　　  请求改变容器容量
+> > ```
+>
+> 其中有几个小技巧
+> **如何从一维序号进行转化为x维序号**
+> **又如何从x维序号转化回一维**
+
+```C++
+#include <bits/stdc++.h>
+#include <unordered_map>
+#include <cstring>
+#include <queue>
+
+using namespace std;
+unordered_map<string,int> dist;
+queue<string> q;
+
+int dx[5] = {0,1,-1,0,0};
+int dy[5] = {0,0,0,1,-1};
+
+int bfs(string str)
+{
+    string z = "123804765";
+    q.push(str);
+    dist[str] = 0;
+    while(!q.empty())
+    {
+        auto t = q.front();
+        q.pop();
+        int dis = dist[t];
+        if(t == z) return dis; //如果已经满足条件则返回步数
+
+        int po = t.find('0');//在字符串中寻找空位所在的位置
+        //将一维度转化为三维
+        int x = po / 3;
+        int y = po % 3;
+
+        for(int i = 1; i <= 4; i ++)
+        {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if(nx >= 0 && nx < 3 && ny >= 0 && ny < 3)
+            {
+                swap(t[po], t[nx*3+ny]);  //<---这里又有将三维情况转化成一维
+
+                if(!dist.count(t)) //map操作，如果t没有出现过的话
+                {
+                    dist[t] = dis + 1;
+                    q.push(t);
+                }
+                swap(t[po], t[nx*3+ny]);
+            }
+        }
+    }
+    return -1;
+}
+int main()
+{
+    string p_str;
+    cin >> p_str;
+    cout << bfs(p_str);
+    return 0;
+}
+```
+
