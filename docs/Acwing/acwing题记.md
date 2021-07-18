@@ -760,3 +760,42 @@ int main()
 }
 ```
 
+#### 3771.选取石子
+
+> https://www.acwing.com/problem/content/description/3774/
+
+> 思路题解：**善用STL库与哈希表**
+>
+> 需要满足的条件是 $x-y = a_x -a_y$ 也就是说 $a_x-x=a_y-y$ 再转化也就是$t=a[i] - i$ 
+>
+> 可以发现，每一类数都可以归类为一类t，这是一种映射关系，故此可以采用一种数据结构进行存储 —— 【哈希表】
+>
+> 观察题目数据 $t = a_i - i$的组合数值范围只在$[1-2*10^5,4*10^5-1] = [-199999,399999]$，故此我们可以在读取所有石子后，遍历所有可能的t值。
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long LL;
+
+int main()
+{
+    int n;
+    cin >> n;
+    vector<LL> a(n+1);
+    map<int, LL> mp;
+    LL ans = 0;
+    for(int i = 1; i <= n; i ++)
+    {
+        cin >> a[i];
+        mp[a[i] - i] += a[i];
+    }
+    for(int i = -200010; i <= 400010; i ++)
+    {
+        ans = max(ans,mp[i]);
+    }
+    cout << ans <<endl;
+}
+```
+
+
+

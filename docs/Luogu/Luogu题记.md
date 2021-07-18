@@ -1923,3 +1923,429 @@ int main()
 }
 ```
 
+#### UVA572 油田 Oil Deposits
+
+> https://www.luogu.com.cn/problem/UVA572
+>
+> > 搜索水题，搞清楚搜索过程就不难
+
+```C++
+#include <bits/stdc++.h>
+#include <cstring>
+
+using namespace std;
+const int N = 110;
+char g[N][N];
+bool st[N][N];
+int n,m;
+int dx[9] = {0,1,1,1,0,0,-1,-1,-1};
+int dy[9] = {0,0,1,-1,1,-1,0,1,-1};
+void dfs(int x, int y)
+{
+    st[x][y] = true;
+    if(x <= 0 || x > n || y <= 0 || y > m) return;
+    for(int i = 1; i <= 8; i ++)
+    {
+        int nx = x + dx[i];
+        int ny = y + dy[i];
+        if(g[nx][ny] == '@' && !st[nx][ny])
+        {
+            dfs(nx,ny);
+        }
+    }
+}
+int main()
+{
+    while(cin >> n >> m)
+    {
+        memset(st, false, sizeof st);
+        int counts = 0;
+        if(n == 0|| m == 0) return 0;
+        for(int i = 1; i <= n; i ++)
+        {
+            for(int j = 1; j <= m; j ++)
+            {
+                cin >> g[i][j];
+            }
+        }
+        for(int i = 1; i <= n; i ++)
+        {
+            for(int j = 1; j <= m; j ++)
+            {
+                if(g[i][j] == '@' && !st[i][j])
+                {
+                    counts++;
+                    dfs(i,j);
+                }
+            }
+        }
+        cout << counts << endl;
+    }
+    return 0;
+}
+```
+
+#### P5194 [USACO05DEC]Scales S
+
+> https://www.luogu.com.cn/problem/P5194
+>
+> > 注意思考顺序&&题意获取的方式
+> >
+> > > 利用题干的隐含条件——【不降序】——可以利用前缀和进行剪枝，从高到低进行枚举
+> >
+> > 防止TLE--->注意去剪枝！
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long LL;
+const int N = 1010;
+bool st[N];
+LL a[N];
+LL sa[N];
+LL ans;
+int n,s;
+
+void dfs(int u, LL sum)
+{
+    ans = max(ans,sum);
+    if(u == 0) return; //退出条件-->到达边界
+    //👇进行剪枝
+    if(sa[u] + sum <= s)//继续枚举下去，肯定都是会比这个sa[u]+sum小的，故直接剪枝优化算法
+    {
+        ans = max(ans, sa[u] + sum);
+        return;
+    }//如果u前缀和的项目+sum <= 标准值的话，则更新一下ans，也就是u之前的砝码都可以取用了
+    if(a[u] + sum <= s)
+    {
+        dfs(u - 1, sum + a[u]);
+    }//如果当前这个位置的值a[u] + sum <= s的话，取一下当前位置  <---也像一个剪枝
+    dfs(u - 1, sum); //都不满足的话，那就继续递归下一个
+}
+
+int main()
+{
+    cin >> n >> s;
+    for(int i = 1 ; i <= n; i ++) cin >> a[i];
+    for(int i = 1 ; i <= n; i ++) sa[i] = sa[i - 1] + a[i];
+    dfs(n,0);
+    cout << ans;
+    return 0;
+}
+```
+
+#### UVA11624 Fire!
+
+> https://www.luogu.com.cn/problem/UVA11624
+
+> 两个BFS进行搜索，双向BFS
+>
+> 有很多需要注意的细节
+>
+> > 1.火源可能有多个，应该记录最早火蔓延的时间
+> > 2.J走到的时候一定要满足火还没蔓延到，也就是J和火不能同时到
+> > 3.到达边界即可结束，注意要多+1
+> >
+> > 一堆细节和代码能力
+
+```C++
+#include <bits/stdc++.h>
+#include <queue>
+using namespace std;
+typedef pair<int,int> PII;
+const int N = 1010;
+char g[N][N];
+int n,m;
+int dx[5] = {0,1,0,-1,0};
+int dy[5] = {0,0,1,0,-1};
+bool flag = false;
+int F_time[N][N];
+int curtime[N][N];
+
+void bfs_F(int x, int y)
+{
+    //PII q2[N*N];
+    queue<PII> q2;
+    bool vis[N][N];
+    memset(vis, false, sizeof vis);
+    F_time[x][y] = 0;
+    vis[x][y] = true;
+    q2.push(PII(x,y));
+    //q2[0] = {x, y};
+    int hh = 0, tt = 0;
+    while(!q2.empty())
+    {
+        auto t = q2.front();
+        hh++;
+        q2.pop();
+        for(int i = 1; i <= 4; i ++)
+        {
+            int nx = t.first + dx[i];
+            int ny = t.second + dy[i];
+            if(nx > 0 && nx <= n && ny > 0 && ny <= m && g[nx][ny] != '#' && g[nx][ny] != 'F' && !vis[nx][ny])
+            {
+                if(F_time[nx][ny] == 0)
+                {
+                    F_time[nx][ny] = F_time[t.first][t.second] + 1;
+                }
+                else
+                {
+                    F_time[nx][ny] = min(F_time[nx][ny],F_time[t.first][t.second] + 1);
+                }
+                vis[nx][ny] = true;
+                q2.push(PII(nx,ny));
+                ++tt;
+                //q2[++tt] = {nx,ny};
+            }
+        }
+    }
+}
+bool check_J(int x, int y, int curtime)
+{
+    if(x > 1 && x < n && y > 1 && y < m && g[x][y] != '#' && F_time[x][y] < curtime + 1)
+    {
+        return true;
+    }
+    else return false;
+}
+void bfs_J(int x,int y)
+{
+    //PII q1[N*N];
+    queue<PII> q1;
+    //int dist[N][N];
+    bool vis[N][N];
+    memset(vis, false, sizeof vis);
+    vis[x][y] = true;
+    q1.push(PII(x,y));
+    //q1[0] = {x,y};
+    curtime[x][y] = 0;
+    int hh = 0, tt = 0;
+    while(!q1.empty())
+    {
+        auto t = q1.front();
+        hh++;
+        q1.pop();
+        for(int i = 1; i <= 4; i ++)
+        {
+            int nx = t.first + dx[i];
+            int ny = t.second + dy[i];
+            if(nx > 0 && nx <= n && ny > 0 && ny <= m && g[nx][ny] != '#' && g[nx][ny] != 'F' && !vis[nx][ny])
+            {
+                curtime[nx][ny] = curtime[t.first][t.second] + 1;
+                vis[nx][ny] = true;
+                q1.push(PII(nx,ny));
+                ++tt;
+            }
+        }
+    }
+}
+
+int bfs_JF(int x,int y)
+{
+    //PII q3[N*N];
+    queue<PII> q3;
+    q3.push(PII(x,y));
+    //q3[0] = {x,y};
+    int hh = 0, tt = 0;
+    if(x == 1 || x == n || y == 1 || y == m)
+    {
+        flag = 1;
+        return 1;
+    }
+    while(!q3.empty())
+    {
+        auto t = q3.front();
+        hh++;
+        q3.pop();
+        if(t.first == 1 || t.first == n || t.second == 1 || t.second == m)
+        {
+            flag = true;
+            return curtime[t.first][t.second] + 1;
+        }
+        for(int i = 1; i <= 4; i ++)
+        {
+            int nx = t.first + dx[i];
+            int ny = t.second + dy[i];
+            if(curtime[nx][ny] < F_time[nx][ny])
+            {
+                q3.push(PII(nx,ny));
+                ++tt;
+            }
+        }
+    }
+    if(curtime[x][y] == 0)
+    {
+        flag = false;
+    }
+    return curtime[x][y] + 1;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    int T;
+    cin >> T;
+    while(T --)
+    {
+        cin >> n >> m;
+        int j_x,j_y;
+        memset(F_time,0,sizeof F_time);
+        memset(curtime,0,sizeof curtime);
+        memset(g,'.',sizeof g);
+        for(int i = 1; i <= n; i ++)
+        {
+            for(int j = 1; j <= m; j ++)
+            {
+                cin >> g[i][j]; 
+                if(g[i][j] == 'J')
+                {
+                    j_x = i;
+                    j_y = j;
+                }
+            }
+        }
+        for(int i = 1; i <= n; i ++)
+        {
+            for(int j = 1; j <= m; j ++)
+            {
+                if(g[i][j] == 'F')
+                {
+                    bfs_F(i, j);
+                }
+            }
+        }
+        bfs_J(j_x, j_y);
+        int c = bfs_JF(j_x,j_y);
+        if(flag)
+        {
+            cout << c << endl;
+        }
+        else
+        {
+            cout << "IMPOSSIBLE" << endl;
+        }
+    }
+    return 0;
+}
+```
+
+### 2021年7月17日 总结&周赛
+
+#### P7095 [yLOI2020] 不离
+
+> https://www.luogu.com.cn/problem/P7095
+
+> 题解&思路：
+>
+> 善于发现：初始额能力值如果越大的话，越有可能穿上所有装备
+> ----->> 决策具有单调性 ------->> 满足二分的性质
+>
+> > 细化问题、简化思考方式
+>
+> 一、对于力量值
+>
+> 对于力量值，发现初始力量越多，穿的也就越多，可以用二分的方法来解决！
+>
+> 二、对于精神值
+>
+> 在选定了满足条件的力量值后，然后模拟穿着装备的过程，一件一件穿，找出满足条件的精神值
+>
+> 可以使用一个堆（优先队列）来维护还未穿着的装备
+
+```C++
+#include <bits/stdc++.h>
+#include <queue>
+#define int long long
+using namespace std;
+
+struct Node
+{
+    int a,b,c,d;
+    bool operator < (Node y) const
+    {
+        return b > y.b;
+    }
+}a[100001];
+int n;
+bool cmp(Node x, Node y)
+{
+    if(x.a == y.a)
+    {
+        return x.b < y.b;
+    }
+    return x.a < y.a;
+}
+
+bool check(int mid)
+{
+    for(int i = 1; i <= n; i ++)
+    {
+        if(mid < a[i].a) return 0;
+        mid += a[i].c;
+    }
+    return 1;
+}
+int get_b(int ac) //再已经获得最合适的力量值的前提下找精神值，第二次贪心
+{
+    //利用堆来维护还未穿的装备
+    int ret = 0, sum = 0;
+    priority_queue<Node> q;
+    int i = 1;
+    while(a[i].a <= ac && i <= n)
+    {
+        q.push(a[i]);
+        i++;
+    }
+    while(!q.empty())
+    {
+        Node cur = q.top();
+        q.pop();
+        ret = max(ret, cur.b - sum);
+        sum += cur.d;
+        ac += cur.c;
+        while(a[i].a <= ac && i <= n)
+        {
+            q.push(a[i]);
+            i++;
+        }
+    }
+    return ret;
+}
+int main()
+{
+    int T;
+    cin >> T;
+    cin >> n;
+    if(n == 0)
+    {
+        cout << "0 0" << endl;
+        exit(0);
+    }
+    int sum = 0;
+    for(int i = 1; i <= n; i++)
+    {
+        cin >> a[i].a >> a[i].b >> a[i].c >> a[i].d;
+        sum += a[i].a; //初始总力量
+    }
+    sort(a+1,a+n+1,cmp); //将结构体中以a为准进行排列
+    int l = 0, r = sum * 2;
+    int ans = 0;
+    //一次贪心
+    while(l <= r) //!目的是找到最小的满足条件的初始力量值
+    {
+        int mid = l+r>>1;
+        if(check(mid))
+        {
+            ans = mid;
+            r = mid - 1;
+        }
+        else l = mid + 1;
+    }
+    //找到完最小的满足条件的力量值后
+    //然后模拟穿装备，找到最合适的精神值
+    //二次贪心
+    cout << ans << " " << get_b(ans);
+    return 0;
+}
+```
+
