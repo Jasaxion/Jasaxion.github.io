@@ -1795,7 +1795,7 @@ int main()
 }
 ```
 
-#### ?P1379 八数码难题
+#### ❔P1379 八数码难题
 
 > https://www.luogu.com.cn/problem/P1379
 
@@ -2349,3 +2349,557 @@ int main()
 }
 ```
 
+#### P4058 [Code+#1]木材
+
+> https://www.luogu.com.cn/problem/P4058
+
+> -->观察题目的数据范围 $1 ≤ S,L ≤ 10^18$
+>
+> --> long long $10^9$  故应该采用 因为数据量都是正数 unsigned long long 无符号long long满足题目的数据范围
+>
+> 本题目的是找最少需要等几个月，不妨采用二分方法
+>
+> 1.考虑二分的端点—— 可能一开始就满足条件，可令左端点为0，
+> 对于右端点，我们因为有两个约束条件：一个是单根的长度，另外一个是总长度。
+>
+> > 我们去比较要求的单根长度和把总任务分配到每一根的需求长度，取最大值就是实际的约束条件；那么二分的右端点**实际上就是每棵树长高到约束条件的时间中的最大值**
+>
+> 本题的几个难点：
+> 		1.数据范围非常大，应该采用unsigned long long 进行存储
+> 		2.二分进行查找，右端点的选取
+
+```C++
+#include <bits/stdc++.h>
+
+using namespace std;
+const int N = 200200;
+unsigned long long h[N],a[N];
+unsigned long long n,m,s,i,j,k,minn = 0,maxn = 0,l,r,q;
+
+//快读函数，快速读入整数
+inline int rd(){
+    int x=0;
+    bool f=true;
+    char c;
+    c=getchar();
+    while(c<'0'||c>'9'){
+        if(c=='-') f=false;
+        c=getchar();
+    }
+    while(c>='0'&&c<='9'){
+        x=(x<<1)+(x<<3)+(c^48);
+        c=getchar();
+    }
+    return f?x:-x;
+}
+
+bool check(unsigned long long mid) //二分check函数
+{
+    unsigned long long sum = 0;
+    bool flag = 1;
+    for(i = 1; i <= n; i ++)
+    {
+        if(h[i] + a[i] * mid >= minn)
+        {
+            if(flag) sum += h[i] + a[i] * mid;
+            if(sum >= s) return true;
+        }
+    }
+    return false;
+}
+
+int main()
+{
+    scanf("%lld%lld%lld",&n,&s,&minn);
+    for(i = 1; i <= n; i ++) h[i] = rd();
+    for(i = 1; i <= n; i ++) a[i] = rd();
+    q = max(minn, s/n+1);
+    for(i = 1; i <= n; i++)
+    {
+        if(h[i] < q) maxn = max(maxn,(q-h[i])/a[i]+1);
+    }//找右端点
+    l = 0;
+    r = maxn;
+    //开始二分枚举
+    while(l < r)
+    {
+        unsigned long long mid = l + r >> 1;
+        if(check(mid))
+        {
+            r = mid;
+        }
+        else
+        {
+            l = mid + 1;
+        } 
+    }
+    printf("%lld",l);
+    return 0;
+}
+```
+
+#### P2331 ❔[SCOI2005]最大子矩阵
+
+> https://www.luogu.com.cn/problem/P2331
+
+> 该题要用到动态规划，等啥时候学到动态规划的时候回来再看看吧
+
+
+
+#### P2853 [USACO06DEC]Cow Picnic S
+
+> https://www.luogu.com.cn/problem/P2853
+
+> (lll￢ω￢)，就是一个dfs，从每个给定的地方开始进行一次dfs，如果能够到达，则该点++，能够到达的点等于所要求的数量，则ans++;
+>
+> > 纯粹用y总的模板写完的题
+>
+> > > 不过还是得注意一下数据范围以及cin速度太慢了，最好换成scanf进行输入
+
+```C++
+#include <bits/stdc++.h>
+
+using namespace std;
+const int N = 10010;
+int k,n,m;
+int h[N],e[N],ne[N],idx;
+int st[N];
+int x[N];
+int start[N];
+void add(int a,int b)
+{
+    e[idx] = b;
+    ne[idx] = h[a];
+    h[a] = idx++;
+}
+void dfs(int u)
+{
+    st[u] = 1;
+    x[u] ++;
+    for(int i = h[u]; i != -1; i = ne[i])
+    {
+        int j = e[i];
+        if(!st[j])
+        {
+            dfs(j);
+        }
+    }
+    return;
+}
+int main()
+{
+    ios::sync_with_stdio(false);
+    scanf("%d%d%d", &k,&n,&m);
+    //cin >> k >> n >> m;
+    idx = 0;
+    int ans = 0;
+    memset(h, -1, sizeof h);
+    memset(x, 0, sizeof x);
+    memset(st, 0, sizeof st);
+    for(int i = 1; i <= k; i ++)
+    {
+        scanf("%d", &start[i]);
+        //cin >> start[i];
+    }
+    for(int i = 1; i <= m; i ++)
+    {
+        int in,to;
+        scanf("%d%d", &in,&to);
+        //cin >> in >> to;
+        add(in,to);
+    }
+    for(int i = 1; i <= k ; i ++)
+    {
+        memset(st, 0, sizeof st);
+        dfs(start[i]);
+    }
+    for(int i = 1; i <= n; i ++)
+    {
+        if(x[i] == k) ans++;
+    }
+    cout << ans;
+    return 0;
+}
+```
+
+#### P2937 [USACO09JAN]Laserphones S
+
+> https://www.luogu.com.cn/problem/P2937
+
+> 看到最短路问题，想到BFS，要满足bfs中的“拐弯数”最少，需要进行特判以及更多约束
+
+> :joy: 通过这一题，我以最快的速度学会了在BFS中记录路径，以及输出BFS所获得的路径
+>
+> ```C++
+> //注意一下，多维情况如何转化为一个一维情况
+> //以及从一维情况转化到多维情况的计算方式 （注意避免麻烦还是下标从0开始吧QAQ）
+> void printpre(int x,int y )
+> {
+>     if(pre[x*n+y] != -1)
+>     {
+>         printpre(pre[x*n+y]/n, pre[x*n+y]%n);
+>     }
+>     printf("(%d, %d)\n",x,y);
+> }
+> 
+> int pre[N]; //用于存储前一个位置
+> memset(pre, 0, sizeof pre);
+> pre[stx*n+sty] = -1;//多维转一维
+> if(t.first == enx && t.second == eny)
+> {
+> 	printpre(enx,eny); //递归进行输出
+>     return;
+> }
+> ```
+
+> 显然最短路的路径可能有多条，每条的拐弯数都不相同。所以这种方式是不行的，但能够学习到BFS输出最短路的路径还是很值得的
+
+> 换一种思路：
+>
+> > 对于对每个格子进行标记（也就是染色）可以采用DFS
+>
+> ```C++
+> ....... 
+> ......C 
+> ......* 
+> *****.*     
+> ....*.. 
+> ....*.. 
+> .C..*.. 
+> ....... 
+> ---->>//也是利用类似贪心的方法，记录每个点能够到达的话，需要的最少的拐弯次数
+> ......1 
+> 111111C 
+> ......* 
+> *****.* 
+> ....*..   为1的地方无需拐弯
+> ....*.. 
+> .C..*.. 
+> ....... 
+>  
+> 然后对每个点都进行延申
+> 2222221 
+> 111111C 
+> 222222* 
+> *****2* 
+> ....*2.   为2的地方需要拐弯1次
+> ....*2. 
+> .C..*2. 
+> .....2.
+>     
+> 2222221 
+> 111111C 
+> 222222* 
+> *****2* 
+> ....*23   为3的地方需要拐弯2次
+> ....*23 
+> .C..*23 
+> 3333323
+>     
+> 2222221 
+> 111111C 
+> 222222* 
+> *****2* 
+> 4444*23   为4的地方需要拐弯3次
+> 4444*23 
+> 4C44*23 
+> 3333323
+> ```
+
+```C++
+#include <bits/stdc++.h>
+#include <queue>
+#define inf 0x3f3f3f3f
+using namespace std;
+int n,m;
+int a[110][110];//保存地图 //将字符地图转化为整型地图
+struct node
+{
+    int x,y;
+    int num;
+}s,t;
+queue<node> q;
+
+void dfs(int fx,node u) //在宽搜中每种延申方式就是一种广搜
+{ 
+    //fx记录方向（1上2下3左4右） u为当前所在点 
+    int x=u.x,y=u.y,p=u.num; 
+    if(a[x][y]<p || a[x][y]==inf) return;
+    if(x<1 || y<1 || x>n || y>m) return;
+
+    //判断延申方向
+    if(fx==1)
+    {
+        a[x][y]=p;
+        q.push((node){x,y,p});
+        dfs(1,(node){x-1,y,p});
+    }
+    if(fx==2)
+    {
+        a[x][y]=p;
+        q.push((node){x,y,p});
+        dfs(2,(node){x+1,y,p});
+    }
+    if(fx==3)
+    {
+        a[x][y]=p;
+        q.push((node){x,y,p});
+        dfs(3,(node){x,y-1,p});
+    }
+    if(fx==4)
+    {
+        a[x][y]=p;
+        q.push((node){x,y,p});
+        dfs(4,(node){x,y+1,p});
+    }
+}
+
+void bfs(){
+    while(!q.empty())
+    {
+        node u=q.front(),v=q.front();
+        q.pop();
+        u.num++;
+        v=u; v.x=u.x-1;//上 
+        dfs(1,v);
+        v=u; v.x=u.x+1;//下 
+        dfs(2,v);
+        v=u; v.y=u.y-1;//左 
+        dfs(3,v);
+        v=u; v.y=u.y+1;//右 
+        dfs(4,v);
+    }
+}
+
+int main(){
+    cin>>m>>n;
+    char zwh;
+    memset(a,inf,sizeof(a));
+    for(int i=1;i<=n;i++)for(int j=1;j<=m;j++) a[i][j]=inf-1;
+    //如果地图范围全部是比答案小的数字（比如0），那么在dfs染色的时候就会直接返回，导致错误。
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=m;j++){
+            scanf(" %c",&zwh);
+            if(zwh=='C') //这一步找起点和终点
+            {
+                if(s.x) t.x=i,t.y=j,t.num=0;//找到起点和终点
+                else s.x=i,s.y=j,s.num=0;
+            }
+            if(zwh=='*')
+            {//如果是墙的话那就设置为无穷大
+                a[i][j]=inf;
+            }
+            
+        }
+    }
+    q.push(s); //队列中将起点入队
+    bfs(); //进行宽搜
+    cout<<a[t.x][t.y]-1;//注意减一
+    return 0;
+}
+```
+
+#### P1031 [NOIP2002 提高组] 均分纸牌
+
+> https://www.luogu.com.cn/problem/P1031
+
+> 嘤嘤嘤，这道签到题，我居然思路出现的错误，嘤嘤嘤，还是得坐得下板凳！要努力去学习才行。
+> 一定要对能够学到新的东西，充满求知欲，对未知充满期待，加油！努力！终会有所收获
+
+> 这道题很简单，因为移动只能从相邻的位置进行移动;
+> 首先我们需要先求一下平均值ave;
+>
+> 然后从第一堆开始，如果a[i] == ave 的话那就直接下一个;
+>
+> 如果a[i] != ave的话， 那么此时需要进行一次操作，也就是从i+1个位置搬运过来纸牌，或者从i位置向i+1的位置搬运纸牌
+> a[i + 1] += a[i] - ave 具体是从i-->i+1 还是i+1-->i，主要看a[i]-ave是正还是负。反正不管怎样，这里都算操作一次，故此counts++;
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long LL;
+const int N = 110;
+LL a[N];
+int main()
+{
+    ios::sync_with_stdio(false);
+    int n;
+    scanf("%d", &n);
+    LL sum = 0;
+    for(int i = 1; i <= n; i ++)
+    {
+        scanf("%lld", &a[i]);
+        sum += a[i];
+    }
+    LL ave = sum / n;
+    LL counts = 0;
+    for(int i = 1; i <= n - 1; i ++)
+    {
+        if(a[i] - ave != 0)
+        {
+            counts++;
+            a[i+1] += a[i] - ave;
+        }
+    }
+    printf("%lld",counts);
+    return 0;
+}
+```
+
+#### P7404 [JOI 2021 Final] とてもたのしい家庭菜園 4
+
+> https://www.luogu.com.cn/problem/P7404
+
+> 思路与题解
+>
+> 数据量巨大，可采用【差分】进行求解
+>
+> 对于差分数组
+>
+> $b_i = a_{i+1} - a_i$
+> 因为题目的操作，只能对给定的区间进行“+1”运算
+>
+> `可以有个结论，bi差分数组的正负情况与ai,ai+1的递增还是递减情况对应`
+>
+> 对于前半段，要满足恒递增的情况，
+> 对于$b_i$如果 $b_i$ <=0 的话，对答案有贡献，此时必须进行一次操作； $x_i←x_{i−1}+∣bi∣+1$；
+> 对于$b_i$如果$b_i$  > 0 的话，对答案没有贡献，无需进行操作；
+>
+> 对于后半段，要满足恒递减的情况，
+> 对于$b_i$如果 $b_i$ < 0 的话，对答案没有贡献，无需进行操作；
+> 对于$b_i$如果$b_i$  >= 0 的话，对答案有贡献，此时必须进行一次操作；
+>
+> > 定义front[N],behind[N];
+> >
+> > - front数组，$front_i$ 表示从$1 \rightarrow i$ 严格递增所需的步数
+> > - $behind$数组，$behind_i$表示从 $ i + 1 \rightarrow n$ 严格递增所需的步数
+> >
+> > 可知：$ans = min{max(x_i,y_{i+1})} ~~~from~~i~~to~~n$
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long LL;
+const int N = 200010;
+LL a[N],b[N];
+LL front[N],behind[N];
+int n;
+LL ans = 0x3f3f3f3f3f3f3f3f;
+int main()
+{
+    scanf("%d", &n);
+    for(int i = 1; i <= n; i ++)
+    {
+        scanf("%lld", &a[i]);
+        b[i] = a[i] - a[i - 1];
+    }
+    for(int i = 2,j = n; i <= n; i ++, j --)
+    {
+        if(b[i] <= 0)
+        {
+            front[i] = front[i - 1] - (b[i] - 1);//front[i]表示需要进行多少次操作才能让其大于前一项
+        }
+        else front[i] = front[i - 1]; //无需操作就让其与前一个相等
+
+        if(b[j] >= 0)
+        {
+            behind[j] = behind[j + 1] + (b[j] + 1);//behind[i]表示需要进行多少次操作才能让其小于前一项
+        }
+        else behind[j] = behind[j + 1]; //无需操作就让其与前一个相等
+    }
+    for(int i = 1; i <= n; i ++)
+    {
+        ans = min(ans, max(front[i],behind[i+1])); //找出最小的满足条件的步数
+    }
+    printf("%lld",ans);
+    return 0;
+}
+```
+
+#### P6155 修改
+
+> https://www.luogu.com.cn/problem/P6155
+
+> 题解&思路：
+>
+> **贪心 + 数据结构[栈]**
+>
+> > 首先，如果没有 b_i的限制。我们可以用一个队列，枚举每个位置，如果这个位置上有点，则将这个位置的所有 a_i加入。然后，将一个 a_i放在这个位置。
+> >
+> > 举个例子。
+> > 假如有 2,2,3 三个点：
+> > 枚举位置 1，没有点。
+> > 枚举位置 2，将两个 2 加入队列，将一个 2 弹出。
+> > 枚举位置 3，将 3 加入队列，将另一个 2 弹出。
+> > 枚举位置 4，将 3 弹出。
+> > 每个点被修改的次数即为 出队时间 -− 入队时间。然后按修改的次数排序再乘上 b_i即可。
+> >
+> > 但有时有多种选择，比如在上述样例中，时间 3 时，既可以弹出 2 又可以弹出 3 ，但弹出 2 肯定是更优的，因为2的入队时间比 3 靠前，乘上的 b_i一定比 3 少，所以多修改一次 2的代价更小。
+> > 所以将上述的队列改为栈。
+> > 但时间复杂度还是 O*(*n*log*n*+max*a_i) 的。
+> > 但可以发现，其实很多时候栈都是空的，优化就是在栈为空的时候跳到下一个 a_i。
+> > 可以证明栈有值的点至多有 2n个。
+> > 总复杂度 O*(*n*log*n*) (排序)。
+
+```C++
+#include <bits/stdc++.h>
+#define re register
+#include <stack>
+//? 结果很大 需要对2^64进行取模？？？
+using namespace std;
+typedef long long LL;
+struct node{
+	int x,id;
+};
+struct d{
+	int ans,pos;
+}p[1000002];
+int n,a[1000002],b[1000002],x,l;
+unsigned long long ans;
+inline int read(){
+	int t=0;
+	char v=getchar();
+	while(v<'0')v=getchar();
+	while(v>='0'){
+		t=(t<<3)+(t<<1)+v-48;
+		v=getchar();
+	}
+	return t;
+}
+inline bool cmp(d x,d y){
+	return x.ans>y.ans;
+}
+stack <node> q;
+signed main(){
+	n=read();
+	for(re int i=1;i<=n;++i)a[i]=read();
+	sort(a+1,a+n+1);
+	for(re int i=1;i<=n;++i)b[i]=read();
+	sort(b+1,b+n+1);
+	l=1;
+	x=1;
+	while(1){
+		if(q.empty()){
+			if(l<=n)
+			x=a[l];
+			else break;
+		}
+		while(a[l]==x){
+			q.push(node{a[l],l});
+			++l;
+		}
+		node tmp=q.top();
+		q.pop();
+		p[tmp.id].ans=x-tmp.x;
+		++x;
+	}
+	sort(p+1,p+n+1,cmp);
+	for(re int i=1;i<=n;++i)
+    {
+        ans+=1llu*p[i].ans*b[i];
+	}
+	printf("%llu",ans);
+}
+```
+
+> 仍存在疑惑：https://www.luogu.com.cn/problem/solution/P6155
