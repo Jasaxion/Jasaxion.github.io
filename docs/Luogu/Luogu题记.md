@@ -3439,7 +3439,90 @@ int main()
 > }
 > ```
 
-#### P5094 [USACO04OPEN]MooFest
+#### ❔P5094 [USACO04OPEN]MooFest
 
 > https://www.luogu.com.cn/problem/P5094
 > CDQ分治典题👌
+
+> 树状数组可以更轻松地解决这个问题：
+>
+> 有关树状数组的解决方法：https://blog.csdn.net/weixin_30572613/article/details/99887389
+
+
+
+#### P2717 寒假作业[CDQ分治]
+
+> https://www.luogu.com.cn/problem/P2717
+
+> *//看到平均值无脑所有 $a_i←a_i−k$*
+> 例如：案例：（平均值：2） 样例：1,2,3
+>
+> 减去平均值后： -1, 0, 1; 【也就是CDQ分治中，每个数对答案的贡献】
+>
+> 故此该题可以转化为，求在这个序列中 $1<=i<=j<=n$ 满足$\sum_{i=i}^{j=j}a_i >= 0$的序列的个数
+> 转化为前缀和数组 -1，-1，0；
+> 从而转化成了只需要$x≤y ~~~且 a_x≤a_y$ 即可 （也就是$a_y-a_x≥0$ $x≤y$ 的满足要求的$(x,y)$序列的个数。
+>
+> 因为求部分区间和也就是前后两个端点的前缀和相减
+> //!启发：如果确定自己的思路没有错误后，调试程序可以从这些参数开始进行调试，根据获取的结果对参数进行微调。CDQ容易出细节上的错误
+>
+> **还是好好掌握好树状数组，利用好树状数组没那么容易出现那种细节错误**
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 100010;
+typedef long long LL;
+int n,k;
+LL a[N];
+LL tmp[N];
+LL ans = 0;
+//看到平均值无脑所有 $a_i←a_i−k$
+//实际上就是通过cdq求顺序对
+void cdq(int l, int r)
+{
+    if(l >= r) return;
+    int mid = l + r >> 1;
+    //分治
+    cdq(l,mid);
+    cdq(mid+1,r);
+    //求跨区间的顺序对个数
+    int i = l;
+    int j = mid+1;
+    int k = l;
+    while(j <= r)
+    {
+        while(i <= mid && a[i] <= a[j])
+        {
+            tmp[k++] = a[i++];
+        }
+        tmp[k++] = a[j++];
+        ans += i - l;  //实际上这里记录的就是顺序和的数目 (i-1) - (l-1) = i - l
+    }
+    while(i <= mid) tmp[k++] = a[i++];
+    //合并
+    for(int i = l; i <= r; i ++) a[i] = tmp[i];
+}
+int main()
+{
+    scanf("%d%d",&n,&k);
+    for(int i = 1;i <= n; i ++)
+    {
+        scanf("%lld",&a[i]);
+        a[i] -= k; //先都减去平均值
+        a[i] = a[i-1] + a[i]; //再转化为前缀和
+    }
+    //注意点
+    cdq(0,n); // 注意这里的l~r是在0~n之间，
+    //这里应该要包含0
+    //!启发：如果确定自己的思路没有错误后，调试程序可以从这些参数开始进行调试，根据获取的结果对参数进行微调
+    //那么求得就是在 [0,n]范围内 x<yx<y 且ax ≤ay的数对个数，即二维偏序。
+    printf("%lld",ans);
+    return 0;
+}
+```
+
+### 2021年7月20日
+
+> 数论基础
+
