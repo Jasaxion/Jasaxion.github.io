@@ -131,3 +131,85 @@ int main()
 }
 ```
 
+
+
+#### CF1512G Short Task
+
+> 这道题一定要深入了解欧拉筛；
+>
+> 首先利用欧拉筛，求出所有和
+> 先用欧拉筛筛出 1→10000000 所有数的因数和（调和级数枚举也可以），然后遍历一遍统计就可以了。
+>
+> > > 欧拉筛筛约数
+> > >
+> > > <img src="D:\Studio\study_space\study_space\MyGitHub\Jasaxion.github.io\docs\Codeforce\Codeforce题记.assets\image-20210722161048939.png" alt="image-20210722161048939" style="zoom:80%;" />
+>
+> > 1. *i* 为素数，f*(*i*)=*i*+1
+> > 2. i不可被 p_j整除, f*(*i*×*pj)=f(i*)+*f*(*i*)×*pj。因为乘上 p_j就使原数的因子数增加了一倍，增加的因子是原数每个因子分别乘上 p**j* 。
+> > 3. i 可被 p_j整除，f*(*i*×*pj)=f(i)+(f(i)−f(i/pj*))×*pj 。因为 i/pj 中的每个因子乘上 p_j都会造成因子的重复计算，所以要去掉重复出现的因子。
+>
+> `拓展知识点还请查看“我的算法笔记” - 数论 章节`
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long LL;
+const int N = 10000005;
+LL sum[N];
+int cnt;
+int prime[N];
+int ans[N];
+bool st[N];
+void getsum()
+{
+    ans[1] = sum[1] = 1;
+    for(int i = 2; i < N; i ++)
+    {
+        ans[i] = -1;
+    }
+    for(int i = 2; i < N; i ++)
+    {
+        if(!st[i])
+        {
+            prime[++cnt] = i;
+            sum[i] = i + 1;
+            //如果此时是质数的话
+            //那么sum[n]=n+1;
+            //例如 2 是质数， 2 = 1 + 3;
+        }
+        //从目前所有的已找到的质数中查找
+        for(int j = 1; j <= cnt&& prime[j] <= N/i;j++)
+        {
+            st[i*prime[j]] = 1;//pj为i的最小质因子
+            if(i%prime[j] == 0) //如果能够被整除的话
+            {
+                sum[i*prime[j]] = sum[i] +(sum[i]-sum[i/prime[j]])*prime[j];
+                break;
+            }
+            sum[i*prime[j]] = sum[i] +sum[i]*prime[j]; //如果不能被整除的话
+        }
+    }
+}
+int main()
+{
+    int T;
+    int n;
+    getsum();
+    //先用欧拉筛筛出1~1e7的所有数的因数和
+    for(int i = 2; i < N; i ++)
+    {
+        if(sum[i] > N) continue;
+        if(ans[sum[i]] == -1) //替换一下-1所对应的值
+        {
+            ans[sum[i]] = i;
+        }
+    }
+    scanf("%d",&T);
+    while(T -- )
+    {
+        scanf("%d",&n);
+        printf("%d\n",ans[n]);
+    }
+}
+```
+
