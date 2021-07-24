@@ -3668,7 +3668,70 @@ bool calc(ll x)
 }
 ```
 
+#### P2054 [AHOI2005]洗牌
 
+> https://www.luogu.com.cn/problem/P2054
+
+> 分析题目：
+>
+> ```
+> 洗牌如下：
+> 1  2  3  4
+> 3  1  4  2
+> 4  3  2  1
+> 2  4  1  3
+> 1  2  3  4
+> //可以发现，对应位置的数字，每次洗牌都位置的变化
+> // 2*x%(n+1)
+> //如 1：1 ---> 1：2 ---> 1：4 ---> 1：3
+> //故此下m次x的位置是 2^m*x%(n+1)
+> ---> 故此 我们要求的就是满足 [线性同余方程]
+>   2^m*x%(n+1)≡ L (mod n+1) 中的x的值
+> ```
+>
+> $也就是求解线性同余方程2^m*x ≡ L ~(mod ~n+1) 中的x的值$
+>
+> $x\equiv L*t^m\ (mod \ n+1)$​
+>
+> 其中t是2在(mod n+1)意义下的逆元，显然$t = \frac{n}{2}+1$​ [2*(n/2+1) = n+2,  n+2%n+1 = 1]
+>
+> !! 该题的数据范围极大...
+> 一定要采用快速幂、快速乘。。否则会爆long long
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+ll n, m, l;
+ll x, y;
+ll mul(ll a, ll b, ll mod) //快速乘，数据量太大了10^10，ll直接相乘会爆。一定要快速乘
+{
+    ll r = 0;
+    while(b)
+    {
+        if(b & 1) r = (r+a) % mod;
+        a = (a + a) % mod;
+        b >>= 1;
+    }
+    return r % mod;
+}
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin >> n >> m >> l;
+    ll t = n/2 + 1;
+    ll s = 1;
+    //快速幂
+    while(m)//求解 t^m次方
+    {
+        if(m&1) s = mul(s, t, n+1);
+        t = mul(t, t, n+1);
+        m >>= 1;
+    }
+    cout << mul(s, l, n+1); //x = L*t^m (mod n+1)
+    return 0;
+}
+```
 
 ### 2021年7月21日
 
@@ -3931,6 +3994,55 @@ int main()
 > 数论中还是挺重要的欧拉筛的一些应用：
 >
 > 如：欧拉筛求约数个数与欧拉筛求约数和。详细内容查看我的算法笔记-数论章节
+
+#### P2158 [SDOI2008]仪仗队
+
+> https://www.luogu.com.cn/problem/P2158
+
+> 有题意可知：
+> 所有的点都关于`y=x`对称，从原点(0，0)连线，可以发现，从原点（0，0）往后的连线上的点一定都是看不到的，对任意整点（x，y）有点（λx，λy）(λ>1)是看不到的，我们显然可以发现:gcd(λx,λy) = λgcd(x,y) >λ·1 =λ >1
+> 也就是说，对于一个点(x,y)，当gcd(x,y)≠1时这个点看不到。
+
+```C++
+//我的代码....虽然有点难看，但都是模板
+//果然数论最难的是数学思维，编码能力体现不高
+#include <bits/stdc++.h>
+using namespace std;
+int phi(int x) //欧拉函数//求1~n，与n互质的正整数(包括1)
+{
+    int res = x;
+    for (int i = 2; i <= x / i; i ++ )
+        if (x % i == 0)
+        {
+            res = res / i * (i - 1);
+            while (x % i == 0) x /= i;
+        }
+    if (x > 1) res = res / x * (x - 1);
+    return res;
+}
+int main()
+{
+    int n;
+    cin >> n;
+    int ans = 0;
+    while(1)
+    {
+        if(n == 1)
+        {
+            ans = 0;
+            break;
+        }
+        for(int i = 2; i < n; i ++)
+        {
+            ans += phi(i)*2;
+        }
+        ans += 3;
+        break;
+    }
+    cout << ans;
+    return 0;
+}
+```
 
 ### 2021年7月22日
 
