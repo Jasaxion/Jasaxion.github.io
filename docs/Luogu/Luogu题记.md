@@ -4039,3 +4039,229 @@ int main(){
 }
 ```
 
+#### P3807 【模板】卢卡斯定理/Lucas 定理
+
+> https://www.luogu.com.cn/problem/P3807
+
+> 卢卡斯定理的模板题
+>
+> 当m和n比较大的时候，求取组合数%p的值应该采用卢卡斯定理
+>
+> > 但当p<m时，分母的乘法逆元可能不存在(m可能是p的倍数)，所以就轮到卢卡斯定理出场了。
+>
+> <img src="D:\Studio\study_space\study_space\MyGitHub\Jasaxion.github.io\docs\Luogu\Luogu题记.assets\image-20210723100600736.png" alt="image-20210723100600736" style="zoom:67%;" />
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long LL;
+const int N = 100100;
+int f[N];
+int Inf[N];
+int qmi(int a, int k, int p)  // 快速幂模板
+{
+    int res = 1 % p;
+    while (k)
+    {
+        if (k & 1) res = (LL)res * a % p;
+        a = (LL)a * a % p;
+        k >>= 1;
+    }
+    return res;
+}
+//求C_a^b的方法一
+/*
+LL C(LL a, LL b, LL p)
+{
+    for(int i = 1; i < N; i ++)
+    {
+        f[i]=f[i-1]%p;
+        Inf[i] = Inf[i-1]*qmi(i,p-2,p)%p;
+    }
+    return f[a]*Inf[a-b]%p*Inf[b]%p;
+}
+*/
+//求C_a^b的方法二
+int C(int a, int b, int p)  // 通过定理求组合数C(a, b)
+{
+    if (a < b) return 0;
+
+    LL x = 1, y = 1;  // x是分子，y是分母
+    for (int i = a, j = 1; j <= b; i --, j ++ )
+    {
+        x = (LL)x * i % p;
+        y = (LL) y * j % p;
+    }
+    return x * (LL)qmi(y, p - 2, p) % p;
+}
+LL lucas(LL a, LL b, int p)
+{
+    if (a < p && b < p) return C(a, b, p);
+    return (LL)C(a % p, b % p, p) * lucas(a / p, b / p, p) % p;
+    //要保证a,b足够小，故此必须不断递归卢卡斯(a,b);
+}
+int main()
+{
+    int T;
+    cin >> T;
+    int a,b,p;
+    while(T--)
+    {
+        f[0] = Inf[0] = 1;
+        cin >> a >> b >> p;
+        cout << lucas(a+b,b,p) <<endl;
+    }
+}
+```
+
+### 2021年7月23日
+
+#### P1137 旅行计划
+
+> https://www.luogu.com.cn/problem/P1137
+
+> 额...虽然看题解都是用的DP动态规划求解的...
+>
+> 但我目前还没咋学动态规划....
+>
+> 仔细分析题目发现答案就是拓扑排序序列，其中的值就是拓扑排序时点所在的深度，
+>
+> 只需要在进行拓扑排序的时候，对结点的深度也进行一下记录就好了。
+
+```C++
+#include <bits/stdc++.h>
+
+using namespace std;
+const int N = 100010;
+const int M = 200010;
+int h[N],ne[M],e[M],idx;
+int d[N];
+int q[N];
+int n,m;
+int res[N]; //记录深度数组
+void add(int a, int b)
+{
+    e[idx] = b;
+    ne[idx] = h[a];
+    h[a] = idx++;
+}
+void topsort()
+{
+    int hh = 0,tt = -1;
+    for(int i = 1 ; i <= n; i ++)
+    {
+        if(!d[i])
+        {
+            q[++tt] = i; //如果一开始入度就是0
+            res[i] = 1;//那么深度就设置为1
+        }
+    }
+    while(hh <= tt)
+    {
+        int t = q[hh++]; //取队头元素
+        for(int i = h[t]; i != -1; i = ne[i])
+        {
+            int j = e[i];
+            res[j] = res[t] + 1; //下一个结点的深度+1
+            if(-- d[j] == 0){
+                q[++ tt] = j;
+            }
+        }
+    }
+}
+int main()
+{
+    memset(h,-1,sizeof h);
+    memset(d,0,sizeof d);
+    cin >> n >> m;
+    int in,to;
+    for(int i = 1; i <= m; i ++)
+    {
+        cin >> in >> to;
+        add(in,to);
+        d[to] ++;
+    }
+    topsort();
+    for(int i = 1; i <= n ; i ++)
+    {
+        cout << res[i] << " ";
+    }
+    return 0;
+}
+```
+
+#### P4316 ?绿豆蛙的归宿
+
+> https://www.luogu.com.cn/problem/P4316
+
+> 反向建图，进行dp搜索求期望
+>
+> > 何时用dp动态规划思想？
+> >
+> > 发现因为这里第一个位置的期望一定为0，终止状态为0
+> > 故可以采用逆推的方式进行逆向递推处理，最后获得终止状态0
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 100010;
+int ne[N],h[N],e[N],w[N],idx;
+int ind[N],tod[N];
+int q[N];
+int n,m;
+double dp[N];
+void add(int a, int b, int wi)
+{
+    e[++idx] = b;
+    ne[idx] = h[a];
+    h[a] = idx;
+    w[idx] = wi;
+}
+void topsort()
+{
+    int hh = 0, tt = -1;
+    dp[n] = 0;
+    for(int i = 1; i <= n; i ++)
+    {
+        if(!ind[i])
+        {
+            q[++tt] = i;
+        }
+    }
+    while(hh <= tt)
+    {
+        int t = q[hh ++];
+        for(int i = h[t]; i; i = ne[i])
+        {
+            int j = e[i];
+            dp[j] += (dp[t]+(double)w[i])/(double)tod[j];
+            if(-- ind[j] == 0)
+            {
+                q[++tt] = j;
+            }
+        }
+    }
+}
+int main()
+{
+
+    cin >> n >> m;
+    int in,to,wi;
+
+    //md,采用逆推的方法进行DP
+    //为了逆推方便，采用反向建图，但注意，反向建图的出度还是以原图为准
+    //逆向建图我们可以知道dp[n] = 0一定为0，因为逆向到达初始点了。
+    for(int i = 1; i <= m; i ++)
+    {
+        //!dp反向建图求期望，思维很重要！！
+        cin >> in >> to >> wi;
+        add(to, in, wi); //反向建图！！！
+        tod[in]++;
+        ind[in]++;
+    }
+    topsort();
+    printf("%0.2lf",dp[1]);//因为是反向建图，所以第一个位置就是最后一个位置
+    return 0;
+}
+```
+
