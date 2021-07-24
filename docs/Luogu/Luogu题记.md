@@ -4114,6 +4114,58 @@ int main()
 }
 ```
 
+#### P2532 (卡特兰+高精度)[AHOI2012]树屋阶梯
+
+> https://www.luogu.com.cn/problem/P2532
+
+> 思路：该题数据量很大，对于四则运算应该采用高精度进行计算才可以！
+>
+> > 关于卡特兰数的求解，可采用DP
+> >
+> > <img src="D:\Studio\study_space\study_space\MyGitHub\Jasaxion.github.io\docs\Luogu\Luogu题记.assets\image-20210724114334069.png" alt="image-20210724114334069" style="zoom:80%;" />
+
+```C++
+//卡特兰数+高精度算法
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+const int N = 1010;
+int f[N][N];
+int len = 1;
+void catlan(ll u)
+{
+    for(int i = 1; i <= len; i ++)
+    {
+        f[u][i] = f[u-1][i] + f[u][i];
+    }
+    for(int i = 1; i <= len; i ++)
+    {
+        f[u][i+1] += f[u][i]/10;
+        f[u][i] %= 10;
+    }
+    if(f[u][len+1]) len++;
+}
+int main()
+{
+    ios::sync_with_stdio(false);
+    int n;
+    f[1][1] = 1;
+    cin >> n;
+    for(int i = 2 ;i <= n + 1; i++)
+    {
+        for(int j = 1; j <= i; j ++)
+        {
+            catlan(j);
+        }
+    }
+    for(int i = len; i >= 1; i --)
+    {
+        cout << f[n][i];
+    }
+    return 0;
+}
+```
+
 ### 2021年7月23日
 
 #### P1137 旅行计划
@@ -4261,6 +4313,135 @@ int main()
     }
     topsort();
     printf("%0.2lf",dp[1]);//因为是反向建图，所以第一个位置就是最后一个位置
+    return 0;
+}
+```
+
+#### ❕P1983 [NOIP2013 普及组] 车站分级
+
+> https://www.luogu.com.cn/problem/P1983
+
+> emmm.....
+>
+> 我真的好弱啊....这仅仅是一道绿题...
+>
+> 想到进行拓扑排序，然后求拓扑排序中最大的深度..
+> 可是如果连边，鲁莽建图连边的空间复杂度是(O(n*m^2))
+>
+> 结果只有70'，原因就是超内存了，我丢...我真是个蒟蒻.
+>
+> > 降低空间复杂度的方法，原来要连n^2条边
+> > 我们只需要**增加一个虚点**，这样我们就只需要连2n条边了..
+>
+> > 当然如果还有更高的空间复杂度要求的话...
+> > 参考某高中OIer大佬的 **线段树优化建边**
+> >
+> > > 优化建边例题：https://www.luogu.com.cn/problem/CF786B
+> >
+> > `https://blog.csdn.net/xumingyang0/article/details/81021793`
+
+```C++
+//[这是我的超内存的MLE代码]
+#include<bits/stdc++.h>
+using namespace std;
+const int N=11000000;
+const int M = 1010;
+int n,m,h[M],e[N],ne[N],idx;
+int a[M];
+bool st[M];
+int deep[M];
+int d[M];
+int q[M];
+
+//70.....超内存了....
+void add(int a, int b)
+{
+    e[idx] = b;
+    ne[idx] = h[a];
+    h[a] = idx++;
+}
+
+void print()
+{
+	for(int i = 1;i <= n; i++)
+	{
+		for(int j = h[i]; j != -1; j = ne[j])
+		{
+            cout << i << "->" << e[j] << " ";
+		}
+        cout << endl;
+	}
+}
+
+void topsort()
+{
+    int hh = 0;
+    int tt = -1;
+
+    for(int i = 1; i <= n; i ++)
+    {
+        if(!d[i])
+        {
+            q[++tt] = i;
+            deep[i] = 1;
+        }
+    }
+    while(hh <= tt)
+    {
+        int t = q[hh++];
+        for(int i = h[t]; i != -1; i = ne[i])
+        {
+            int j = e[i];
+            deep[j] = deep[t]+1;
+            if(--d[j] == 0)
+            {
+                q[++tt] = j;
+            }
+        }
+    }
+}
+
+int main()
+{
+    cin >> n >> m;
+    int t;
+    memset(h,-1,sizeof h);
+    memset(d,0,sizeof d);
+    idx = 0;
+    for(int i = 1; i <= m; i ++)
+    {
+        cin >> t;
+        memset(st,false,sizeof st);
+        int l,r;
+        for(int j = 1; j <= t; j ++)
+        {
+            cin >> a[j];
+            st[a[j]] = true;
+        }
+        l = a[1];
+        r = a[t];
+        for(int k = l; k <= r; k ++)
+        {
+            if(st[k])
+            {
+                for(int p = l; p <= r; p ++)
+                {
+                    if(!st[p])
+                    {
+                        add(k,p);
+                        d[p]++;
+                    }
+                }
+            }
+        }
+    }
+    topsort();
+    int ans = 0;
+    for(int i = 1; i <= n; i ++)
+    {
+        ans = max(ans,deep[i]);
+    }
+    cout << ans;
     return 0;
 }
 ```
