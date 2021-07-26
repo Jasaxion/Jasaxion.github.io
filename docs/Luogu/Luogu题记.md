@@ -2920,6 +2920,12 @@ signed main(){
 
 ### 2021年7月19日
 
+> 2021年7月19日 分治 
+> 2021年7月20日 数学知识选讲Ⅰ （约数、整除划分）
+> 2021年7月21日 数学知识选讲 Ⅱ （质数筛）
+> 2021年7月22日 组合数学（卡特兰,lgv算法,隔板法,容斥原理,卢卡斯定理)
+> 2021年7月23日 基础图论
+
 #### P1908 逆序对
 
 > https://www.luogu.com.cn/problem/P1908
@@ -4554,6 +4560,244 @@ int main()
         ans = max(ans,deep[i]);
     }
     cout << ans;
+    return 0;
+}
+```
+
+### 2021年7月24日
+
+> 周赛|记得补题
+
+### 2021年7月25日
+
+> 放假~
+> 但是今天太颓废了。。。。。。。
+> 一定不要轻易满足，要充满危机意识
+
+### 2021年7月26日
+
+> 最短路问题
+
+> **一定要熟练并掌握求解最短路问题的模板！**
+
+#### P1629 邮递员送信
+
+> https://www.luogu.com.cn/problem/P1629
+
+> 正确理解题意：
+> 第一步是计算1~x的最短距离 之和
+> 第二步则是计算x~1的最短距离之和
+>
+> > 巧妙之处1：因为该图可能存在重边或自环，我们在进行权值存储的时候，应该只存储权值最小的那一个边
+> >
+> > 巧妙之处2：求x\~1的最短距离之和，因为题目中规定了任何两点之间都能相互到达，故此我们只需将邻接矩阵进行反向，再次进行一次dijkstra就能获得x\~1的最短距离了。
+> >
+> > 难理解的地方1：dijkstra算法用邻接矩阵算法该如何进行，与模板邻接表类似，也是首先找最短距离的点j，然后去更新dist[j]为1\~j最小还是1\~t\~j最小。
+> > 					2：关于dist[N]数组的初始化，使用1能直接到达的点的权值进行初始化处理
+
+```C++
+#include <bits/stdc++.h>
+#include <queue>
+
+using namespace std;
+typedef pair<int,int> PII;
+const int N = 1100;
+int ans = 0;
+int g1[N][N];
+int g2[N][N]; //反向建的图
+int n,m;
+int in,to,wi;
+int dist[N];
+
+//邻接矩阵实现的dijkstra算法
+void dijkstra(int x,int g[][N])
+{
+    bool st[N] = {0};
+    st[1] = 1;
+    int v;
+    for(int i = 1; i < n; i ++)
+    {
+        int min = 0x3f3f3f3f;
+        for(int j = 1; j <= n; j ++)
+        {
+            if(!st[j] && min > dist[j])
+            {
+                min = dist[j];
+                v = j;
+            }
+        }
+        st[v] = 1;
+        for(int j = 1; j <= n; j ++)
+        {
+            if(!st[j] && g[v][j] + dist[v] < dist[j])
+            {
+                dist[j] = g[v][j] + dist[v];
+            }
+        }
+    }
+}
+void initial(int n,int g[][N])
+{
+    for(int i = 1; i <= n; i ++)
+    {
+        for(int j = 1; j <= n; j ++)
+        {
+            if(i!=j)
+            {
+                g[i][j] = 0x3f3f3f3f;
+            }
+        }
+    }
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin >> n >> m;
+    initial(n,g1);
+    initial(n,g2);
+    for(int i = 1; i <= m; i ++)
+    {
+        cin >> in >> to >> wi;
+        g1[in][to] = min(g1[in][to],wi);
+        g2[to][in] = min(g2[to][in],wi); //反转的逆向图
+    }
+
+    //首先正向进行一次dijkstra算法求1~x的距离
+    //?用1能直接到达的点的权值进行初始化
+    for(int i = 1; i <= n; i ++)
+    {
+        dist[i] = g1[1][i];
+    }
+    dijkstra(n,g1);
+    for(int i = 1; i <= n; i ++)
+    {
+        ans += dist[i]; //1~x的距离都加起来
+    }
+    //然后逆向进行一次dijkstra算法求x~1的距离
+    //!何时可以逆向处理？ 需要题目已经说明：输入保证任意两点都能互相到达。
+    //?也是用1能直接到达的点进行初始化
+    for(int i = 1; i <= n; i ++)
+    {
+        dist[i] = g2[1][i];
+    }
+    dijkstra(n,g2);
+    for(int i = 1; i <= n; i ++)
+    {
+        ans += dist[i];
+    }
+    cout << ans << endl;
+    return 0;
+}
+```
+
+#### P1144 最短路计数
+
+> https://www.luogu.com.cn/problem/P1144
+
+> 这道题有两种思路&解决方法：-c-读题要细心，这是无向图
+>
+> 法一：BFS宽度优先搜索，
+> 因为权重值都相等为1，故此可以利用宽度优先搜索BFS来求最小值
+> 因为权值都为1，故此一个点的最短路就相当于是它在bfs搜索树中的深度
+> 一个点最短路一定经过了一个层数比它少1的节点（否则就不是最短路）
+> 故此用每个相邻且层数比当前节点层数少1的点更新当前点的路径跳数即可
+>
+> ```C++
+>  queue<int>Q;dep[1]=0;vis[1]=1;Q.push(1);cnt[1]=1;
+>     while(!Q.empty()){
+>         int x=Q.front();Q.pop();
+>         for(int i=0;i<G[x].size();i++){
+>             int t=G[x][i];
+>             if(!vis[t]){vis[t]=1;dep[t]=dep[x]+1;Q.push(t);}
+>             if(dep[t]==dep[x]+1){cnt[t]=(cnt[t]+cnt[x])%MOD;}
+>         }
+>     }
+>     for(int i=1;i<=N;i++){
+>         printf("%d\n",cnt[i]);
+> ```
+>
+> 法二：SPFA算法：
+>
+> > 更新边长的时候如果大于号就覆盖，相等的话（即有相同最短路径）就相加
+> >
+> > 注：自环和重边不会对本题造成影响
+
+```C++
+#include <bits/stdc++.h>
+#include <queue>
+using namespace std;
+const int INF = 0x3f3f3f3f;
+const int mod = 100003;
+const int N = 1000010;
+const int M = 2000010;
+int h[N],e[M],ne[N],idx;
+long long ans[N] = {0};
+bool st[N];
+int dist[N];
+int n,m;
+int x,y;
+
+void add(int a, int b)
+{
+    e[idx] = b;
+    ne[idx] = h[a];
+    h[a] = idx++;
+}
+void spfa()
+{
+    for(int i = 0; i <= n; i ++) dist[i] = INF;
+    dist[1] = 0;
+
+    queue<int> q;
+    q.push(1);
+    st[1] = true;
+
+    while(q.size())
+    {
+        auto t = q.front();
+        q.pop();
+        st[t] = false;
+
+        for(int i = h[t]; i != -1; i = ne[i])
+        {
+            int j = e[i];
+            if(dist[j] > dist[t] + 1)
+            {
+                dist[j] = dist[t] + 1;
+                ans[j] = ans[t];
+                if(!st[j])
+                {
+                    q.push(j);
+                    st[j] = true;
+                }
+            }
+            else if(dist[j] == dist[t] + 1)
+            {
+                ans[j] += ans[t];
+                ans[j] %= mod;
+            }
+        }
+    }
+}
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin >> n >> m;
+    memset(h, -1, sizeof h);
+    idx = 0;
+    for(int i = 1; i <= m; i ++)
+    {
+        cin >> x >> y;
+        add(x,y);
+        add(y,x);
+    }
+    ans[1] = 1;
+    spfa();
+    for(int i = 1; i <= n; i ++)
+    {
+        cout << ans[i] << endl;
+    }
     return 0;
 }
 ```

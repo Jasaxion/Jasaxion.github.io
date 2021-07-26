@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css" >
   <link rel="stylesheet" href="//unpkg.com/element-ui/lib/theme-chalk/index.css">
   <link rel="stylesheet" href="css/compatible.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/style.min.css"/>
   <style>
     .blog-corner {
       position: fixed;
@@ -163,6 +164,32 @@ function http(res, time = 200) {
       loadSidebar: true,
       loadNavbar: true,
       search: 'auto', // default,
+	  'flexible-alerts': {
+        note: {
+          label: {
+            '/de-DE/': 'Hinweis',
+            '/': 'Note'
+          }
+        },
+        tip: {
+          label: {
+            '/de-DE/': 'Tipp',
+            '/': 'Tip'
+          }
+        },
+        warning: {
+          label: {
+            '/de-DE/': 'Warnung',
+            '/': 'Warning'
+          }
+        },
+        attention: {
+          label: {
+            '/de-DE/': 'Achtung',
+            '/': 'Attention'
+          }
+        }
+     },
 	  search: {
 		 placeholder: '此处进行搜索',
 		 noData: '没有找到结果~',
@@ -215,6 +242,8 @@ function http(res, time = 200) {
   <script src="//unpkg.com/prismjs/components/prism-matlab.min.js"></script>
   <script src="//unpkg.com/prismjs/components/prism-cpp.js"></script>
   <script src="//unpkg.com/prismjs/components/prism-cpp.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/index.min.js"></script>
+  <script src="https://unpkg.com/docsify-plugin-flexible-alerts"></script>
   
 
 </body>
