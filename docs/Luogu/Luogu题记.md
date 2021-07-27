@@ -4802,3 +4802,226 @@ int main()
 }
 ```
 
+#### P5905 【模板】Johnson 全源最短路
+
+> https://www.luogu.com.cn/problem/P5905
+
+```C++
+#include <bits/stdc++.h>
+#include <queue>
+using namespace std;
+typedef long long ll;
+typedef pair<int,int> PII;
+const int maxn = 9010;
+const int inf = 0x3f3f3f3f;
+
+int h[maxn],ne[maxn],e[maxn],w[maxn],idx,n,m;
+int dis[maxn],d[maxn],cnt[maxn];
+bool vis[maxn];
+//!【Johnson算法模板】
+void add(int a, int b, int wi)
+{
+    e[idx] = b;
+    w[idx] = wi;
+    ne[idx] = h[a];
+    h[a] = idx ++;
+}
+//SPFA判是否有负环，并求出dis[N]数组
+bool spfa (int x) 
+{
+    queue<int> q;
+    dis[x] = 0;
+    q.push(x);
+    vis[x] = true;
+    cnt[x]++;
+    while (!q.empty()) 
+    {
+        int t = q.front();
+        q.pop();
+        vis[t] = false;
+        for (int i = h[t]; i != 0; i = ne[i])
+        {
+            int j = e[i];
+            if (dis[j] > dis[t] + w[i]) 
+            {
+                dis[j] = dis[t] + w[i];
+                if (!vis[j]) 
+                {
+                    q.push(j);
+                    vis[j] = true;
+                    cnt[j]++;
+                    if (cnt[j] > n)  //原来是cnt[j] >= n 因为增加了一个零虚点，这里改为 > n
+                        return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+//堆优化版的dijkstra算法
+void dijkstra (int x) 
+{
+    priority_queue<PII, vector<PII>, greater<PII>> heap;
+    d[x] = 0;
+    heap.push({0,x});
+    while (heap.size()) 
+    {
+        auto t = heap.top();
+        heap.pop();
+        int ver = t.second;
+        int distance = t.first;
+
+        if (vis[ver]) continue;
+        vis[ver] = true;
+        
+        for (int i = h[ver]; i != 0; i = ne[i])
+        {
+            int j = e[i];
+            if (d[j] > distance + w[i]) 
+            {
+                d[j] = distance + w[i];
+                heap.push({d[j],j});
+            }
+        }
+    }
+}
+
+int main () 
+{
+    memset(dis, inf, sizeof(dis));
+    memset(vis, false, sizeof(vis));
+    idx = 1;  //注意此处idx应从1开始编号
+    scanf("%d %d", &n, &m);
+    for (int i = 1; i <= m; i++) 
+    {
+        int u, v, wi;
+        scanf("%d %d %d", &u, &v, &wi);
+        add(u, v, wi);
+    }
+    for (int i = 1; i <= n; i++) //建立一个虚点，每个点都连线到该虚点，且权值为0
+    {
+        add(n + 1, i, 0);
+    }
+    bool flag = spfa(n + 1);//从虚点开始到每个点进行的spfa
+    if (!flag) 
+    {
+        puts("-1");
+        return 0;
+    }
+    //为了进行dijkstra算法，对原边权值进行的操作
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = h[i]; j != 0; j = ne[j])
+        {
+            w[j] += dis[i] - dis[e[j]]; // w = w + dis_i - dis_e[j]
+            //根据三角形不等式，新图上任意一边(i,j)上两点满足 dis_e[j] <= dis_i + w[i,j]
+            //这条边重新标记后的边权为w'[i,j] = w[i,j] + dis_i - dis_e[j] >= 0
+        }
+    }
+    for (int i = 1; i <= n; i++)  // 对1~n号点进行dijkstra并统计答案
+    {
+        memset(d, inf, sizeof(d));
+        memset(vis, false, sizeof(vis));
+        dijkstra(i);
+        ll ans = 0;
+        for (int j = 1; j <= n; j++) 
+        {
+            if (d[j] == inf)
+            {
+                ans += 1ll * 1e9 * j;
+            }
+            else
+            {
+                ans += 1ll * (d[j] - dis[i] + dis[j]) * j;  //w = d[j] - dis[i] + dist[j]
+            }
+        }
+        printf("%lld\n", ans);
+    }
+    return 0;
+}
+```
+
+### 2021年7月27日
+
+#### P2758 编辑距离
+
+> 动态规划思想求最优化解
+>
+> > 确定子问题：就是通过4种操作将str1变为str2需要多少步
+>
+> - 状态表示：
+>   我们可以采用f\[i]\[j]表示：从长度为i的str1变化到长度为j的str2需要多少步
+> - 状态计算：
+>   4种操作：
+>   1.删除操作：问题转化也就是，str1的前i-1个字符变为str2的前j个需要多少步（把字符串的第i个字符（最后一个）删除了），这一步的操作需要一步+1；dp\[i-1]\[j]+1
+>   2.添加操作：将str2字符在str1字符串的最后面添加，可以理解为将str2[j]删除（因为str2[j]不必再考虑了） dp\[i]\[j-1]+1 
+>   3.替换操作：str1前i-1个字符变成str2的前j-1个需要多少步 dp\[i-1]\[j-1] + 1;
+>   4.不变的情况：如果str1的i-1和str2的j-1相同的话，那么无需进行操作
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 3010;
+int f[N][N];
+int f2[N][N];
+char str1[N];
+char str2[N];
+int str1_len;
+int str2_len;
+//递推
+void dp()
+{
+    for(int i = 1; i <= str1_len; i ++)
+    {
+        f[i][0] = i;
+    }
+    for(int i = 1; i <= str2_len; i ++)
+    {
+        f[0][i] = i;
+    }
+    //👆如果某个字符串长度为0的话，那么更新的次数就是增加i或j个
+    for(int i = 1; i <= str1_len; i ++)
+    {
+        for(int j = 1; j <= str2_len; j ++)
+        {
+            if(str1[i - 1] == str2[j - 1])
+            {
+                f[i][j] = f[i-1][j-1];
+                continue;
+            }
+            f[i][j] = min(min(f[i-1][j],f[i][j-1]),f[i-1][j-1])+1;
+            //这里是指在三种情况下去最小的情况
+            //1.删除: f[i-1][j]
+            //2.增加: f[i][j-1]
+            //3.替换: f[i-1][j-1]
+        }
+    }
+}
+//递归
+/*
+int dp2(int i, int j) //从i变成j需要多少步
+{
+    if(f2[i][j] != -1) return f2[i][j];
+    if(i == 0) return f2[i][j] = j;
+    if(j == 0) return f2[i][j] = i;
+    int bonus = 1; //是为了判断替换操作是否需要更改，为1表示需要改1次，为0表示无需更改
+    if(str1[i] == str2[j]) bonus = 0;
+    return f2[i][j] = min(min(dp2(i-1, j)+1 ,dp2(i, j-1)+1),dp2(i-1,j-1)+bonus);
+}
+*/
+int main()
+{
+    ios::sync_with_stdio(false);
+    memset(f2,-1,sizeof f2);
+    cin >> str1;
+    cin >> str2;
+    str1_len = strlen(str1);
+    str2_len = strlen(str2);
+    dp();
+    //dp2(str1_len,str2_len);
+    cout << f[str1_len][str2_len] << endl;
+    //cout << f2[str1_len][str2_len] << endl;
+    return 0;
+}
+```
+
