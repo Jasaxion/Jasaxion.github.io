@@ -2990,7 +2990,7 @@ int main()
 }
 ```
 
-#### ❕P1115 最大子段和
+#### P1115 最大子段和
 
 > https://www.luogu.com.cn/problem/P1115
 
@@ -3007,7 +3007,6 @@ int main()
 
 > 方法二：DP动态规划
 >
-> ---->学了动态规划后回来再看看这道题！！
 
 ```C++
 #include<bits/stdc++.h>
@@ -3080,6 +3079,32 @@ int main()
         arr[i] = read();
     }
     write(rec(1,n));
+    return 0;
+}
+```
+
+> 该题的动态规划做法
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 200010;
+int num[N];
+int ans[N] = {0};
+int sum = -1e9;
+int main()
+{
+    ios::sync_with_stdio(false);
+    int m;
+    cin >> m; 
+    for(int i = 1; i <= m; i ++)
+    {
+        cin >> num[i];
+        //DP ans[N]数组存放的是最大的连续子段和
+        ans[i] = max(ans[i-1] + num[i], num[i]);
+        sum = max(sum,ans[i]);
+    }
+    cout << sum;
     return 0;
 }
 ```
@@ -5021,6 +5046,264 @@ int main()
     //dp2(str1_len,str2_len);
     cout << f[str1_len][str2_len] << endl;
     //cout << f2[str1_len][str2_len] << endl;
+    return 0;
+}
+```
+
+#### P1002 [NOIP2002 普及组] 过河卒
+
+> https://www.luogu.com.cn/problem/P1002
+
+> 动态规划DP递推式：
+>
+> 易于发现：从(0,0)到(n,m)的路径数量为
+> n,m的左点的数量+n,m的上点数量
+>
+> 故此a[n,m] = a[n-1]\[m] + a\[n]\[m-1]
+>
+> `注意巧妙去进行标记马的位置🐎`
+
+```C++
+#include <bits/stdc++.h>
+#define MAXN 110
+bool b[MAXN][MAXN]; //更简洁的标记方法，b数组标记此处是否被标记
+long long a[MAXN][MAXN];
+int dx[8]={2,1,-1,-2,-2,-1,1,2}; //马的日字移动方向标记
+int dy[8]={1,2,2,1,-1,-2,-2,-1};
+int n,m,x,y;
+using namespace std;
+int main()
+{
+    ios::sync_with_stdio(false);
+	cin>>n>>m>>x>>y;
+	memset(b,0,sizeof(b));
+	b[x][y]=1;
+	for(int i=0;i<=7;i++)
+    {
+		if(x+dx[i]>=0&&x+dx[i]<=n&&y+dy[i]>=0&&y+dy[i]<=m) //标记马
+        {
+            b[x+dx[i]][y+dy[i]]=1;
+		}
+	}
+	int k=0;
+	while(!b[k][0]&&k<=n) //横线只有一种情况
+    {
+		a[k++][0]=1;
+	}
+	int l=0;
+	while(!b[0][l]&&l<=m) //纵向也是只有一种情况
+    {
+		a[0][l++]=1;
+	}
+	for(int i=1;i<=n;i++)
+    {
+		for(int j=1;j<=m;j++)
+        {
+			if(b[i][j])// 如果有马被标记的话，那么置此处的值为0
+            {
+				a[i][j]=0;
+			}
+			else
+            {
+				a[i][j]=a[i-1][j]+a[i][j-1];
+			}
+		}
+	}
+	cout<<a[n][m];
+	return 0;
+}
+```
+
+#### P1434 [SHOI2002]滑雪
+
+> https://www.luogu.com.cn/problem/P1434
+
+> 方法一：记忆化搜索：
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+int n,m;
+const int N = 210;
+int dp[N][N];
+int dx[4] = {0, 0, 1, -1};
+int dy[4] = {1, -1, 0, 0};
+int a[N][N];
+int ans = 0;
+int dfs(int x, int y)
+{
+    if(dp[x][y]) return dp[x][y]; //记忆化，已经记录过了的话，直接返回
+    dp[x][y] = 1;
+    for(int i = 0; i < 4; i ++)
+    {
+        int nx = x + dx[i];
+        int ny = y + dy[i];
+        if(nx > 0 && ny > 0 && nx <= n && ny <= m && a[x][y] > a[nx][ny])
+        {
+            dfs(nx,ny);
+            dp[x][y] = max(dp[x][y], dp[nx][ny] + 1);
+        }
+    }
+    return dp[x][y];
+}
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin >> n >> m;
+    for(int i = 1; i <= n; i ++)
+    {
+        for(int j = 1; j <= m; j ++)
+        {
+            cin >> a[i][j];
+        }
+    }
+    for(int i = 1; i <= n; i ++)
+    {
+        for(int j = 1; j <= m; j ++)
+        {
+            ans = max(ans, dfs(i,j));
+        }
+    }
+    cout << ans;
+    return 0;
+}
+```
+
+> 方法二：线性DP
+
+```C++
+using namespace std;
+const int N = 110;
+const int M = 110000;
+int a[N][N];
+int f[N][N];
+int dx[4]={-1,0,0,1};
+int dy[4]={0,-1,1,0};
+int n,m;
+int ans = 0;
+struct node
+{
+    int x,y,h;
+}P[M]; //太粗心了，P是点数，应该达到maxM个，导致RE好几次！！
+bool cmp(node &a, node &b)
+{
+    return a.h < b.h;
+}
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin >> n >> m;
+    int id = 1;
+    for(int i = 1; i <= n; i ++)
+    {
+        for(int j = 1; j <= m; j ++)
+        {
+            cin >> a[i][j];
+            P[id].x = i;
+            P[id].y = j;
+            P[id].h = a[i][j];
+            f[i][j] = 1; //题目有要求包括自己这个点
+            id++;
+        }
+    }
+    sort(P,P+id,cmp);
+    //这里需要将高度进行排序，从最低的高度开始进行处理，这样是为了满足DP的后效性。
+    //如果不进行处理的话，前面出现过的结果可能会影响后面的结果。
+    //后效性：计算能够*按顺序、不重复地进行*，动态规划要求已经求解的子问题不受后续阶段的影响。
+    for(int i = 1; i < id; i ++)
+    {
+        int x = P[i].x, y = P[i].y;
+        for(int j = 0; j < 4; j ++)
+        {
+            int nx = x + dx[j];
+            int ny = y + dy[j];
+            if(nx > 0 && nx <= n && ny > 0 && ny <= m && a[nx][ny] < a[x][y]) //向上下左右四个方向走，如果发现更低的话，那么f[x][y]进行更新，找更大的。
+            {
+                f[x][y] = max(f[x][y], f[nx][ny] + 1);
+            }
+        }
+        ans = max(ans, f[x][y]);
+    }
+    cout << ans;
+    return 0;
+}
+```
+
+#### P1439 【模板】最长公共子序列
+
+> https://www.luogu.com.cn/problem/P1439
+
+> 1. 如果A[i]和B[j]相同，也就是有了新的公共元素。
+>    	那么： dp\[i]\[j] = max(dp\[i]\[j], dp\[i-1]\[j-1] + 1)
+> 2. 如果不相同的话，无法更新公共元素，那么只能考虑去继承
+>       那么选择继承其中最大的那个dp\[i]\[j] = max(dp\[i-1]\[j], dp\[i]\[j-1])
+>
+> 但是该题卡了数据，数据量巨大，如果采用原始方法$O(n^2)$的时间复杂度 10^5的数据绝对会爆
+
+> 仔细观察该题
+> P1和P2其实就是两个全排列的数组，也就是意味着P1,P2两个数组元素都相同，唯一不同的是排列顺序
+>
+> ```
+> 不妨我们以P1数组为基准
+> 3 2 1 4 5
+> 重新编号为
+> a b c d e
+> 
+> 而P2数组
+> 1 2 3 4 5
+> 就变成了
+> c b a d e
+> 
+> 开一个map重新映射P1数组的元素
+> 因为P1数组映射后是一个严格递增的数组
+> 故此我们也就是以P1为基准，在P2中找其最长递增序列
+> 由此从LCS问题转化成了LIS问题
+> //注意得用nlogn二分优化的方式去求解该LIS问题
+> ```
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 100010;
+int a[N],b[N];
+int m[N];
+int f[N]; //将此题转化为一个LIS问题（求最长上升子序列）
+int n;
+//状态表示 f[i,j]表示A[1~i] B[1~j]的序列的最长公共序列长度
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin >> n;
+    for(int i = 1; i <= n; i ++)
+    {
+        cin>>a[i];
+        m[a[i]] = i; //m数组映射a数组中的值
+    }
+    for(int j = 1; j <= n; j ++) 
+    {
+        cin>>b[j];
+    }
+    int len = 0;
+    f[0] = 0;
+    for(int i = 1; i <= n; i ++) // LIS问题的二分模板
+    {
+        int l = 0;
+        int r = len;
+        int mid;
+        if(m[b[i]] > f[len]) f[++len] = m[b[i]];
+        else
+        {
+            while(l < r)
+            {
+                mid = l + r >> 1;
+                if(f[mid] > m[b[i]]) r = mid;
+                else l = mid + 1;
+            }
+            f[l] = m[b[i]];
+        }
+    }
+    cout << len;
     return 0;
 }
 ```
