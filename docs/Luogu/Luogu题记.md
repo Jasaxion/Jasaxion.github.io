@@ -5502,11 +5502,347 @@ int main()
 }
 ```
 
+### 2021年7月29日
+
+#### P1433 吃奶酪[状态压缩DP]
+
+> https://www.luogu.com.cn/problem/P1433
+
+> 定义一下F[i]\[j] 表示在i点经过j中的点的集合，走过的最短的距离
+>
+> s[i]\[j] 表示 从i到j的直线距离
+> `memset(f, 127, sizeof f) --> 可以用来为浮点数赋极大值`
+>
+> 由于到达第i块奶酪时，中间只会经过i，就是原点到第i块奶酪的距离，故此要进行初始化为f[i]\[(1<<(i-1))] = s[0]\[i]
+>
+> 然后开始三重循环，枚举所有的状态、当前点所在的位置和能在当前状态下到达当前点的位置
+>
+> 在第二层循环中要判断一下 i在当前二进制状态下是否已走过，如果根本没走过则不需要进行接下来的计算，直接continue就可以。
+>
+> 在第三层运算中同样要判断当前点是否已走过，且当前点不与 i点相同。
+>
+> 然后开始进行状态转移:$F_{i,k}=min(F_{i,k},\ F_{j,k-2^{i-1}}+S_{i,j})$​
+> `f[j][k - (1 << (i - 1))] 表示在j点且没有走过i点的最短距离 s[i][j]是i到j的距离`
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 100010;
+const int M = 20;
+double x[M],y[M];
+double s[20][20];
+double f[M][N]; //这是状态压缩数组，表示在第i个点上，走过的二进制状态的十进制表达为j时，最短的距离
+int n;
+double cal(double x1, double y1, double x2, double y2)
+{
+    return sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
+}
+int main()
+{
+    scanf("%d",&n);
+    for(int i = 1; i <= n; i ++)
+    {
+        scanf("%lf%lf",&x[i],&y[i]);
+    }
+    //计算任意两点之间的距离
+    x[0] = 0;
+    y[0] = 0;
+    for(int i = 0; i <= n; i ++)
+    {
+        for(int j = i + 1; j <= n; j ++)
+        {
+            s[i][j] = cal(x[i], y[i], x[j], y[j]);
+            s[j][i] = s[i][j];
+        }
+    }
+    //!
+    memset(f, 127, sizeof f); //浮点数无穷大赋值方式
+    double ans = f[0][0];
+    for(int i = 1; i <= n; i ++)
+    {
+        f[i][(1 << (i - 1))] = s[0][i]; // 如果在i点上，且只经过i点的情况下的距离就是原点到i点的距离
+    }
+    int maxn = 1 << n; //一共有2^n个集合
+    for(int k = 1; k < maxn; k ++) //将所有二进制情况进行枚举
+    {
+        for(int i = 1; i <= n; i ++)
+        {
+            if((k & (1 << (i - 1))) == 0) continue; //如果i还没有走过的话，则跳过（这里的位运算表示 的是i不在k这个集合中
+            for(int j = 1; j <= n; j ++)
+            {
+                if(i == j) continue;
+                if((k & (1 << (j - 1))) == 0) continue; //j不在k这个集合中的话
+
+                f[i][k] = min(f[i][k], f[j][k - (1 << (i - 1))] + s[i][j]);
+                //f[j][k - (1 << (i - 1))] 表示在j点且没有走过i点的最短距离 s[i][j]是i到j的距离
+            }
+        }
+    }
+    for(int i = 1; i <= n; i ++)
+    {
+        ans = min(ans, f[i][maxn - 1]);
+    }
+    printf("%.2lf",ans);
+    return 0;
+}
+```
+
+#### P1880 [NOI1995] 石子合并
+
+> https://www.luogu.com.cn/problem/P1880
+
+> 区间DP的模板题。该题综合运用了一些技巧
+> 1.区间DP的最大和最小
+> 2.环形区间-->拆为链
+
+`记忆化搜索方式 or DP循环`
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 1100;
+int a[2*N];
+int s[2*N];
+int f1[N][N];
+int f2[N][N];
+int n;
+
+/*
+//?记忆化搜索的DP递归方式
+int dfs1(int L,int R){                //求出最小得分 
+    if(f1[L][R])return f1[L][R];    //已保存的状态不必搜索 
+    if(L==R)    return f1[L][R]=0;    //L==R时返回0 
+    int res=INF;                    //初始值赋为最大值以求最小值 
+    for(int k=L;k<R;k++)            //枚举K搜索 
+        res=min(res,dfs1(L,k)+dfs1(k+1,R)+A[R]-A[L-1]);
+    return f1[L][R]=res;            //记录状态 
+}
+int dfs2(int L,int R){                //求出最大得分 
+    if(f2[L][R])return f2[L][R];
+    if(L==R)    return f2[L][R]=0;    //若初始值为0可省略该句 
+    int res=0;                        //初始值设为0 
+    for(int k=L;k<R;k++)
+        res=max(res,dfs2(L,k)+dfs2(k+1,R)+A[R]-A[L-1]);
+    return f2[L][R]=res;
+}
+*/
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin >> n;
+    for(int i = 1; i <= n; i ++)
+    {
+        cin >> a[i];
+        a[i + n] = a[i];
+    }
+    for(int i = 1; i <= 2*n; i ++)
+    {
+        s[i] = s[i-1] + a[i];
+    }
+    //初始化
+    memset(f1, 0x3f, sizeof f1);
+    memset(f2, 0, sizeof f2);
+    for(int i = 1; i <= 2*n; i ++)
+    {
+        f1[i][i] = 0;
+        f2[i][i] = 0;
+    }
+    for(int len = 2; len <= 2*n; len ++)
+    {
+        for(int l = 1; l <= 2*n - len + 1; l ++)
+        {
+            int r = l + len - 1;
+            for(int k = l; k < r; k ++)
+            {
+                f1[l][r] = min(f1[l][r], f1[l][k] + f1[k+1][r]);
+                f2[l][r] = max(f2[l][r], f2[l][k] + f2[k+1][r]);
+            }
+            f1[l][r] += s[r] - s[l - 1];
+            f2[l][r] += s[r] - s[l - 1];
+        }
+    }
+    int minf = 0x3f3f3f3f;
+    int maxf = 0;
+    for(int i = 1; i <= n; i ++)
+    {
+        minf = min(minf, f1[i][n + i - 1]);
+        maxf = max(maxf, f2[i][n + i - 1]);
+    }
+    cout << minf << endl;
+    cout << maxf;
+    return 0;
+}
+```
+
+#### P1063 [NOIP2006 提高组] 能量项链
+
+> https://www.luogu.com.cn/problem/P1063
+
+> 与上面那题的类型相同，也是带环的区间DP问题
+>
+> 环状结构有两种好的解决方法：1. position % size    2.扩展数组为原来的两倍（注意这样的话，最后输出的时候也要注意l,r区间的变化）
+>
+> 凡是求解这类问题的时候，一定要心里留底，一定要清晰地明白动态规划的过程那些变量所指的具体含义
+>
+> 该题合并的时候包含了k ,  [l,k]+[k,r]
+> `f[l][r]=max(f[l][r],f[l][k]+f[k][r]+a[l]*a[k]*a[r]);`
+
+```C++
+#include <bits/stdc++.h>
+
+using namespace std;
+const int N = 110;
+int a[2*N];
+int f[5*N][5*N];
+int n;
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin >> n;
+    for(int i = 1; i <= n; i ++)
+    {
+        cin >> a[i];
+        a[n + i] = a[i];
+    }
+    int ans = 0;
+    for(int len = 2; len <= 2*n ; len ++)
+    {
+        for(int l = 1; l <= 2*n - len + 1; l ++)
+        {
+            int r = l + len - 1;
+            for(int k = l + 1; k < r; k ++)
+            {
+                f[l][r] = max(f[l][r], f[l][k] + f[k][r] + a[l]*a[k]*a[r]);
+            }
+        }
+    }
+    for(int i = 1; i <= n; i ++)
+    {
+        ans = max(ans, f[i][n + i]);
+    }
+    cout << ans;
+    return 0;
+}
+```
+
+#### P3147 [USACO16OPEN]262144 P
+
+> https://www.luogu.com.cn/problem/P3147
+
+> 状态表示：$f[i][j]$ 表示以j为起点能够合成为i的区间长度
+> 			那么f[i]\[j] 又是如何得到的呢？
+> 		易知：$f[i-1][j] 与 f[i-1][j+f[i-1][j]]$
+>
+> 于是乎，我们得到了状态转移方程：$f[i][j] = f[i-1][j]+f[i-1][j+f[i-1][j]]$​ -->小坑点：区间长度一定要大于0才行，否则无法构成一个区间！！！需要特判一下！ `考查思维的严密性`​
+>
+> 枚举所有状态，由题意给的数据可以知道最多的状态为58 --> $40+log2(262144)=58$​
+
+`启发：一定要在心里对DP动态规划的实质有个更深刻和确切的理解，做题的时候要头脑清醒，明确DP的状态、阶段和决策`
+
+`同时，也要对题目中所给的数据要有清晰的认识和反射`
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 300010;
+int f[60][N];
+int main()
+{
+    ios::sync_with_stdio(false);
+    int n;
+    cin >> n;
+    int x;
+    for(int i = 1; i <= n; i ++)
+    {
+        cin >> x;
+        f[x][i] = 1;  //以i为起点合成x的右端点的位置是i+1，把他
+    }
+    int ans;
+    //这个58是分析题目数据所得到的最大枚举数目40+log2(262144)=58
+    for(int len = 2; len <= 58; len ++)
+    {
+        for(int j = 1; j <= n; j ++)
+        {
+            if(!f[len][j])
+            {
+                if(f[len-1][j+f[len-1][j]] && f[len-1][j])//判断是否能构成区间
+                {
+                    f[len][j] = f[len-1][j+f[len-1][j]] + f[len-1][j]; 
+                }
+                if(f[len][j]) ans = len; //len是单调递增的
+            }
+        }
+    }
+    cout << ans;
+    return 0;
+}
+```
 
 
 
+#### P3205 [HNOI2010]合唱队 [区间DP好题！]
 
+> https://www.luogu.com.cn/problem/P3205
 
+> 区间DP的核心思想就是，大区间要包含小的区间
+>
+> 1 ~ n区间 可以 转化为较小的区间 i ~ j 枚举相应的小区间！！区间DP的精髓所在
+>
+> 每次有新的人加入到队伍里面的话，区间就会越来越大---->由此可知，大区间包含小的区间
+>
+> 状态表示：可以发现队伍中加入新的人只有两种情况 [i]\[j] 表示i~j这段区间
+>
+> $f[i][j][0] \ \ \ 表示第i人从左边进来的方案数目 \\ f[i][j][1] \ \ \ 表示第j人从右边进来的方案数目$
+>
+> 如果i号从左边进来，那么前面一个人肯定比它高，则它的位置可能是i+1号或j 号  两种
+> 如果j号从右边进来，那么前面一个人肯定比它矮，则它的位置可能是j-1 号或i 号  两种 
+>
+> > 于是乎得到了状态转移方程
+> >
+> > ```
+> > if(a[i] < a[i+1]) f[i][j][0] += f[i+1][j][0];
+> > if(a[i] < a[j]) f[i][j][0] += f[i+1][j][1];
+> > if(a[j] > a[i]) f[i][j][1] += f[i][j-1][0];
+> > if(a[j] > a[j-1]) f[i][j][1] += f[i][j-1][1];
+> > 
+> > //边界条件
+> > for(int i=1;i<=n;i++)f[i][i][0]=1,f[i][i][1]=1;  × 因为第一个人进去只有一种情况，这样求得话也会出现两种情况，不符合题意
+> > //修改后的边界条件
+> > for(int i=1;i<=n;i++)f[i][i][0]=1;
+> > ```
+
+```C++
+#include <bits/stdc++.h>
+
+using namespace std;
+const int mod = 19650827;
+const int N = 1010;
+int a[N];
+int f[N][N][2];
+int n;
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin >> n;
+    for(int i = 1; i <= n; i ++) cin >> a[i];
+    for(int i = 1; i <= n; i ++) f[i][i][0] = 1;
+    for(int len = 1; len <= n; len ++)
+    {
+        for(int i = 1, j = i + len; j <= n; i ++, j ++)
+        {
+            if(a[i] < a[i + 1]) f[i][j][0] += f[i+1][j][0];
+            if(a[i] < a[j]) f[i][j][0] += f[i+1][j][1];
+            if(a[j] > a[j-1]) f[i][j][1] += f[i][j-1][1];
+            if(a[j] > a[i]) f[i][j][1] += f[i][j-1][0];
+            f[i][j][0] %= mod;
+            f[i][j][1] %= mod;
+        }
+    }
+    cout << (f[1][n][0] + f[1][n][1])%mod;
+    return 0;
+}
+```
 
 
 
