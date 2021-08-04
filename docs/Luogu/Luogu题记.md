@@ -5779,6 +5779,55 @@ int main()
 }
 ```
 
+> #### P3146 [USACO16OPEN]248 G
+>
+> > https://www.luogu.com.cn/problem/P3146
+>
+> 这一题跟P3147如出一辙，就是区间DP(石子合并的同类型题目)
+>
+> ```
+> f[i][j] 表示将i~j之间的数字全部合并最终能够得到的最大数
+> ```
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 260;
+int f[N][N];
+int main()
+{
+    ios::sync_with_stdio(false);
+    int n;
+    cin >> n;
+    int x;
+    for(int i = 1; i <= n; i ++)
+    {
+        cin >> x;
+        f[i][i] = x; //i~j之间的数字全部合并能够得到的最大值是x
+    }
+    int ans = 0;
+    //👇区间DP(石子合并模板)
+    for(int len = 2; len <= n; len ++)
+    {
+        for(int i = 1; i <= n - len + 1; i ++)
+        {
+            int j = i + len - 1;
+            for(int k = i; k < j; k ++)
+            {
+                if(f[i][k] == f[k+1][j] && f[i][k] != 0 && f[k+1][j] != 0)
+                {
+                    f[i][j] = max(f[i][j],f[i][k] + 1); //与石子合并不同的是，这里只+1
+                    //这一步表示将i~k || k+1~j 进行合并成一个区间i,j; 判断并取得合并后和未合并的最大值
+                    ans = max(ans,f[i][k]+1);
+                }
+            }
+        }
+    }
+    cout << ans;
+    return 0;
+}
+```
+
 
 
 #### P3205 [HNOI2010]合唱队 [区间DP好题！]
@@ -6068,7 +6117,7 @@ int main()
 }
 ```
 
-#### P2034 选择数字 [单调队列+DP]
+#### P2034 选择数字 [单调队列+DP]\[思维很活跃的好题！]
 
 > https://www.luogu.com.cn/problem/P2034
 
@@ -6138,31 +6187,446 @@ return sum - dp[n + 1];
 > 我希望我能做一个不以物喜、不以己悲的人
 > 竭尽全力后的不强求，而不是无所事是后的不作为
 >
-> 加油！少雄！！
+> 加油！少雄！
+
+#### 周赛补题
+
+#### P1734 最大约数和
+
+> 本题可以转化为一个0/1背包问题
+>
+> 输入的s也就是可以当作是总体积
+> 而小于s的每个数都因数和就是价值，每个数就是单个体积
+>
+> 也就是求不超过s总体积的所有数的因素和最大
+
+```C++
+//遇到这种筛因数和、质数的题目，要善于去进行初始化操作。
+筛每个数的因数和
+for(int i = 1; i <= n/2; i ++)
+{
+    for(int j = 2; i * j <= n; j ++)
+    {
+        a[i*j] += i; 
+    }
+}
+//a[i] 就是i不包括自身的因数和👆是进行了简单优化的版本
+//在这里其实每个i的大小就是每个单独的体积，a[i]就是每个i的价值
+//0/1背包模板
+for(int i = 1; i <= n; i ++)
+{
+    for(int j = n; j >= i; j --)
+    {
+        dp[j] = max(dp[j], dp[j-i] + a[i]);
+    }
+}
+```
+
+#### P2384 最短路
+
+> https://www.luogu.com.cn/problem/P2384
+
+> 说来尴尬，做题的时候不小心被我去看到题解。
+>
+> > 难点1：该题可能会爆long * long数据，超出ll能够存放的数据范围
+> > 故此该题可以采用巧妙的方法，也就是通过取log将原来的乘法转化为加法，然后SPFA算法进行的同时进行路径保存。
+>
+> `对w[i]取log后可以将原来的乘法转化为加法`
+
+```C++
+#include <bits/stdc++.h>
+#include <queue>
+#include <cmath>
+using namespace std;
+typedef long long ll;
+const int N = 1100;
+const int M = 1000100;
+const int mod = 9987;
+int h[N],e[M],ne[M],idx;
+double w[M];
+bool st[M];
+int g[N][N];
+int pre[M];//<---记录路径前驱
+double dist[N];
+int n, m;
+int x,y,z;
+void add(int a, int b, double wi)
+{
+    e[idx] = b;
+    w[idx] = wi;
+    ne[idx] = h[a];
+    h[a] = idx++;
+}
+ll ksc(ll a, ll b)
+{
+    ll r = 0;
+    while(b)
+    {
+        if(b & 1) r = (r + a) % mod;
+        a = (a + a) % mod;
+        b >>= 1;
+    }
+    return r % mod;
+}
+void spfa()
+{
+    for(int i = 1; i <= n + 1; i ++) dist[i] = 0x3f3f3f3f3f3f3f3f;
+    dist[1] = 0;
+    queue<int> q;
+    q.push(1);
+    st[1] = true;
+    while(q.size())
+    {
+        auto t = q.front();
+        q.pop();
+        st[t] = false;
+        for(int i = h[t]; i != -1; i = ne[i]){
+            int j = e[i];
+            if(dist[j] > dist[t] + w[i]){ //<---dist[t]*w[i]，因为w[i]转化成了log，这样乘法就能以很巧妙的方式转化成加法了
+                dist[j] = dist[t] + w[i];
+                pre[j] = t; //<===记录一下前驱
+                if(!st[j]){
+                    q.push(j);
+                    st[j] = true;
+                }
+            }
+        }
+    }
+}
+int main()
+{
+    memset(h, -1, sizeof h);
+    scanf("%d%d", &n,&m);
+    for(int i = 1; i <= m; i ++)
+    {
+        scanf("%d%d%d", &x,&y,&z);
+        g[x][y] = z; //<---这里存放原来的权值
+        double r = log(z);
+        add(x, y, r);
+    }
+    if(n == 1)
+    {
+        printf("0");
+        return 0;
+    }
+    spfa();
+    ll ans = 1;
+    for(int i = n; i > 1; i = pre[i]){ //<---这里的目的是将log转化回来，采用的方式是倒过来进行累乘，由log恢复成原来的答案，注意对答案进行取模
+        ans = ksc(ans, (ll)g[pre[i]][i]);
+    }
+    printf("%lld", ans % mod);
+    return 0;
+}
+```
+
+#### P3183 [HAOI2016]食物链
+
+> https://www.luogu.com.cn/problem/P3183
+
+> 这道题只是一道简单的记忆化搜索题
+> 但是显然在这里如果采用邻接表的存储方式出现了MLE的错误
+>
+> 故此，不妨采用结构体来存储点
+>
+> 注意此处要忽略单点
+
+```C++
+#include <bits/stdc++.h>
+
+using namespace std;
+const int N = 100010;
+const int M = 200010;
+struct node
+{
+    int a,b,ne;
+}e[M];
+int h[N],idx;
+int n,m;
+int x, y;
+int in[N],out[N];
+int f[N];
+void add(int a, int b)
+{
+    e[++idx].a = a;
+    e[idx].b = b;
+    e[idx].ne = h[a];
+    h[a] = idx;
+}
+int dfs(int u) //记忆化搜索
+{
+    if(f[u]) return f[u];
+    int cur = 0;
+    if(out[u] == 0) return 1;
+    for(int i = h[u]; i; i = e[i].ne)
+    {
+        int j = e[i].b;
+        cur += dfs(j);
+    }
+    return f[u] = cur;
+}
+int main()
+{
+    cin >> n >> m;
+    for(int i = 1; i <= m; i ++)
+    {
+        cin >> x >> y;
+        add(x,y);
+        in[y] ++;
+        out[x] ++;
+    }
+    int ans = 0;
+    for(int i = 0; i <= n; i ++)
+    {
+        if(in[i] == 0 && out[i] != 0)
+        {
+            ans += dfs(i);
+        }
+    }
+    cout << ans;
+    return 0;
+}
+```
 
 
 
+### 2021年8月2日
+
+> 并查集
+> Prim最小生成树算法
+
+#### P1621 集合
+
+> https://www.luogu.com.cn/problem/P1621
+>
+> > 思考问题的时候思路一定要清晰
+
+```C++
+#include <bits/stdc++.h>
+
+using namespace std;
+const int N = 100010;
+int a,b,p;
+int f[N];
+int ans;
+int prime[501000];
+int cnt;
+bool st[501000];
+int find(int x)
+{
+    if(f[x] != x) f[x] = find(f[x]);
+    return f[x];
+}
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin >> a >> b >> p;
+    for(int i = a; i <= b; i ++) f[i] = i;
+    for(int i = 2; i <= b; i ++)//埃筛筛质数
+    {
+        if(!st[i])
+        {
+            if(i >= p) //如果这个质数满足要求的话，则去求一下这个质数p的倍数，肯定都是满足要求的
+            {
+                for(int j = i * 2; j <= b; j += i)
+                {
+                    st[j] = true;
+                    if(j - i >= a && find(j) != find(j - i)) //j-i实际上就是i这个质数的倍数
+                    {
+                        f[find(j)] = find(j-i); //则j和j-i进行合并
+                    }
+                }
+            }  
+            else
+            {
+                for(int j = i * 2; j <= b; j += i)
+                {
+                    st[j] = true;
+                }
+            }
+        }
+    }
+    for(int i = a; i <= b; i++)
+    {
+        if(f[i] == i)
+        {
+            ans ++;
+        }
+    }
+    cout << ans;
+    return 0;
+}
+```
+
+#### P3366 【模板】最小生成树
+
+> https://www.luogu.com.cn/problem/P3366
+
+`Prim()算法的模板题`
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 5010;
+const int M = 200010;
+const int INF = 0x3f3f3f3f;
+struct edge
+{
+    int v,w,next;
+}e[M<<1];
+int h[N],dist[N],cnt,n,m,now=1,ans=0;
+bool vis[N];
+
+void add(int u, int v, int w)
+{
+    e[++cnt].v = v;
+    e[cnt].w = w;
+    e[cnt].next = h[u];
+    h[u] = cnt;
+}
+int prim()
+{
+    for(int i = 2; i <= n; i ++) dist[i] = INF;
+    dist[1] = 0;
+    //处理重边
+    for(int i = h[1]; i; i = e[i].next)
+    {
+        dist[e[i].v] = min(dist[e[i].v], e[i].w);
+    }
+    for(int i = 0; i < n - 1; i ++) //最小生成树的边等于点数-1
+    {
+        int minn = INF;
+        vis[now] = 1;
+
+        for(int j = 1; j <= n; j ++)
+        {
+            if(!vis[j] && minn > dist[j])
+            {
+                minn = dist[j];
+                now = j;
+            }
+        }
+        ans += minn;
+        for(int j = h[now]; j; j = e[j].next)
+        {
+            int v = e[j].v;
+            if(dist[v] > e[j].w && !vis[v])
+            {
+                dist[v] = e[j].w;
+            }
+        }
+    }
+    return ans;
+}
+int main()
+{
+    cin >> n >> m;
+    for(int i = 1; i <= m; i ++)
+    {
+        int u,v,w;
+        cin >> u >> v >> w;
+        add(u,v,w);
+        add(v,u,w);
+    }
+    int t = prim();
+    if(t >= INF/2)
+    {
+        cout << "orz" <<endl;
+    }
+    else cout << t << endl;
+    return 0;
+}
+```
+
+#### P4047 [JSOI2010]部落划分 [Kruscal算法思路]
+
+> https://www.luogu.com.cn/problem/P4047
+
+> 该题的思路就是，首先把每一个点都连起来，权值赋值为每两个点之间的欧几里得距离
+> 然后进行Kruscal算法，将边进行合并，因为Kruscal算法是从小到大进行边的合并的，
+> 最开始的时候是将所有单独的村落都看作是一个集群
+> 然后进行kruscal算法的时候从小到大进行边的合并，每合并一次“村落集群的数目n”都减一
+> 直到村落集群的数量与规定的目标数量一样的时候，此时就直接输出当前待合并的权值（因为是从Kruscal算法中获得的权值，故此可知该权值一定是满足要求的最小值)
+
+```C++
+#include <bits/stdc++.h>
+
+using namespace std;
+const int N = 1e7+10;
+int p[N];
+int num; //存放有多少边
+struct edge
+{
+    int u,v;
+    double w;
+    bool operator<(const edge &t)const
+    {
+        return w < t.w;
+    }
+}pre[N],e[N];
+int n,k;
+int find(int x)
+{
+    if(p[x] != x) p[x] = find(p[x]);
+    return p[x];
+}
+double cal(int a, int b)
+{
+    return sqrt((pre[a].u-pre[b].u)*(pre[a].u-pre[b].u) + (pre[a].v-pre[b].v)*(pre[a].v-pre[b].v));
+}
+void kruscal()
+{
+    for(int i = 1; i <= n; i ++) p[i] = i;
+    sort(e+1, e+num+1);
+    bool flag = false;
+    int cur = 0;
+    for(int i = 1; i <= num; i ++)
+    {
+        if(cur == n - k) flag = true;
+        if(find(e[i].u) != find(e[i].v))
+        {
+            cur++;
+            p[find(e[i].u)] = find(e[i].v);
+            if(flag)
+            {
+                printf("%.2lf\n", e[i].w);
+                return;
+            }
+        }
+    }
+}
+int main()
+{
+    scanf("%d%d", &n,&k);
+    int a,b;
+    for(int i = 1; i <= n; i ++)
+    {
+        scanf("%d%d", &a,&b);
+        pre[i].u = a;
+        pre[i].v = b;
+    }
+    //建图存边
+    for(int i = 1; i <= n; i ++)
+    {
+        for(int j = 1; j <= n; j ++)
+        {
+            if(i != j)
+            {
+                e[++num].u = i;
+                e[num].v = j;
+                e[num].w = cal(i,j);
+            }
+        }
+    }
+    kruscal();
+    return 0;
+}
+```
 
 
 
+### 2021年8月3日
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+> Hash及其应用
 
 
 
