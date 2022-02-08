@@ -213,3 +213,69 @@ int main()
 }
 ```
 
+
+
+#### CF-Hello2022_B
+
+> Problem B - Integers Shop
+>
+> https://codeforces.com/contest/1621/problem/B
+
+> 思路一定要清晰！！！！
+> 不要好高骛远！
+
+```C++
+#include <bits/stdc++.h>
+
+using namespace std;
+int T;
+const int N = 100010;
+const int INF = 2e9+10;
+
+int main()
+{
+    scanf("%d",&T);
+    while(T --)
+    {
+        int n;
+        scanf("%d",&n);
+        int l,r,c,minl,maxr;
+        int ansl,ansr;
+        int ans;
+        int anst = INF;
+        minl=INF;
+        maxr=0;
+        while(n--)
+        {
+            scanf("%d%d%d",&l,&r,&c);
+            if(l < minl){
+                minl = l;
+                ansl = c;
+                anst = INF;
+            }
+            else if(l == minl){
+                ansl = min(ansl, c);
+            }
+
+            if(r > maxr){
+                maxr = r;
+                ansr = c;
+                anst = INF;
+            }
+            else if(r == maxr){
+                ansr = min(ansr, c);
+            }
+
+            if(minl == l && maxr == r)
+            {
+                anst = min(anst, c);
+            }
+            ans = ansl+ansr;
+            printf("%d\n", min(anst,ans));
+        }
+
+    }
+    return 0;
+}
+```
+
