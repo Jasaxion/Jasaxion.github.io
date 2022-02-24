@@ -916,5 +916,109 @@ int main()
 
 
 
+### 2022年2月24日
 
+>\2067. 走方格
+
+蓝桥杯省赛 https://www.acwing.com/problem/content/2069/
+
+> 1.暴力搜索DFS ---> TLE
+> 2.记忆化搜索 ---> 记得处理边界情况
+> 3.闫氏DP分析法 ---> 记得处理边界/初始情况
+
+```C++
+#include <bits/stdc++.h>
+
+using namespace std;
+const int N = 30;
+int g[N][N];
+int n,m;
+int ans;
+//搜索 TLE
+// void dfs(int x, int y)
+// {
+//     if(x == n && y == m){
+//         ans ++;
+//         return;
+//     }
+//     if(x > n || y > m) return;
+//     if(!g[x + 1][y]) dfs(x+1,y);
+//     if(!g[x][y + 1]) dfs(x,y+1);
+//     return;
+// }
+// int main()
+// {
+//     scanf("%d%d",&n,&m);
+//     for(int i = 1; i <= n; i ++)
+//     {
+//         for(int j = 1; j <= m; j ++)
+//         {
+//             if(i % 2 == 0 && j % 2 == 0){
+//                 g[i][j] = 1;
+//             }
+//         }
+//     }
+//     dfs(1,1);
+//     printf("%d",ans);
+//     return 0;
+// }
+
+//记忆化搜索
+/*
+int f[N][N];
+int dfs(int x, int y)
+{
+    if(x > n || y > m) return 0;
+    if(f[x][y]) return f[x][y];
+    if(!g[x+1][y]) f[x][y] += dfs(x+1,y);
+    if(!g[x][y+1]) f[x][y] += dfs(x,y+1);
+    return f[x][y];
+}
+
+int main()
+{
+    scanf("%d%d",&n,&m);
+    for(int i = 1; i <= n; i ++)
+    {
+        for(int j = 1; j <= m; j ++)
+        {
+            if(i % 2 == 0 && j % 2 == 0){
+                g[i][j] = 1;
+            }
+        }
+    }
+    f[n][m] = n & 1 || m & 1; //记忆化搜索需要注意边界条件！
+    //cout << (n & 1 || m & 1) << endl;
+    cout << dfs(1,1);
+    return 0;
+}
+*/
+//闫氏DP分析法
+/*
+1.集合：所有从(1,1) -> (n,m)的路径总和
+2.属性：数量 （求一共多少条路  并且f[i][j]表示到达这里的方案数
+3.状态计算：f[i][j]最后一步向右， (1,1) -> (i,j-1)
+                    最后一步向下：(1,1) -> (i-1,j)
+4.特判:i j均为偶数时都不能走
+5.边界条件f[1][1] = 1;
+*/
+int dp[N][N];
+int main()
+{
+    scanf("%d%d",&n,&m);
+    dp[1][1] = 1;
+    for(int i = 1; i <= n; i ++)
+    {
+        for(int j = 1; j <= m; j ++)
+        {
+            if(i == 1 && j == 1) continue; // 记得跳过边界
+            if(i & 1 || j & 1){  //表示i j都不是偶数
+                dp[i][j] = dp[i-1][j] + dp[i][j-1];
+            }
+        }
+    }
+    printf("%d",dp[n][m]);
+    return 0;
+}
+```
 
