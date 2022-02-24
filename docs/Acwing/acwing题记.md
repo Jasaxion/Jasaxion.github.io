@@ -799,3 +799,122 @@ int main()
 
 
 
+---
+
+### 2022年2月8日
+
+#### AcWing 1726. 挤奶顺序
+
+> https://www.acwing.com/problem/content/description/1728/
+
+> 思路：
+>
+> **分类讨论**的思想方式：
+> 1、“1”被直接限定了位置，那么就直接输出1所限定的位置
+> 2、“1”被间接限定了位置（也就是说1在那m个数之中），那么就从没有摆的地方从头开始摆放那m个数，直到摆到1所在的位置，那么就直接输出1 所被摆放的位置。
+> //值得注意的是，有可能既有在情况1和情况2 的情况，可以再选定一个标志数组表示元素是否已被访问，因为情况2限定了先后次序，故此如果一个m中的元素已被访问，那么一定要先访问到这个元素才能继续往后面进行访问。
+> 3、“1”没有被限定位置，根据贪心的原则，要求“1”的位置足够靠前，那么我们可以从后往前将m个元素摆放完毕后，再从头开始，看哪些位置没有被访问，那个位置就是答案。
+
+```C++
+#include<bits/stdc++.h>
+using namespace std;
+const int N = 10010;
+int n,m,k;
+int pos[N];
+int t[N];
+int x[N];
+int flag = 0;
+int ans;
+int main()
+{
+    scanf("%d%d%d",&n,&m,&k);
+    for(int i = 1; i <= m; i ++)
+    {
+        scanf("%d",&t[i]);
+        if (t[i] == 1)
+        {
+            flag = 1;
+            ans = i;
+        }
+    }
+    for(int i = 0; i < k; i ++)
+    {
+        int a,b;
+        scanf("%d%d",&a,&b);
+        x[a] = 1;
+        pos[b] = a;
+        if(a == 1)
+        {
+            flag = 2;
+            ans = b;
+        }
+    }
+    
+    if(flag == 2)
+    {
+        printf("%d\n", ans);
+        return 0;
+    }
+    if(flag == 1)
+    {
+        //int cur = 1;
+        int cur = 1;
+        for(int i = 1; i <= n; i ++)
+        {
+            if(!pos[i])
+            {
+                if(!x[t[cur]])
+                {
+                    x[t[cur]] = 1;
+                    pos[i] = t[cur];
+                    cur ++;
+                    if(pos[i] == 1)
+                    {
+                        ans = i;
+                        break;
+                    }
+                }
+            }
+            if(pos[i])
+            {
+                if(pos[i] == t[cur])
+                {
+                    cur ++;
+                }
+            }
+        }
+        printf("%d\n", ans);
+        return 0;
+    }
+    
+    int num = m;
+    for(int i = n; i > 0; i --)
+    {
+        if(!x[t[num]] || pos[i] == t[num])
+        {
+            if(!pos[i])
+            {
+                pos[i] = t[num];
+                //num --;
+            }
+            num --;
+        }
+        if(num == 0) break;
+    }
+    for(int i = 1; i <= n; i ++)
+    {
+        if(!pos[i])
+        {
+            ans = i;
+            break;
+        }
+    }
+    printf("%d\n", ans);
+    return 0;
+}
+```
+
+
+
+
+
