@@ -1022,3 +1022,145 @@ int main()
 }
 ```
 
+
+
+### 2022年3月12日
+
+周赛> 4312. 出现次数
+
+> 链接：https://www.acwing.com/problem/content/4315/
+
+- 动态规划 + 搜索的方法
+
+```C++
+#include <bits/stdc++.h>
+
+using namespace std;
+const int N = 2010;
+char s[N],t[N];
+int n,m,q;
+int dp[N][N];
+
+int dfs(int i, int j)
+{
+    if(j - i + 1 < m){
+        return dp[i][j] = 0;
+    }
+    if(dp[i][j] != -1)
+    {
+        return dp[i][j];
+    }
+    int flag = 1;
+    for(int k = m - 1, x = j; k >= 0 && x >= 0; k --, x --){
+        if(s[x] != t[k]){
+            flag = 0;
+            break;
+        }
+    }
+    dp[i][j] = dfs(i, j - 1) + flag;
+    return dp[i][j];
+}
+int main()
+{
+    scanf("%d%d%d",&n,&m,&q);
+    scanf("%s",s);
+    scanf("%s",t);
+    for(int i = 0; i < n; i ++)
+    {
+        for(int j = 0; j < n; j ++)
+        {
+            dp[i][j] = -1; 
+        }
+    }
+    for(int i = 0; i < q; i ++)
+    {
+        int l, r;
+        scanf("%d%d",&l,&r);
+        printf("%d\n", dfs(l - 1, r - 1));
+    }
+    
+    return 0;
+}
+```
+
+- KMP字符串匹配+前缀和
+
+```C++
+#include <bits/stdc++.h>
+
+using namespace std;
+const int N = 2010;
+char s[N],t[N];
+int n,m,q;
+int ne[N];
+int a[N];
+
+
+int main()
+{
+    cin >> n >> m >> q;
+    cin >> s + 1;
+    cin >> t + 1;
+    
+    //生成next数组
+    for(int i = 2; i <= m; i ++){
+        ne[i] = ne[i-1];
+        while(ne[i] && t[i] != t[ne[i] + 1]) ne[i] = ne[ne[i]];
+        ne[i] += t[i]==t[ne[i]+1];
+    }
+    
+    //KMP匹配
+    for(int i = 1, j = 0; i <= n; i ++){
+        while(j && s[i] != t[j + 1]) j = ne[j];
+        if(s[i] == t[j + 1]) j ++;
+        if(j == m){
+            a[i - j + 1] = 1;
+            j = ne[j];
+        }
+    }
+    for(int i = 1; i <= n; i ++) a[i] += a[i - 1];
+    while(q --){
+        int l, r;
+        cin >> l >> r;
+        if(r - m + 1 <= l - 1) cout << 0 << endl;
+        else cout << a[r - m + 1] - a[l - 1] << endl;
+    }
+    return 0;
+}
+```
+
+
+
+周赛>4313. 满二叉树等长路径
+
+> 链接：https://www.acwing.com/problem/content/4316/
+
+- 巧解：
+
+```C++
+#include <bits/stdc++.h>
+
+using namespace std;
+const int N = 2500;
+int n;
+int a[N],d[N];
+int main()
+{
+    scanf("%d", &n);
+    for(int i = 2; i < pow(2, n + 1); i ++){
+        scanf("%d", &a[i]);
+        d[i] = a[i] + d[i/2]; //由边构建权重点树
+    }
+    int ans = 0;
+    
+    for(int i = pow(2, n + 1)-1; i > 1;)
+    {
+        d[(i - 1)/2] = max(d[i], d[i-1]);
+        ans += max(d[i], d[i-1]) - min(d[i], d[i-1]);
+        i -= 2;
+    }
+    cout << ans;
+    return 0;
+}
+```
+
