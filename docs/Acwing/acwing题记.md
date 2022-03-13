@@ -1095,7 +1095,6 @@ int n,m,q;
 int ne[N];
 int a[N];
 
-
 int main()
 {
     cin >> n >> m >> q;
@@ -1129,7 +1128,41 @@ int main()
 }
 ```
 
+- 单纯前缀和
 
+```C++
+#include <bits/stdc++.h>
+
+using namespace std;
+const int N = 2010;
+//char s[N],t[N];
+string s,t;
+int n,m,q;
+int a[N];
+int main()
+{
+    cin >> n >> m >> q;
+    cin >> s;
+    cin >> t;
+    s = ' ' + s;
+    for(int i = m; i <= n; i ++){   //前缀和预处理
+        a[i] = a[i-1];
+        if(s.substr(i - m + 1, m) == t){
+            a[i] ++;
+        }
+    }
+    while(q--){  //匹配询问
+        int l,r;
+        cin >> l >> r;
+        l += m - 1; //注意下标从1开始与从0开始的区别
+        if(l > r) cout << 0 << endl;
+        else{
+            cout << a[r] - a[l - 1] << endl;
+        }
+    }
+    return 0;
+}
+```
 
 周赛>4313. 满二叉树等长路径
 
@@ -1163,4 +1196,62 @@ int main()
     return 0;
 }
 ```
+
+> 关于树类型的题目：需要注意一些关于树的性质
+
+```C++
+#include <bits/stdc++.h>
+
+using namespace std;
+const int N = 2050;
+int n;
+int w[N];
+int ans;
+x:表示左边到根节点的距离
+y:表示右边到根节点的距离
+d >= max{x, y}
+左边需要增加 d - x
+右边需要增加 d - y
+一共最小 --> 2 * d - (x + y)  //要增加的话一定是在当前路径上增加，而且增加最小值x,而不是跑到下一层增加，这样不能满足最小值的规定。
+int dfs(int u)
+{
+    if(u * 2 > ( 1 << n + 1) - 1) return 0;
+    
+    int l = dfs(u * 2) + w[u * 2];
+    int r = dfs(u * 2 + 1) + w[u * 2 + 1];
+    ans += abs(l - r);
+    return max(l, r);
+}
+
+//更便于理解的一种： 贪心+递归
+//函数返回根节点到当前分支中的叶子结点的路径最大值
+int dfs(int u, int s)  //s：根节点到u的父节点的路径总和
+{
+    int l = u * 2, r = u * 2 + 1;
+    if(l < 1 << (n + 1))  //判断是否为叶子结点
+    {
+        int lv = dfs(l, s + a[u]);
+        int rv = dfs(r, s + a[u]);
+        res += abs(lv - rv);  //如果左右子节点的最大值不一致，添加路径长度使其相等，最大值不相等，说明需要将其进行增加，其增加的值就是左右两边的绝对值
+        return max(lv, rv) + a[u]; //返回左右量变最大的加上当前路径
+    }
+    return a[u];
+}
+--------------------------------------------------------------------------------------------
+int main()
+{
+    cin >> n;
+    for(int i = 2; i <= (1 << n + 1) - 1; i ++) cin >> w[i];
+    
+    dfs(1);
+    cout << ans << endl;
+    return 0;
+}
+```
+
+- 树形DP
+
+> 
+
+
 
