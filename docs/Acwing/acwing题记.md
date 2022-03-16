@@ -1263,3 +1263,73 @@ int main()
 
 
 
+### 2022年3月16日
+
+蓝桥杯
+
+> https://www.acwing.com/problem/content/description/2070/
+
+> 题解：
+>
+> 方法一：进行暴力枚举，两重循环肯定超时
+>
+> n的个数在$10^5$ --> 思考nlogn算法
+>
+> 仔细分析，题目所要求的实际上就是 $A_j * 10^{(len){\lfloor log_{10}A_i\rfloor}}+A_i$ 能被K整除
+>
+> 也就是说			$(A_j * 10^{(len){\lfloor log_{10}A_i\rfloor}}+A_i) \% K ==0 $
+>
+> ​		也就是说 $A_j * 10^{(len){\lfloor log_{10}A_i\rfloor}} ≡ -A_i(MOD \ K)$
+>
+> 也就是说我们只需要枚举一遍
+>
+> $A_j*10^0$ 、$A_j*10^1$、$A_j*10^2$ ..... $A_j*10^{9}$ --> 看他们的分别模K后的余数是多少
+>
+> 这里我们用哈希表来存储，这样下次访问的时候只需要O(1)的时间复杂度
+>
+> S[11] [s]  11位，s则表示余数  S所表示的就是个数了
+>
+> > 穿插一下，将求负数的模转化成求正数的模
+> >
+> > > 我们知道对负数取模，在c++会得到负数。例如(-5)%3=-2,因此我们写成( 3+(-5)%3)%3=1，就可以得到正数。
+> >
+> > 代码中(m-a[i]%m)%m其实就是利用(正的)a[i]求得(-a[i])%m
+
+```C++
+#include <bits/stdc++.h>
+
+using namespace std;
+const int N = 100010;
+typedef long long ll;
+ll a[N];
+int n,m;
+int s[11][N];
+int main()
+{
+    scanf("%d%d",&n,&m);
+    for(int i = 0; i < n; i ++) scanf("%lld", &a[i]);
+    
+    for(int i = 0; i < n; i ++)
+    {
+        ll t = a[i]%m; //计算当前的余数
+        for(int j = 0; j < 11; j ++){
+            s[j][t] ++;  
+            t = t * 10 % m;
+        }
+    }
+    ll res = 0;
+    for(int i = 0; i < n; i ++){
+        ll t = a[i] % m;
+        int len = to_string(a[i]).size();
+        res += s[len][(m - t)%m];
+        
+        //特判去重
+        ll r = t;
+        while(len --) r = r * 10 % m;
+        if(r == (m - t)%m) res --;
+    }
+    printf("%lld",res);
+    return 0;
+}
+```
+
