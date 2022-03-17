@@ -120,12 +120,206 @@ int main()
 >
 > ​					$x^kd(x) ≡ q(x)g(x)-r(x) 的含义其实就是多项式出发，r(x)就是多项式除法的余数$
 
-> 【拓展】多项式除法的一般做法
+> 难点就在校验码
 >
-> 
+> 1. 需要把g(x),d(x)求出来
+>    	在求g(x)的系数的时候，**过程中需要MOD929 否则会爆**
+> 2. f(x) / g(x) 进行多项式除法，过程中用vector记录对应位置的系数
+> 3. 注意**除法余项的系数需要取反**，因为题目中是$-r(x)$ 
+>
+> > $g(x)$的求法：
+> >
+> > $g(x)=(x+3)*(x+3^2)...$
+> > 一步一步进行计算
+>
+> > $r(x)的求法$：
+> >
+> > 模拟竖式除法，每次根据$f(x)和g(x)$的最高次系数计算当前位的商t，然后计算$f(x)$的余项，直到$f(x)$的最高次小于$g(x)$，剩下的$f(x)就是-r(x)$
 
 ```C++
+#include <bits/stdc++.h>
+#include <vector>
+using namespace std;
+const int N = 5050;
+const int MOD = 929;
+int w,s;
+char str[N];
+vector<int> da;
+vector<int> sj;
+vector<int> ans;
+int k = 0;
+int st = 0;
+//0 A | 1 0 | 2 a
+//A - a > 27  A - 0 > 28
+//a - A  (a - 0 - A)  a - 0 > 28
+//0 - A 28
+int main()
+{
+    ios::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
+    cin >> w >> s;
+    cin >> str;
+    int len = strlen(str);
+    //常规读入
+    for(int i = 0; i < len; i ++)
+    {
+        char c = str[i];
+        if(c >= 'A' && c <= 'Z'){
+            if(st == 0){
+                da.push_back(c - 'A');
+            }
+            else{
+                if(st == 1){
+                    da.push_back(28);
+                    da.push_back(c - 'A');
+                    st = 0;
+                }
+                if(st == 2){
+                    da.push_back(28);
+                    da.push_back(28);
+                    da.push_back(c - 'A');
+                    st = 0;
+                }
+            }
+        }
+        if(c >= '0' && c <= '9'){
+            if(st == 1){
+                da.push_back(c - '0');
+            }
+            else{
+                if(st == 0){
+                    da.push_back(28);
+                    da.push_back(c - '0');
+                    st = 1;
+                }
+                if(st == 2){
+                    da.push_back(28);
+                    da.push_back(c - '0');
+                    st = 1;
+                }
+            }
+        }
+        if(c >= 'a' && c <= 'z'){
+            if(st == 2){
+                da.push_back(c - 'a');
+            }
+            else{
+                if(st == 0){
+                    da.push_back(27);
+                    da.push_back(c - 'a');
+                    st = 2;
+                }
+                if(st == 1){
+                    da.push_back(27);
+                    da.push_back(c - 'a');
+                    st = 2;
+                }
+            }
+        }
+    }
+    //读入完后进行处理
+    if(da.size() % 2 != 0) da.push_back(29); //如果不是偶数则填充29
+    //计算校验码的个数
+    if(s > -1) k = pow(2, s + 1);
+    else k = 0;
+    //依据公式 D = 30*H + L计算有效码字
+    for(int i = 0; i < da.size(); i += 2)
+    {
+        sj.push_back(da[i]*30+da[i+1]);
+    }
 
+    int t = sj.size() + 1 + k; //k表示校验码的个数
+    while(t % w != 0){ //这里看要填充多少个数 也就是占满有效数据宽度
+        t ++;
+    }
+    ans.push_back(t - k); //长度码字就是一共的码字个数减去校验码
+    for(int i = 0; i < sj.size(); i ++){
+        ans.push_back(sj[i]);
+    }
+    for(int i = ans.size(); i < t - k; i ++) //t-k表示填充的码字个数
+    {
+        ans.push_back(900);
+    }
+
+    if(k == 0){
+        for(int i = 0; i < ans.size(); i ++)
+        {
+            cout << ans[i] << endl;
+        }
+        return 0;
+    }
+
+    //计算校验码
+    vector<int> dx(ans.size() + k);
+    for(int i = 0; i < dx.size(); i ++){
+        dx[i] = 0;
+    }
+    //首先我们把g(x),d(x)根据公式写出
+    //1.计算g(x)
+    // 一项一项乘，vector保留系数
+    vector<int> gx(k+1);
+    for(int i = 0; i < k + 1; i ++){
+        gx[i] = 0;
+    }
+    // g * (x + pow3) = g * x + g * pow3
+    gx[k] = -3;
+    gx[k - 1] = 1;
+    int pow3 = -9;
+    // 一共有k项，前i项相乘有（i+1）个参数（从k往前）
+    for(int i = 0; i < k - 1; i ++)
+    {
+        vector<int> tt(k+1);
+
+        //复制
+        for(int j = k - i - 1; j <= k; j ++){
+            tt[j] = gx[j];
+        }
+        //g = g * pow3
+        for(int j = k - i - 1; j <= k; j ++){
+            gx[j] = ((gx[j] % MOD) * (pow3 % MOD))%MOD;
+        }
+
+        //g = g + tt * x ((tt向左移动一位))
+        for(int j = k - i - 1; j < k; j ++){
+            gx[j] = (gx[j] % MOD + tt[j + 1] % MOD) % MOD;
+        }
+        gx[k - i - 2] = 1; // 最高次一定是1
+
+        pow3 *= 3;
+        pow3 %= MOD;
+    }
+
+    //计算dx
+    //dx[0] = ans.size();
+    for(int i = 0; i < ans.size(); i ++){
+        dx[i] = ans[i];
+        dx[i] %= MOD;
+    }
+
+    //计算Rx
+    for(int i = 0; i < dx.size()-k; i ++){
+        int t = dx[i];
+        for(int j = 0; j < gx.size(); j ++){
+            dx[i + j] = (dx[i + j] - (gx[j] * t)% MOD) % MOD;
+        }
+    }
+    for(int i = dx.size() - gx.size() + 1; i < dx.size(); i ++){
+        if(-dx[i] < 0){
+            ans.push_back(MOD + (-dx[i] % MOD));
+        }
+        else{
+            ans.push_back(-dx[i] % MOD);
+        }
+    }
+
+    //从头开始输出结果
+    for(int i = 0; i < ans.size(); i ++)
+    {
+        cout << ans[i] << endl;
+    }
+    return 0;
+}
 ```
 
 
