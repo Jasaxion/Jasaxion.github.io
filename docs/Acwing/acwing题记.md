@@ -918,7 +918,7 @@ int main()
 
 ### 2022年2月24日
 
->\2067. 走方格
+#### [蓝桥杯省赛]走方格
 
 蓝桥杯省赛 https://www.acwing.com/problem/content/2069/
 
@@ -1026,7 +1026,7 @@ int main()
 
 ### 2022年3月12日
 
-周赛> 4312. 出现次数
+#### [acw周赛] 4312. 出现次数
 
 > 链接：https://www.acwing.com/problem/content/4315/
 
@@ -1265,7 +1265,7 @@ int main()
 
 ### 2022年3月16日
 
-蓝桥杯
+#### [蓝桥杯省赛]选取整数
 
 > https://www.acwing.com/problem/content/description/2070/
 
