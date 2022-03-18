@@ -334,3 +334,142 @@ int main()
 
 
 
+### 第二十三次 2021年9月
+
+#### 1.数组推导
+
+> 家人们咱就是说要，沉下心来看题才行，不要好高骛远
+
+```C++
+#include <bits/stdc++.h>
+
+using namespace std;
+const int N = 100010;
+typedef long long ll;
+ll b[N];
+ll n;
+ll ansl,ansr;
+int main()
+{
+    cin >> n;
+    for(ll i = 1; i <= n; i ++){
+        cin >> b[i];
+        ansr += b[i];
+
+        if(b[i] > b[i - 1]){
+            ansl += b[i];
+        }
+    }
+    cout << ansr << endl;
+    cout << ansl;
+    return 0;
+}
+```
+
+#### 2.非零段划分
+
+> 1.暴力枚举——n^2 绝对超时
+
+> 2.岛屿问题——海平面下降  【巧妙思维】
+>
+> > 假设现在海平面就是p值，很大。降低p值就是降低海平面
+> >
+> > 每当一个凸峰出现，岛屿数就会多一个；
+> > 每当一个凹谷出现，原本相邻的两个岛屿就被这个凹谷连在一起了，岛屿数减少一个
+> >
+> > 过程中存储最大值即可
+> >
+> > > 注意细节与STL函数的相关使用
+> > >
+> > > 判重，因为所有相同的元素可以看作是一个整体
+> > >
+> > > > unique返回的是处理判重后的位置的下一个位置，将其减去1 就能得到长度。
+
+```C++
+#include<bits/stdc++.h>
+
+using namespace std;
+const int N = 500010;
+int n;
+int a[N];
+int cnt[N];
+int p = 10010;
+
+int main()
+{
+    cin >> n;
+    for(int i = 1; i <= n; i ++){
+        cin >> a[i];
+    }
+    //去重可以免于特判
+    n = unique(a, a + 2 + n) - a - 1;//返回去重后的长度n
+    a[0] = 0;
+    a[n + 1] = 0;
+    for(int i = 1; i <= n; i ++){
+        if(a[i] > a[i - 1] && a[i] > a[i + 1]){
+            cnt[a[i]] ++;
+        }
+        else if (a[i] < a[i-1] && a[i] < a[i + 1]){
+            cnt[a[i]] --;
+        }
+    }
+    int res = 0, sum = 0;
+    for(int i = p; i; i --)
+    {
+        sum += cnt[i];
+        res = max(sum, res);
+    }
+    cout << res << endl;
+    return 0;
+}
+```
+
+> 3.差分+前缀和综合使用
+
+> 观察可以得到：$如果a[i] > a[i-1]$意味着当p取到$a[i-1]+1到a[i]之间的值时$ 非零段+1
+> 使用数组$cnt[]$，$cnt[i]表示p从i-1上升到i时，非零段数量的变化$
+> 从正向前缀和中找出最大值就是所要的结果。
+
+```C++
+#include<bits/stdc++.h>
+
+using namespace std;
+const int N = 500050;
+int p = 50500;
+int a[N], cnt[N];
+int n;
+int main()
+{
+    cin >> n;
+    for(int i = 1;i <= n; i ++)
+    {
+        cin >> a[i];
+        if(a[i] > a[i - 1]){
+            cnt[a[i-1]+1] ++;
+            cnt[a[i]+1] --;
+        }
+    }
+    int sum = 0,res = 0;
+    for(int i = 1; i < p; i ++)
+    {
+        sum += cnt[i];
+        res = max(res, sum);
+    }
+    cout << res << endl;
+    return 0;
+}
+```
+
+
+
+
+
+#### 3.脉冲神经网络
+
+
+
+#### 4. 收集卡牌
+
+
+
+#### 5.箱根山岳险天下
