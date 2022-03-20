@@ -1333,3 +1333,53 @@ int main()
 }
 ```
 
+
+
+### 2022年3月20日
+
+#### 3370. 牛年
+
+> https://www.acwing.com/problem/content/3373/
+
+> 也要巧妙去使用字符串的处理和输入输出之间的关系
+
+```C++
+#include <iostream>
+#include <unordered_map>
+#include <cmath>
+using namespace std;
+
+int n;
+//age记录每头牛与Bessie的相对年龄
+//ord是order的简写，记录的是从牛到鼠的生肖到0-12的映射
+unordered_map<string, int> age, ord = {{"Ox", 0}, {"Tiger",  1}, {"Rabbit", 2}, {"Dragon", 3}, {"Snake", 4}, {"Horse", 5}, {"Goat", 6}, {"Monkey", 7}, {"Rooster", 8}, {"Dog", 9}, {"Pig", 10}, {"Rat", 11}};
+//na是name-animal的映射，记录每头牛的生肖
+unordered_map<string, string> na;
+
+int main() {
+  cin >> n;
+  na["Bessie"] = "Ox";
+  age["Bessie"] = 0;    //初始化Bessie生肖为Ox，年龄为0
+  while (n--) {
+    //ind表示increase-decrease，记录a是在b的前还是后出生，ani表示animal，是a的生肖，tmp用来读取无用字符串
+    string a, ind, ani, b, tmp;
+    cin >> a >> tmp >> tmp >>ind >> ani >> tmp >> tmp >> b;
+    //记录a的生肖
+    na[a] = ani;
+    //如果a和b生肖相同的话，判断是先还是后出生，在b的年龄基础上加减12
+    if (ani == na[b]) age[a] = (ind == "previous" ? age[b] - 12 : age[b] + 12);
+    //不是同样的生肖的话，用后出生者的生肖序号减去先出生者的生肖序号，模12取正值即为a,b的年龄差值，再用b的年龄加减这个年龄差值即为a的年龄
+    else age[a] = (ind == "previous" ? age[b] - ((ord[na[b]] - ord[ani] + 12) % 12) : age[b] + ((ord[ani] - ord[na[b]] + 12) % 12));
+  }
+  //输出Elsie年龄的绝对值，因为我们把Bessie的年龄记为0，所以直接打印Elsie年龄的绝对值就是这两者的年龄差值
+  cout << abs(age["Elsie"]) << endl;
+  return 0;
+}
+```
+
+
+
+#### 3745. 牛的学术圈 I
+
+
+
