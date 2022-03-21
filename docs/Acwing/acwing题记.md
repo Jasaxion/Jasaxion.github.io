@@ -1381,5 +1381,182 @@ int main() {
 
 #### 3745. 牛的学术圈 I
 
+> https://www.acwing.com/problem/content/3748/
+
+> 方法一：二分
+>
+> 首先不看有l的情况，进行一次二分查找满足条件的答案，然后找到不满足条件的对其进行+1操作，最后进行排序后，再次二分查找最终的答案
+
+```C++
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+
+using namespace std;
+
+int n, l;
+int L,R;
+int tempL = 0x3f3f3f3f, tempR = 0;
+const int N = 100010;
+int a[N];
+int check(int x) { //求h是否成立 
+    int ans = 0;
+    for (int i = 1;i <= n; i++) if (a[i] >= x) ans++;
+    return ans >= x;
+}
+
+int main()
+{
+    scanf("%d%d", &n, &l);
+    for(int i = 1; i <= n; i ++){
+        scanf("%d", &a[i]);
+        tempL = min(tempL, a[i]);
+        tempR = max(tempR, a[i]);
+    }
+    sort(a + 1, a + n + 1);
+    L = tempL, R = tempR;
+    int mid = L + R + 1 >> 1;
+    while(L < R){
+        mid = L + R + 1 >> 1;
+        if(!check(mid)){
+            R = mid - 1;
+        }
+        else{
+            L = mid;
+        }
+    }
+    
+    if(l == 0){
+        printf("%d", L);
+        return 0;
+    }
+    for(int i = n; i > 0; i --){
+        if(l == 0) break;
+        if(a[i] <= L){
+            a[i] ++;
+            l --;
+        }
+    }
+    sort(a+1, a+n+1);
+    L = 1, R = 100000;
+    mid = L + R >> 1;
+    while(L < R){
+        mid = L + R + 1 >> 1;
+        if(!check(mid)){
+            R = mid - 1;
+        }
+        else{
+            L = mid;
+        }
+    }
+    printf("%d\n", L);
+    return 0;
+}
+```
+
+> 方法二：yxc枚举+双指针
+
+> 首先从大到小进行排序，统计一下每个引用次数的cnt（出现次数），然后就for循环一遍0~n
+>
+> 用一个数组，记录一下引用出现的次数cnt[i] ++
+
+```C++
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+
+using namespace std;
+
+const int N = 100010;
+
+int n, L;
+int q[N];
+
+int main()
+{
+    scanf("%d%d", &n, &L);
+    for (int i = 1; i <= n; i ++ ) scanf("%d", &q[i]);
+    sort(q + 1, q + n + 1, greater<int>());
+
+    int res = 0;
+    for (int i = 1, j = n; i <= n; i ++ )
+    {
+        while (j && q[j] < i) j -- ;
+        if (q[i] >= i - 1 && i - j <= L)
+            res = i;
+    }
+
+    printf("%d\n", res);
+    return 0;
+}
+作者：yxc
+链接：https://www.acwing.com/activity/content/code/content/2892226/
+```
 
 
+
+
+
+
+
+### 2022年3月21日
+
+#### （43周赛）两个数列 —— 上下界/区间交
+
+> https://www.acwing.com/problem/content/4318/
+
+> 思考一下这题，其实就是要求b数组的上界与下界，然后与原来$a_i与b_i$的上下界相减即可
+>
+> > 对于$b_i$的上界：
+> > 但其余b全为1时， $b_i <= sun - n + 1$
+> > 由于前提条件已经给出：$b_i <= a_i \  \& \ b_i <= sum$
+> > 由此可以得出$b_i的上界b_i=min(min(a_i,sum),sum-n+1)$
+>
+> > 对于$b_i$的下界：
+> > 由已知条件：$b_i<=a_i$ 不难得出 $sum_b <= sum_a$
+> > 不难发现，$b_i$的可能最小值必然存在1，
+> > 且：$sum_b-b_i$表示除去$b_i$元素后，剩余元素的总和，同理$sum_a-a_i$
+> > 显然有：$sum_b-b_i<=sum_a-a_i$ 整理后
+> >
+> > 可得$b_i$的下界为$a_i+sum_b-sum_a<=b_i$  ---> 则$b_i=max(a_i+sum_b-sum_a,1)$
+>
+> > Tip: 注意数据范围$2*10^5$ 累加的 $sum_a$可能爆int
+
+```C++
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+
+using namespace std;
+const int N = 200010;
+typedef long long LL;
+LL n,s;
+LL a[N];
+LL b[N];
+LL suma = 0;
+int main()
+{
+    scanf("%lld%lld", &n, &s);
+    for(int i = 0; i < n; i ++){
+        scanf("%lld", &a[i]);
+        suma += a[i];
+    }
+    for(int i = 0; i < n; i ++){
+        LL upperbound = min(min(a[i], s), s - n + (LL)1);
+        LL lowerbound = max(a[i] + s - suma, (LL)1);
+        b[i] = a[i] - (abs(upperbound - lowerbound + 1));
+    }
+    for(int i = 0; i < n; i ++){
+        printf("%lld ", b[i]);
+    }
+    return 0;
+}
+```
+
+
+
+
+
+
+
+#### （43周赛）合适数对
