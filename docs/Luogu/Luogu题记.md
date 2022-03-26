@@ -6679,7 +6679,67 @@ int main()
 
 
 
+### 2022年3月26日
 
+#### 两道树状数组模板
+
+> https://www.luogu.com.cn/problem/P3374 ——单点更新与查询
+>
+> https://www.luogu.com.cn/problem/P3368 ——区间更新与查询
+>
+> 难的总不是数据结构的模板，而是那个思考的过程和转化成树状数组类型题目的能力！！
+
+```C++
+#include<bits/stdc++.h>
+
+using namespace std;
+const int N = 1000010;
+typedef long long ll;
+ll a[N],c[N];
+int n,l,r,k,op;
+int lowbit(int x)
+{
+    return x&(-x);
+}
+void update(int i, int k)
+{
+    while(i <= n)
+    {
+        c[i] += k;
+        i += lowbit(i);
+    }
+}
+ll getsum(int i){//返回的是[1,i-1]之间的和
+    ll res = 0;
+    while(i > 0){
+        res += c[i];
+        i -= lowbit(i);
+    }
+    return res;
+}
+int main()
+{
+    scanf("%d%d",&n,&k);
+    for(int i = 1; i <= n; i ++)
+    {
+        scanf("%lld",&a[i]);
+        update(i,a[i]);
+    }
+    while(k--)
+    {
+        scanf("%d%d%d",&op,&l,&r);
+        if(op == 1){
+            //scanf("%d%d",&l,&r);
+            update(l,r);
+        }
+        else{
+            //scanf("%d%d",&l,&r);
+            printf("%lld\n",(ll)getsum(r) - (ll)getsum(l-1));
+        }
+    }
+    return 0;
+}
+```
 
 
 
