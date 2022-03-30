@@ -1553,10 +1553,168 @@ int main()
 }
 ```
 
+#### （43周赛）合适数对 (树状数组典型题)-时常来回顾一下
+
+> https://www.acwing.com/problem/content/4319/
+
+> 题意大致以前缀和的说法：就是要满足前面的前缀和数组中满足$S_i-S_{j-1}<t$
+>
+> $S_{j-1}>S_i-t \ \ \  注：j是从0开始，但树状数组中j从1开始$
+>
+> 但由于这里a[i]有负数，于是这里的前缀和数组并不单调
+>
+> 故此，我们这里需要想办法求动态维护一个前面所有数的一个有序序列，而且还需要求排名，给定一个位置知道它的排名。
+>
+> 这里如果需要动态维护一个前面所有数的一个有序序列/排名 也可以借用树状数组来实现。
+
+> 需要知识点：平衡树/Splay，树状数组+离散化可以替代
+
+```C++
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+
+using namespace std;
+typedef long long ll;
+const int N = 400010;
+ll a[N],c[N];
+ll s[N];
+ll xs[N],cnt; //离散化数组和当前离散化的数
+ll m;
+int n;
+int lowbit(int x)  // 返回末尾的1
+{
+    return x & -x;
+}
+
+void update(int i, int k){
+    while(i <= N){
+        c[i] += k;
+        i += lowbit(i);
+    }
+}
+ll getsum(int i){
+    ll res = 0;
+    while(i > 0){
+        res += c[i];
+        i -= lowbit(i);
+    }
+    return res;
+}
+int get(ll x){
+    int l=1,r= cnt;
+    while(l < r)
+    {
+        int mid = l + r >> 1;
+        if(xs[mid] >= x) r = mid;
+        else l = mid + 1;
+    }
+    return r;
+}
+int main()
+{
+    scanf("%d%lld", &n, &m);
+    xs[++ cnt] = 0; //si=0
+    xs[++ cnt] = -m; //si-t=-m  均放入临时离散化数组xs中
+    for (int i = 1; i <= n; i ++ ){ //输入每一个点
+        scanf("%lld", &a[i]);
+        s[i] = a[i] + s[i-1];
+        xs[ ++ cnt] = s[i];
+        xs[ ++ cnt] = s[i] - m;
+    }
+    sort(xs + 1, xs + cnt + 1); //离散化-排序
+    cnt = unique(xs+1, xs+cnt+1) - xs - 1; //离散化去重
+    
+    ll ans = 0;
+    update(get(0),1); //0这个位置上+1
+    //这里树状数组的做法多多理解一下，
+    //getsum(s[i] - m) 直接就能得到i之前大于si-m的数的个数
+    for(int i = 1; i <= n; i ++){
+        ans += i - getsum(get(s[i]-m));   //i前面一共i个数-->这里表示加上一共前面大于si-m的个数
+        update(get(s[i]),1); //然后把这个点放进树状数组里面，方便之后的运算
+    }
+    printf("%lld\n",ans);
+    return 0;
+}
+```
 
 
 
+### 2022年3月30日
 
+#### （44周赛） acwing4318.最短路径
 
+>  https://www.acwing.com/problem/content/4321/
 
-#### （43周赛）合适数对
+> 这是一道思维性强的题目 spj构造问题
+>
+> 如果是最短路径的话，需要满足如下几个条件
+> 1.不能有环——不能走重复的格子。
+> 2.整条路径中，走的格子不能相邻（三面）。
+
+```C++
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+#include <cmath>
+#include <map>
+
+using namespace std;
+string path;
+int x,y;
+int cur;
+const int N = 1010;
+int g[N][N];
+int main()
+{
+    cin >> path;
+    int flag = 1;
+    g[110][110] = 1;
+    for(int i = 0; i < path.size(); i ++)
+    {
+        if(path[i] == 'L'){
+            x--;
+            if(g[x-1+110][y+110] || g[x+110][y-1+110] || g[x+110][y+1+110]){
+                flag = 0;
+                break;
+            }
+        }
+        if(path[i] == 'R'){
+            x++;
+            if(g[x+1+110][y+110] || g[x+110][y-1+110] || g[x+110][y+1+110]){
+                flag = 0;
+                break;
+            }
+        }
+        if(path[i] == 'U'){
+            y++;
+            if(g[x+110][y+1+110] || g[x-1+110][y+110] || g[x+1+110][y+110]){
+                flag = 0;
+                break;
+            }
+        }
+        if(path[i] == 'D'){
+            y--;
+            if(g[x+110][y-1+110] || g[x-1+110][y+110] || g[x+1+110][y+110]){
+                flag = 0;
+                break;
+            }
+        }
+        
+        if(g[x+110][y+110]){ //不能走重复
+            flag = 0;
+            break;
+        }
+        
+        g[x+110][y+110] = 1;
+    }
+    if(flag){
+        cout << "YES" << endl;
+    }
+    else cout << "NO" << endl;
+    return 0;
+}
+```
+
+#### （44周赛） acwing4319. 合适数对
+
