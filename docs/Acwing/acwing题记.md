@@ -1567,7 +1567,8 @@ int main()
 >
 > 这里如果需要动态维护一个前面所有数的一个有序序列/排名 也可以借用树状数组来实现。
 >
-> <img src="D:/Studio/study_space/study_space/GitHubRespo/Jasaxion.github.io/docs/Acwing/acwing%E9%A2%98%E8%AE%B0.assets/image-20220330234607313.png" alt="image-20220330234607313" style="zoom:50%;" />
+> > 大概思维过程，难点就在于树状数组中的处理部分
+> > <img src="acwing%E9%A2%98%E8%AE%B0.assets/image-20220331000828858.png" alt="image-20220331000828858" style="zoom:50%;" />
 
 > 需要知识点：平衡树/Splay，树状数组+离散化可以替代
 
