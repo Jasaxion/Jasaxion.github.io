@@ -4,7 +4,7 @@
 
 > https://leetcode-cn.com/problems/k-th-smallest-in-lexicographical-order/
 >
-> 字典序中第K小的数字
+> 字典序中第K小的数字，要擅于编写搜索代码。以及搜索递归等思维方式
 >
 > 思考过程：
 > <img src="D:/Studio/study_space/study_space/GitHubRespo/Jasaxion.github.io/docs/Leetcode/LeetCode%E9%A2%98%E8%AE%B0.assets/EBE85B5611246F29CC6807CD4FC283AB.png" alt="img" style="zoom:50%;" />
