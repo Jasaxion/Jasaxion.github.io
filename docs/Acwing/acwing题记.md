@@ -1566,6 +1566,8 @@ int main()
 > 故此，我们这里需要想办法求动态维护一个前面所有数的一个有序序列，而且还需要求排名，给定一个位置知道它的排名。
 >
 > 这里如果需要动态维护一个前面所有数的一个有序序列/排名 也可以借用树状数组来实现。
+>
+> <img src="D:/Studio/study_space/study_space/GitHubRespo/Jasaxion.github.io/docs/Acwing/acwing%E9%A2%98%E8%AE%B0.assets/image-20220330234607313.png" alt="image-20220330234607313" style="zoom:50%;" />
 
 > 需要知识点：平衡树/Splay，树状数组+离散化可以替代
 
