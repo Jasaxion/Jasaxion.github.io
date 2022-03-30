@@ -7,4 +7,5 @@
 * [Luogu刷题之路](Luogu/Luogu题记.md)
 * [CCF-CSP 题记](CCF-CSP/CCF-CSP真题.md)
 * [模板](模板/模板.md)
+* [ACM赛制杂题与思考](ACM/Acm赛制比赛杂题.md)
 
