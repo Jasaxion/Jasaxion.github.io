@@ -32,7 +32,7 @@
 
 #### [Codeforce 题记](Codeforce/Codeforce题记.md)
 
-#### [LeetCode 题记](LeetCode/LeetCode题记.md)
+#### [LeetCode 题记](Leetcode/LeetCode题记.md)
 
 #### [Luogu 题记](Luogu/Luogu题记.md)
 
