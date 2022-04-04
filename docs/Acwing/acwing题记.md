@@ -1721,3 +1721,124 @@ int main()
 
 #### （44周赛） acwing4319. 合适数对
 
+
+
+
+
+
+
+### 2022年4月4日
+
+#### （45周赛）4394. 最长连续子序列
+
+> 差一点就做出来了QAQ
+>
+> 哈希表（桶+双指针）
+
+> https://www.acwing.com/problem/content/4397/
+
+```C++
+#include<bits/stdc++.h>
+
+using namespace std;
+const int N = 500010;
+int n,m;
+int a[N];
+int d[N];
+set<int> s;
+int maxans;
+int ansl,ansr;
+int main()
+{
+    scanf("%d%d",&n,&m);
+    for(int i = 1; i <= n; i ++)
+    {
+        scanf("%d", &a[i]);
+//        d[a[i]] ++;
+    }
+    int i = 1;
+    int j = i;
+    while(j <= n && i <= n){
+        s.insert(a[i]);
+        s.insert(a[j]);
+
+        while(s.size() > m){
+            s.erase(a[i]);
+            i ++;
+        }
+
+        if(j - i + 1 > maxans){
+            maxans = j - i + 1;
+            ansl = i;
+            ansr = j;
+        }
+
+        j ++;
+        s.insert(a[j]);
+
+    }
+    printf("%d %d",ansl, ansr);
+    return 0;
+}
+```
+
+#### （45周赛） 4395. 最大子矩阵
+
+> https://www.acwing.com/problem/content/4398/
+
+```C++
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+
+using namespace std;
+typedef long long LL;
+const int N = 20010;
+LL a[N],b[N];
+LL sa[N],sb[N];
+LL lena[N],lenb[N];
+int x;
+int n,m;
+int main()
+{
+    scanf("%d%d", &n, &m);
+    memset(lena,0x3f,sizeof lena);
+    memset(lenb,0x3f,sizeof lenb);
+    
+    //记录a,b的前缀和
+    for(int i = 1; i <= n; i ++){
+        scanf("%d",&a[i]);
+        sa[i] = sa[i-1] + a[i];
+    }
+    for(int i = 1; i <= m; i ++){
+        scanf("%d",&b[i]);
+        sb[i] = sb[i-1] + b[i];
+    }
+    scanf("%d", &x);
+    //记录a b 数组长度为len时的最小区间和
+    
+    //如果是相同的区间，总和最小最好，故选取最小的值作为当前这个长度的区间的最佳值
+    for(int len = 1; len <= n; len ++){
+        for(int l = 1; l <= n - len + 1; l ++){
+            int r = l + len - 1;
+            lena[len] = min(lena[len], sa[r] - sa[l-1]);
+        }
+    }
+    for(int len = 1; len <= m; len ++){
+        for(int l = 1; l <= m - len + 1; l ++){
+            int r = l + len - 1;
+            lenb[len] = min(lenb[len], sb[r] - sb[l-1]);
+        }
+    }
+    
+    //在lena,lenb中进行枚举，如果lena长度于lenb长度的值的乘积小于x的话,ans更新子矩阵的最大面积
+    int ans = 0;
+    for(int i = 1; i <= n; i ++){
+        for(int j = 1; j <= m; j ++){
+            if(lena[i] * lenb[j] <= x) ans = max(ans,i * j);
+        }
+    }
+    printf("%d",ans);
+}
+```
+

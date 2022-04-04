@@ -6743,6 +6743,52 @@ int main()
 
 
 
+### 2022年4月4日
+
+#### P1004 [NOIP2000 提高组] 方格取数
+
+> 状态转移：
+>
+> 多一维度，需要判重 类似题：https://jasaxion.github.io/#/Acwing/acwing%E9%A2%98%E8%AE%B0?id=%e8%93%9d%e6%a1%a5%e6%9d%af%e7%9c%81%e8%b5%9b%e8%b5%b0%e6%96%b9%e6%a0%bc
+>
+> `dp[i][j][l][k] = max(max(dp[i-1][j][l-1][k],dp[i][j - 1][l][k-1]),max(dp[i - 1][j][l][k - 1],dp[i][j - 1][l - 1][k]))+g[i][j];`
+
+```C++
+#include <bits/stdc++.h>
+
+using namespace std;
+const int N = 110;
+int g[N][N];
+int dx[2] = {0,1};
+int dy[2] = {-1,0};
+int dp[10][10][10][10];
+int n;
+int main()
+{
+    cin >> n;
+    int x,y,w;
+    do{
+        cin >> x >> y >> w;
+        g[x][y] = w;
+    }while(x != 0 && y != 0 && w != 0);
+    for(int i = 1; i <= n; i ++){
+        for(int j = 1; j <= n; j ++){
+            for(int l = 1; l <= n; l ++){
+                for(int k = 1; k <= n; k ++){
+                    dp[i][j][l][k] = max(max(dp[i-1][j][l-1][k],dp[i][j - 1][l][k-1]),max(dp[i - 1][j][l][k - 1],dp[i][j - 1][l - 1][k]))+g[i][j];
+                
+                    if(i != l && j != k) dp[i][j][l][k] += g[l][k]; //去重
+                }
+            }
+        }
+    }
+    cout << dp[n][n][n][n];
+    return 0;
+}
+```
+
+
+
 
 
 
