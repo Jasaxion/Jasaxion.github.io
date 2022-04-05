@@ -30,7 +30,6 @@
   <script src="//unpkg.com/vue/dist/vue.js"></script>
   <script src="//unpkg.com/babel-standalone@6/babel.min.js"></script>
   <script src="//unpkg.com/docsify-demo-box-vue/dist/docsify-demo-box-vue.min.js"></script>
-  <script src="//unpkg.com/docsify-edit-on-github/index.js"></script>
   <script src="//unpkg.com/element-ui/lib/index.js"></script>
   <script src="//unpkg.com/element-ui/lib/umd/locale/en.js"></script>
   <script src="//unpkg.com/vue-data-tables@3.4.4/dist/data-tables.min.js"></script>
@@ -174,31 +173,8 @@ function http(res, time = 200) {
 		buttonText : '点击复制',
 		errorText : '出错辽',
 		successText : '复制辽'
-	  },
-      plugins: [
-        DemoBoxVue.create(jsResources, cssResources, bootCode),
-        EditOnGithubPlugin.create(
-          'https://github.com/Jasaxion/Jasaxion.github.io/tree/main/docs/',
-		  null,
-		  function(file) {
-			return '在GitHub上编辑'
-			}
-		),
-        function (hook) {
-          var footer = [
-            '<hr/>',
-            '<footer>',
-            '<span><a href="https://github.com/Jasaxion">Jasaxion</a> &copy;2021.</span>',
-            '<span>本博客构建依据 <a href="https://github.com/docsifyjs/docsify" target="_blank">docsify</a>.</span>',
-            '</footer>'
-          ].join('')
-
-          hook.afterEach(function (html) {
-            return html + footer
-          })
-        },
-        DocsifyCodefund.create(15)
-      ]
+	  }
+	  loadFooter: true
     }
   </script>
   <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
@@ -217,6 +193,9 @@ function http(res, time = 200) {
   <script src="//unpkg.com/prismjs/components/prism-matlab.min.js"></script>
   <script src="//unpkg.com/prismjs/components/prism-cpp.js"></script>
   <script src="//unpkg.com/prismjs/components/prism-cpp.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-katex@latest/dist/docsify-katex.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-updated@1/src/time-updater.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@alertbox/docsify-footer/dist/docsify-footer.min.js"></script>
   
 
 </body>
