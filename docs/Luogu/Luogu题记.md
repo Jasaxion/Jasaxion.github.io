@@ -30,7 +30,7 @@
 >
 > 想法Ⅱ：小根堆排序优化版
 >
-> ```C++
+> ```cpp
 > //注意：以下是从1~n进行编号的。
 > //堆的初始化操作：
 > len = 0;
@@ -69,7 +69,7 @@
 > }
 > ```
 
-```C++
+```cpp
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
@@ -144,7 +144,7 @@ int main()
 >
 > 要从根本上发现，什么叫模拟，要去思考去模拟算法实现的全过程，去发现隐含条件
 
-```C++
+```cpp
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
@@ -208,7 +208,7 @@ int main()
 >
 > //如果a > 1 ~ i 之间的最大值j ，那么a = a - j 并输出j;然后再一个一个访问 j ~ 1之间的元素,直到a==j
 
-```C++
+```cpp
 #include <iostream>
 #include <cstdlib>
 #include <cstdio>
@@ -272,7 +272,7 @@ int main()
 >
 > 可以用STL库的map
 
-```C++
+```cpp
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
@@ -318,7 +318,7 @@ int main()
 
 > 思路题解：
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 const int MAXN=2e5+5;
@@ -438,7 +438,7 @@ int main(){
 > 关于$\xi(x)$ 因为能够整除的时候其值为1，不能够被整除的时候其值为0，
 > 所以其和$\sum$来说就是其所有因子总和。
 >
-> ```C++
+> ```cpp
 > for(int i = 1; i <= n; i ++)
 > {
 >     for(int j = i; j <= n; j = j + i)
@@ -449,7 +449,7 @@ int main(){
 > //暴力筛：找能被整除的数 （也就是找因子）
 > ```
 
-```C++
+```cpp
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
@@ -496,7 +496,7 @@ int main()
 >
 > 高精度与斐波那契数列结合
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 #include <vector>
 
@@ -661,7 +661,7 @@ int main()
 >
 > `s[x2][y2] - s[x2][y1 - 1] - s[x1 - 1][y2] + s[x1 - 1][y1 - 1]`
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 #include <cstring>
 using namespace std;
@@ -750,7 +750,7 @@ int main()
 > 需要特判：如果b[i]不是0或1的话，直接就是不满足条件
 > 				   还需要特判一下到达b[n+1]的时候一定要为0，否则也不满足条件
 
-```C++
+```cpp
 #include<bits/stdc++.h>
 using namespace std;
 int i,j,k,m,n;
@@ -820,7 +820,7 @@ int main()
 >
 > //然后要搞清楚右下角的具体位置，相对于左上角 i + c - 1; j + c - 1;
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -889,7 +889,7 @@ int main()
 >
 > 然后是一些低级错误要注意，比如要计算的部分和的范围问题，`s[j] - s[i - 1];` 以及区间`j - i + 1`
 
-```C++
+```cpp
 //P3131
 #include <bits/stdc++.h>
 
@@ -952,7 +952,7 @@ int main()
 >
 > 注意：因为求得的值可能会比较大，故此应该进行取模运算
 
-```C++
+```cpp
 #include<iostream>
 #include<cstdio>
 using namespace std;
@@ -1002,7 +1002,7 @@ int main()
 > > > wr = mid - 1;
 > > > wl = mid + 1;
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long LL;
@@ -1127,7 +1127,7 @@ int main()
 >
 > > 既然学算法了，于是用像个算法er的解法做了一次
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 110;
@@ -1183,7 +1183,7 @@ int main()
 > > > 1 1 2 3 4
 > > > 1 1 2 3 4
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 #include <queue>
 using namespace std;
@@ -1278,7 +1278,7 @@ int main()
 >
 > 很多需要特判的情况，然后可能存在的ERROR的情况
 
-```C++
+```cpp
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -1389,7 +1389,7 @@ int main()
 >
 > > 思想不难，但处处设限
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long LL;
@@ -1485,7 +1485,7 @@ int main()
 > > 1、模板搜索
 > > 2、根据本题题意进行的搜索
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 1000;
@@ -1575,7 +1575,7 @@ int main()
 
 > DFS会出现超时，求最短路可换采用BFS
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 #include <queue>
 using namespace std;
@@ -1660,7 +1660,7 @@ int main()
 > 与上题一样，不过该题BFS和DFS应该都可以撒
 > spfa...还有好多算法没好好学好呢！！！
 
-```C++
+```cpp
 #include  <bits/stdc++.h>
 using namespace std;
 const int N = 2000;
@@ -1720,7 +1720,7 @@ int main()
 
 > 迷宫问题的DFS&BFS
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 110;
@@ -1833,7 +1833,7 @@ int main()
 > > 关于unordered_map:
 > > https://www.cnblogs.com/langyao/p/8823092.html
 > >
-> > ```C++
+> > ```cpp
 > > 成员函数：
 > > =================迭代器========================= 
 > > begin 　　返回指向容器起始位置的迭代器（iterator） 
@@ -1873,7 +1873,7 @@ int main()
 > **如何从一维序号进行转化为x维序号**
 > **又如何从x维序号转化回一维**
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 #include <unordered_map>
 #include <cstring>
@@ -1937,7 +1937,7 @@ int main()
 >
 > > 搜索水题，搞清楚搜索过程就不难
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 #include <cstring>
 
@@ -2003,7 +2003,7 @@ int main()
 > >
 > > 防止TLE--->注意去剪枝！
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long LL;
@@ -2056,7 +2056,7 @@ int main()
 > >
 > > 一堆细节和代码能力
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 #include <queue>
 using namespace std;
@@ -2260,7 +2260,7 @@ int main()
 >
 > 可以使用一个堆（优先队列）来维护还未穿着的装备
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 #include <queue>
 #define int long long
@@ -2376,7 +2376,7 @@ int main()
 > 		1.数据范围非常大，应该采用unsigned long long 进行存储
 > 		2.二分进行查找，右端点的选取
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -2464,7 +2464,7 @@ int main()
 >
 > > > 不过还是得注意一下数据范围以及cin速度太慢了，最好换成scanf进行输入
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -2538,7 +2538,7 @@ int main()
 
 > :joy: 通过这一题，我以最快的速度学会了在BFS中记录路径，以及输出BFS所获得的路径
 >
-> ```C++
+> ```cpp
 > //注意一下，多维情况如何转化为一个一维情况
 > //以及从一维情况转化到多维情况的计算方式 （注意避免麻烦还是下标从0开始吧QAQ）
 > void printpre(int x,int y )
@@ -2566,7 +2566,7 @@ int main()
 >
 > > 对于对每个格子进行标记（也就是染色）可以采用DFS
 >
-> ```C++
+> ```cpp
 > ....... 
 > ......C 
 > ......* 
@@ -2614,7 +2614,7 @@ int main()
 > 3333323
 > ```
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 #include <queue>
 #define inf 0x3f3f3f3f
@@ -2722,7 +2722,7 @@ int main(){
 > 如果a[i] != ave的话， 那么此时需要进行一次操作，也就是从i+1个位置搬运过来纸牌，或者从i位置向i+1的位置搬运纸牌
 > a[i + 1] += a[i] - ave 具体是从i-->i+1 还是i+1-->i，主要看a[i]-ave是正还是负。反正不管怎样，这里都算操作一次，故此counts++;
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long LL;
@@ -2784,7 +2784,7 @@ int main()
 > >
 > > 可知：$ans = min{max(x_i,y_{i+1})} ~~~from~~i~~to~~n$
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long LL;
@@ -2849,7 +2849,7 @@ int main()
 > > 可以证明栈有值的点至多有 2n个。
 > > 总复杂度 O*(*n*log*n*) (排序)。
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 #define re register
 #include <stack>
@@ -2951,7 +2951,7 @@ signed main(){
 > 2. ans = merge_sortt(mid+1, r);
 > 3. ans = mid - i + 1;  如果第i个要大于第j个，那么第i~mid个都会大于j，ans = mid - i + 1
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long LL;
@@ -3008,7 +3008,7 @@ int main()
 > 方法二：DP动态规划
 >
 
-```C++
+```cpp
 #include<bits/stdc++.h>
 int n , arr[200200];
 const int minn = -0x3f3f3f3f;
@@ -3085,7 +3085,7 @@ int main()
 
 > 该题的动态规划做法
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 200010;
@@ -3120,7 +3120,7 @@ int main()
 >
 > 结束条件是 分治到最后只剩下一个元素，那一定是有序的，无需进行操作
 
-```C++
+```cpp
 void quicksort(int l, int r)
 {
     //如果最后，分治到只有一个元素，那肯定是有序的，无需操作直接返回即可
@@ -3179,7 +3179,7 @@ void quicksort(int l, int r)
 
 > 代码中的tmp数组同题解的strip[]数组
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long LL;
@@ -3268,7 +3268,7 @@ int main()
 > > 3.特殊方格，`board[dr][dc]`表示特殊方格，dr和dc时该特殊方格在二维数组board中的下标
 > > 4.L型地毯，一个$2^k*2^k$的棋盘中有一个特殊方格，所以，用到L型地毯的个数为$(4^k-1)/3$，将所有地毯从1开始连续编号，用一个全局变量t表示
 > >
-> > ```C++
+> > ```cpp
 > > void dac(int tr,int tc,int dr,int dc,int size)
 > > {
 > >     //tr,tc是棋盘左上角的下标
@@ -3309,7 +3309,7 @@ int main()
 > > > \end{aligned}
 > > > \right.$$ 由此可知$T(k) = O(4^k)$ ，由于覆盖一个满足要求的正方形，所需要的L型块件的个数为$(4^k-1)/3$ 故此该算法可以说是在一个渐进意义下的最优算法
 > > >
-> > > > ```C++
+> > > > ```cpp
 > > > > #include <bits/stdc++.h>
 > > > > using namespace std;
 > > > > const int N = 1050;
@@ -3367,7 +3367,7 @@ int main()
 > $2^k*2^k$的正方形内，只要有一个点不覆盖，就有办法把其他店覆盖。
 > 可以将这个大的正方形分割成四个$2^{\frac{k}{2}}*2^{\frac{k}{2}}$的小正方形来进行求解
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 int n;
@@ -3442,7 +3442,7 @@ int main()
 >
 > //暴力重新编号：
 >
-> ```C++
+> ```cpp
 > bool vis[N][N];
 > int dx[8]={-1,-1,-1,0,1,1,1,0};
 > int dy[8]={-1,0,1,1,1,0,-1,-1};
@@ -3499,7 +3499,7 @@ int main()
 >
 > **还是好好掌握好树状数组，利用好树状数组没那么容易出现那种细节错误**
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 100010;
@@ -3567,7 +3567,7 @@ int main()
 
 > 运用到整除分块的方法，降低时间复杂度
 
-```C++
+```cpp
 LL sum(LL n)
 {
     LL s = 0;
@@ -3597,7 +3597,7 @@ LL sum(LL n)
 >
 > `inv[i] = (p - p / i) * inv[p % i] % p;`
 
-```C++
+```cpp
 inv[1] = 1;
 printf("%d\n",inv[1]);
 for(int i = 2; i <= n; ++ i)
@@ -3623,7 +3623,7 @@ for(int i = 2; i <= n; ++ i)
 >
 > 两种方法求解
 
-```C++
+```cpp
 void Exgcd(LL a, LL b, LL &x, LL &y) 
 {
     if (!b) x = 1, y = 0;
@@ -3654,7 +3654,7 @@ x = (x%p+p)%p;// 得出的x就是其逆元
 
 |整除分块将时间复杂度降低到$\sqrt n$|
 
-```C++
+```cpp
 LL ans = n*k;
     for(LL l = 1, r; l <= n; l = r+1)
     {
@@ -3683,7 +3683,7 @@ LL ans = n*k;
 >
 > 在[1, m]的范围内，枚举每个值，带入bool check函数中利用秦九韶算法计算该值是否 满足条件即可
 
-```C++
+```cpp
 //秦九韶算法计算这个多项式的值
 const int p = 1e9+7;
 bool calc(ll x)
@@ -3729,7 +3729,7 @@ bool calc(ll x)
 > !! 该题的数据范围极大...
 > 一定要采用快速幂、快速乘。。否则会爆long long
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
@@ -3772,7 +3772,7 @@ int main()
 >
 > 要搞清楚题目的要求，不要想当然做题！！！
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 int a,ans,mx=1,n,vis[100100];
@@ -3822,7 +3822,7 @@ int main()
 >
 > > 注意一些特判情况
 >
-> ```C++
+> ```cpp
 > 1.筛出根号R之间的所有质数
 > 2.在L-R的范围内用已求出的质数筛出其中的合数(若p为质数，那么p*i一定不为质数)，并标记
 > !3.遍历L-R，没有被标记的元素就是我们要求的素数 
@@ -3832,7 +3832,7 @@ int main()
 > 🔰：启发：一定要先计算一下空间，并考虑存储范围，如果可能出现爆存储范围的情况，我们需要进行缩小区间处理。然后要灵活使用模板，要正确理解数学推导过程和含义以及时间|空间复杂度，就像线性筛对空间复杂度要求高一样。
 > ```
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 1000007;
@@ -3914,7 +3914,7 @@ int main()
 > > **1~N内所有约数的和为**
 > > $sum = (p_1^0+p_1^1+...+p_k^{c_1})*...*(p_k^0+p_k^1+...+p_k^{ck})$​​
 
-```C++
+```cpp
 #include <algorithm>
 #include <iostream>
 #include <cstdio>
@@ -3976,7 +3976,7 @@ int main()
 > 想个办法优化一下，我们只需要枚举从1~√a[i] 就好了
 > `要注意当枚举到√a[i]时，只需要加一次`
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 1001000;
@@ -4034,7 +4034,7 @@ int main()
 > 所有的点都关于`y=x`对称，从原点(0，0)连线，可以发现，从原点（0，0）往后的连线上的点一定都是看不到的，对任意整点（x，y）有点（λx，λy）(λ>1)是看不到的，我们显然可以发现:gcd(λx,λy) = λgcd(x,y) >λ·1 =λ >1
 > 也就是说，对于一个点(x,y)，当gcd(x,y)≠1时这个点看不到。
 
-```C++
+```cpp
 //我的代码....虽然有点难看，但都是模板
 //果然数论最难的是数学思维，编码能力体现不高
 #include <bits/stdc++.h>
@@ -4092,7 +4092,7 @@ int main()
 >
 > `从第一层开始-->处理当前(注意递归退出条件)-->回溯-->恢复现场`
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 int cost[1010] = {6,2,5,5,4,5,6,3,7,6}; //花费火柴
@@ -4167,7 +4167,7 @@ int main()
 > 显然只有当 k1，k2中一个为奇数一个为偶数时，L,R才是整数
 > 注：并且 L != R 也就是 k1 != 1
 
-```C++
+```cpp
 #include<bits/stdc++.h>
 using namespace std;
 int m;
@@ -4194,7 +4194,7 @@ int main(){
 >
 > <img src="Luogu题记.assets/image-20210723100600736.png" alt="image-20210723100600736" style="zoom:67%;" />
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long LL;
@@ -4267,7 +4267,7 @@ int main()
 > >
 > > <img src="Luogu题记.assets/image-20210724114334069.png" alt="image-20210724114334069" style="zoom:80%;" />
 
-```C++
+```cpp
 //卡特兰数+高精度算法
 #include <bits/stdc++.h>
 using namespace std;
@@ -4323,7 +4323,7 @@ int main()
 >
 > 只需要在进行拓扑排序的时候，对结点的深度也进行一下记录就好了。
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -4396,7 +4396,7 @@ int main()
 > > 发现因为这里第一个位置的期望一定为0，终止状态为0
 > > 故可以采用逆推的方式进行逆向递推处理，最后获得终止状态0
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 100010;
@@ -4483,7 +4483,7 @@ int main()
 > >
 > > `https://blog.csdn.net/xumingyang0/article/details/81021793`
 
-```C++
+```cpp
 //[这是我的超内存的MLE代码]
 #include<bits/stdc++.h>
 using namespace std;
@@ -4620,7 +4620,7 @@ int main()
 > > 难理解的地方1：dijkstra算法用邻接矩阵算法该如何进行，与模板邻接表类似，也是首先找最短距离的点j，然后去更新dist[j]为1\~j最小还是1\~t\~j最小。
 > > 					2：关于dist[N]数组的初始化，使用1能直接到达的点的权值进行初始化处理
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 #include <queue>
 
@@ -4728,7 +4728,7 @@ int main()
 > 一个点最短路一定经过了一个层数比它少1的节点（否则就不是最短路）
 > 故此用每个相邻且层数比当前节点层数少1的点更新当前点的路径跳数即可
 >
-> ```C++
+> ```cpp
 >  queue<int>Q;dep[1]=0;vis[1]=1;Q.push(1);cnt[1]=1;
 >     while(!Q.empty()){
 >         int x=Q.front();Q.pop();
@@ -4748,7 +4748,7 @@ int main()
 > >
 > > 注：自环和重边不会对本题造成影响
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 #include <queue>
 using namespace std;
@@ -4831,7 +4831,7 @@ int main()
 
 > https://www.luogu.com.cn/problem/P5905
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 #include <queue>
 using namespace std;
@@ -4983,7 +4983,7 @@ int main ()
 >   3.替换操作：str1前i-1个字符变成str2的前j-1个需要多少步 dp\[i-1]\[j-1] + 1;
 >   4.不变的情况：如果str1的i-1和str2的j-1相同的话，那么无需进行操作
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 3010;
@@ -5063,7 +5063,7 @@ int main()
 >
 > `注意巧妙去进行标记马的位置🐎`
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 #define MAXN 110
 bool b[MAXN][MAXN]; //更简洁的标记方法，b数组标记此处是否被标记
@@ -5120,7 +5120,7 @@ int main()
 
 > 方法一：记忆化搜索：
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 int n,m;
@@ -5171,7 +5171,7 @@ int main()
 
 > 方法二：线性DP
 
-```C++
+```cpp
 using namespace std;
 const int N = 110;
 const int M = 110000;
@@ -5261,7 +5261,7 @@ int main()
 > //注意得用nlogn二分优化的方式去求解该LIS问题
 > ```
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 100010;
@@ -5332,7 +5332,7 @@ int main()
 >  目标：max{N - (F1[i] + F2[i] - 1)}
 > ```
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 110;
@@ -5397,7 +5397,7 @@ int main()
 >
 > 对于其中的完全背包问题，可以将其拆分次数标记为999999次
 
-```C++
+```cpp
 #include<cstdio>
 #include<algorithm>
 using namespace std;
@@ -5457,7 +5457,7 @@ int main()
 >
 > > 当然还可以再进一步优化——采用单调队列进行优化
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 #include <vector>
 
@@ -5524,7 +5524,7 @@ int main()
 > 然后开始进行状态转移:$F_{i,k}=min(F_{i,k},\ F_{j,k-2^{i-1}}+S_{i,j})$​
 > `f[j][k - (1 << (i - 1))] 表示在j点且没有走过i点的最短距离 s[i][j]是i到j的距离`
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 100010;
@@ -5597,7 +5597,7 @@ int main()
 
 `记忆化搜索方式 or DP循环`
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 1100;
@@ -5688,7 +5688,7 @@ int main()
 > 该题合并的时候包含了k ,  [l,k]+[k,r]
 > `f[l][r]=max(f[l][r],f[l][k]+f[k][r]+a[l]*a[k]*a[r]);`
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -5742,7 +5742,7 @@ int main()
 
 `同时，也要对题目中所给的数据要有清晰的认识和反射`
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 300010;
@@ -5789,7 +5789,7 @@ int main()
 > f[i][j] 表示将i~j之间的数字全部合并最终能够得到的最大数
 > ```
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 260;
@@ -5861,7 +5861,7 @@ int main()
 > > for(int i=1;i<=n;i++)f[i][i][0]=1;
 > > ```
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -5915,7 +5915,7 @@ AC代码自行取网站上去看，这里我们分析一下如何去写
 
 [区间DP的思考方式]
 
-```C++
+```cpp
 //思考到状态表示后，我们再来看，f[i][j]区间又能拆成f[i][k]、f[k+1][j]
 //然后打出区间DP的一般模板，进行深度思考
 for(int len = 2; len <= n; len ++)
@@ -5932,7 +5932,7 @@ for(int len = 2; len <= n; len ++)
 
 [判断字符串是否有折叠，也就是这段区域是否有相同的子串]
 
-```C++
+```cpp
 bool check(int l, int r, int len)
 {
     for(int i = l; i <= r; i ++)
@@ -5945,7 +5945,7 @@ bool check(int l, int r, int len)
 
 [状态方程]
 
-```C++
+```cpp
 for(int len = 2; len <= n; len ++)
 	for(int i = 1, j = i + len - 1; j <= n; i ++, j ++)
         for(int k = i; k < j; k ++)
@@ -6005,7 +6005,7 @@ m[100] = 3;
 >
 > 启发：当我们以其中一种方式做起来比较困难或很难行通时，不妨完全打破之前的思维定势，换一种方式去想！
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 80010;
@@ -6048,7 +6048,7 @@ int main()
 >
 > 面积就是 h[i] * (r[i] - l[i] - 1) <<---注意减去1
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
@@ -6130,7 +6130,7 @@ int main()
 > $f[i][1]表示取i元素的最大值的方案f[i][1]=max(f[0][j]-sum[j])+sum[i]$​ <-- $f[0][j] +sum[i\rarr j]$ (准确含义)​​
 > 👆解释，如果取了第i个元素，那个i-k-1 ~ i之间的元素都不能取了，此时$max(f[0][j]-sum[j])满足单调性原则，可以用单调队列进行优化时间复杂度$​​​
 
-```C++
+```cpp
 int main()
 {
 	n=read();d=read();
@@ -6157,7 +6157,7 @@ int main()
 > 表示满足条件的前i个数被选且**第i个数也被选**的和的最小值
 > 约束条件转化为：**两个相邻的被选择的数中间最多只能有k个数。**
 
-```C++
+```cpp
 int h = 0, t = 0;
 for(int i = 1; i <= k + 1; i ++)
 {
@@ -6200,7 +6200,7 @@ return sum - dp[n + 1];
 >
 > 也就是求不超过s总体积的所有数的因素和最大
 
-```C++
+```cpp
 //遇到这种筛因数和、质数的题目，要善于去进行初始化操作。
 筛每个数的因数和
 for(int i = 1; i <= n/2; i ++)
@@ -6233,7 +6233,7 @@ for(int i = 1; i <= n; i ++)
 >
 > `对w[i]取log后可以将原来的乘法转化为加法`
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 #include <queue>
 #include <cmath>
@@ -6330,7 +6330,7 @@ int main()
 >
 > 注意此处要忽略单点
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -6400,7 +6400,7 @@ int main()
 >
 > > 思考问题的时候思路一定要清晰
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -6463,7 +6463,7 @@ int main()
 
 `Prim()算法的模板题`
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 5010;
@@ -6547,7 +6547,7 @@ int main()
 > 然后进行kruscal算法的时候从小到大进行边的合并，每合并一次“村落集群的数目n”都减一
 > 直到村落集群的数量与规定的目标数量一样的时候，此时就直接输出当前待合并的权值（因为是从Kruscal算法中获得的权值，故此可知该权值一定是满足要求的最小值)
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -6689,7 +6689,7 @@ int main()
 >
 > 难的总不是数据结构的模板，而是那个思考的过程和转化成树状数组类型题目的能力！！
 
-```C++
+```cpp
 #include<bits/stdc++.h>
 
 using namespace std;
@@ -6753,7 +6753,7 @@ int main()
 >
 > `dp[i][j][l][k] = max(max(dp[i-1][j][l-1][k],dp[i][j - 1][l][k-1]),max(dp[i - 1][j][l][k - 1],dp[i][j - 1][l - 1][k]))+g[i][j];`
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;

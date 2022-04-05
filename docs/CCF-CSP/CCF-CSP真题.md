@@ -36,7 +36,7 @@
 >
 > 显然这里需要枚举$10^9$ 注定超时了
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -79,7 +79,7 @@ int main()
 >
 > > 总的思想就是：把握f和g的变化规律，减少枚举的次数，直接x区间大小得到error的值
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -158,7 +158,7 @@ int main()
 > >
 > > 模拟竖式除法，每次根据$f(x)和g(x)$的最高次系数计算当前位的商t，然后计算$f(x)$的余项，直到$f(x)$的最高次小于$g(x)$，剩下的$f(x)就是-r(x)$
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 #include <vector>
 using namespace std;
@@ -362,7 +362,7 @@ int main()
 
 > 家人们咱就是说要，沉下心来看题才行，不要好高骛远
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -407,7 +407,7 @@ int main()
 > > >
 > > > > unique返回的是处理判重后的位置的下一个位置，将其减去1 就能得到长度。
 
-```C++
+```cpp
 #include<bits/stdc++.h>
 
 using namespace std;
@@ -452,7 +452,7 @@ int main()
 > 使用数组$cnt[]$，$cnt[i]表示p从i-1上升到i时，非零段数量的变化$
 > 从正向前缀和中找出最大值就是所要的结果。
 
-```C++
+```cpp
 #include<bits/stdc++.h>
 
 using namespace std;

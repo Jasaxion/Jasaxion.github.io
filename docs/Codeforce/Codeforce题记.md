@@ -78,7 +78,7 @@
 > 这里需要注意的是，应该用long long 类型，其次是无穷大的设置应该尽可能大。
 > 然后此处check()函数就是判断当前能够制作的汉堡包的数目（减去原料后）去商店进行购买(这里计算每个原料所要花的钱cb,cs,cc)，看身上带的钱是否足够，然后这里也需要特别注意一下：可能会出现负数（也就是说已有的原料已经足够制作相应数目的汉堡包了，此时重置当前原料所要的花费为0）
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -150,7 +150,7 @@ int main()
 >
 > `拓展知识点还请查看“我的算法笔记” - 数论 章节`
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long LL;
@@ -224,7 +224,7 @@ int main()
 > 思路一定要清晰！！！！
 > 不要好高骛远！
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;

@@ -18,7 +18,7 @@
 
 > 1.确定一个前缀下所有子节点的个数
 
-```C++
+```cpp
 int getcount(int x, int n){ //x表示当前的前缀
     int cur = x;
     int next = x + 1;//表示下一个前缀
@@ -56,7 +56,7 @@ x ++;
 
 > 完整代码
 
-```C++
+```cpp
 int main()
 {
     cin >> n >> k;
