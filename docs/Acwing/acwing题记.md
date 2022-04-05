@@ -1786,6 +1786,8 @@ int main()
 
 > https://www.acwing.com/problem/content/4398/
 
+> <img src="acwing%E9%A2%98%E8%AE%B0.assets/image-20220404220132792.png" alt="image-20220404220132792" style="zoom:40%;" />
+
 ```C++
 #include <iostream>
 #include <cstring>

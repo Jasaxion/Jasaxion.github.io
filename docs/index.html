@@ -153,6 +153,7 @@ function http(res, time = 200) {
       + fakeHttp + '\n\n';
 
     window.$docsify = {
+	  relativePath: true,
       coverpage: [
         '/',
         '/en-us/',
@@ -162,6 +163,7 @@ function http(res, time = 200) {
       repo: 'https://github.com/Jasaxion',
       subMaxLevel: 2,
       loadSidebar: true,
+	  autoHeader: true,
       loadNavbar: true,
       search: 'auto', // default,
 	  'flexible-alerts': {
