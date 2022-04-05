@@ -8,6 +8,8 @@
   <meta name="description" content="Jasaxion的个人博客@Github：Jasaxion(bai_bo)">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
+  <link href="https://cdn.bootcss.com/prism/1.15.0/themes/prism.css" rel="stylesheet">
+  <link href="https://cdn.bootcss.com/prism/1.15.0/plugins/line-numbers/prism-line-numbers.css" rel="stylesheet">
   <style>
     nav.app-nav li ul {
       min-width: 100px;
@@ -74,11 +76,12 @@
 		text: ">最后更新时间: {docsify-updated}",
 		formatUpdated: "{YYYY}/{MM}/{DD}",
 	  },
-	  toc: {
-		scope: '.markdown-section',
-		headings: 'h1, h2, h3, h4, h5, h6',
-		title: '目录',
-	  },
+      count: {
+        countable: true,
+        fontsize: '0.9em',
+        color: 'rgb(90,90,90)',
+        language: 'chinese'
+      },
 	  loadFooter: true,
       plugins: [
         DemoBoxVue.create(jsResources, cssResources, bootCode),
@@ -100,14 +103,10 @@
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-copy-code"></script>
-  <script src="//cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-markdown.min.js"></script>
-  <script src="//unpkg.com/prismjs/components/prism-cpp.js"></script>
-  <script src="//unpkg.com/prismjs/components/prism-cpp.min.js"></script>
-  <script src="//unpkg.com/prismjs/components/prism-c.js"></script>
-  <script src="//unpkg.com/prismjs/components/prism-c.min.js"></script>
-  <script src="//unpkg.com/prismjs/components/prism-matlab.js"></script>
-  <script src="//unpkg.com/prismjs/components/prism-matlab.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-cpp.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-c.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-matlab.min.js"></script>
   <script src="//unpkg.com/docsify-plugin-flexible-alerts"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/js/docsify-themeable.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-updated@1/src/time-updater.min.js"></script>
