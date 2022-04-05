@@ -71,6 +71,7 @@
 		headings: 'h1, h2, h3, h4, h5, h6',
 		title: '目录',
 	  },
+	  loadFooter: true,
       plugins: [
         DemoBoxVue.create(jsResources, cssResources, bootCode),
         EditOnGithubPlugin.create(
@@ -79,20 +80,7 @@
 		  function(file) {
 			return '在GitHub上编辑'
 			}
-		),
-        function (hook) {
-          var footer = [
-            '<hr/>',
-            '<footer>',
-            '<span><a href="https://github.com/Jasaxion">Jasaxion</a> &copy;2021.</span>',
-            '<span>本博客构建依据 <a href="https://github.com/docsifyjs/docsify" target="_blank">docsify</a>.</span>',
-            '</footer>'
-          ].join('')
-
-          hook.afterEach(function (html) {
-            return html + footer
-          })
-        },
+		)
         DocsifyCodefund.create(15)
       ]
     }
@@ -117,6 +105,10 @@
   <script src="//cdn.jsdelivr.net/npm/docsify-updated@1/src/time-updater.min.js"></script>
   <script src="//unpkg.com/docsify-toc@1.0.0/dist/toc.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-edit-on-github"></script>
+  <script src="//cdn.jsdelivr.net/npm/@alertbox/docsify-footer/dist/docsify-footer.min.js"></script>
+  <script src="//unpkg.com/mermaid/dist/mermaid.js"></script>
+  <script src="//unpkg.com/docsify-mermaid@latest/dist/docsify-mermaid.js"></script>
+  <script>mermaid.initialize({ startOnLoad: true });</script>
 
 </body>
 </html>
