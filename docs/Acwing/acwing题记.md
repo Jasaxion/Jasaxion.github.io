@@ -58,7 +58,7 @@
 >
 > 如果当前位置位于要改变的区间内，则将此处的a[i]改变成1.
 
-```C++
+```cpp
 #include <iostream>
 #include <cstring>
 
@@ -173,9 +173,9 @@ int main()
 >
 > 要确保找准题干中的关键字，要耐得住寂寞，坐得下板凳。
 >
-> <img src=".\acwing题记.assets\image-20210630153938471.png" alt="image-20210630153938471" style="zoom:65%;" />
+> <img src="acwing题记.assets/image-20210630153938471.png" alt="image-20210630153938471" style="zoom:65%;" />
 
-```C++
+```cpp
 #include <iostream>
 
 using namespace std;
@@ -274,7 +274,7 @@ int main()
 >
 > `typedef pair<int,int> PII`的巧妙使用
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -388,7 +388,7 @@ int main()
 > 1.统计出现次数为1的数
 > 2.找出统计的数字中的最小的数
 
-```C++
+```cpp
 #include <iostream>
 #include <cstring>
 
@@ -510,7 +510,7 @@ int main()
 >
 > <img src=".\acwing题记.assets\641F5EAF017F538F1603E8C7DB911A49.png" alt="img" style="zoom:30%;" />
 
-```C++
+```cpp
 #include <iostream>
 
 using namespace std;
@@ -612,7 +612,7 @@ int main()
 >
 > 当然还有许多可以优化的地方，例如寻找a,b最小的元素可以无需排序，可以在存入的时候加个判断即可。
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 210;
@@ -734,7 +734,7 @@ int main()
 > > >
 > > > $\lceil\frac{a}{b}\rceil  = \lfloor\frac{a+b-1}{b}\rfloor$
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 110;
@@ -772,7 +772,7 @@ int main()
 >
 > 观察题目数据 $t = a_i - i$的组合数值范围只在$[1-2*10^5,4*10^5-1] = [-199999,399999]$，故此我们可以在读取所有石子后，遍历所有可能的t值。
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long LL;
@@ -815,7 +815,7 @@ int main()
 > //值得注意的是，有可能既有在情况1和情况2 的情况，可以再选定一个标志数组表示元素是否已被访问，因为情况2限定了先后次序，故此如果一个m中的元素已被访问，那么一定要先访问到这个元素才能继续往后面进行访问。
 > 3、“1”没有被限定位置，根据贪心的原则，要求“1”的位置足够靠前，那么我们可以从后往前将m个元素摆放完毕后，再从头开始，看哪些位置没有被访问，那个位置就是答案。
 
-```C++
+```cpp
 #include<bits/stdc++.h>
 using namespace std;
 const int N = 10010;
@@ -926,7 +926,7 @@ int main()
 > 2.记忆化搜索 ---> 记得处理边界情况
 > 3.闫氏DP分析法 ---> 记得处理边界/初始情况
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -1032,7 +1032,7 @@ int main()
 
 - 动态规划 + 搜索的方法
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -1089,7 +1089,7 @@ int main()
 >
 > 预处理前缀和数组，如果会超时的话，那就采用KMP算法去做，可以降低时间复杂度
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -1134,7 +1134,7 @@ int main()
 
 - 单纯前缀和
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -1178,7 +1178,7 @@ int main()
   >
   > 先构建出每个点到根节点的权重树，然后自底向上开始进行，比较父节点的两个子节点的大小，所要增加的路径长度就等于两个子节点的权重差的绝对值。
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -1207,7 +1207,7 @@ int main()
 
 > 关于树类型的题目：需要注意一些关于树的性质
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -1295,7 +1295,7 @@ int main()
 > >
 > > 代码中(m-a[i]%m)%m其实就是利用(正的)a[i]求得(-a[i])%m
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -1343,7 +1343,7 @@ int main()
 
 > 也要巧妙去使用字符串的处理和输入输出之间的关系
 
-```C++
+```cpp
 #include <iostream>
 #include <unordered_map>
 #include <cmath>
@@ -1387,7 +1387,7 @@ int main() {
 >
 > 首先不看有l的情况，进行一次二分查找满足条件的答案，然后找到不满足条件的对其进行+1操作，最后进行排序后，再次二分查找最终的答案
 
-```C++
+```cpp
 #include <iostream>
 #include <cstring>
 #include <algorithm>
@@ -1460,7 +1460,7 @@ int main()
 >
 > 用一个数组，记录一下引用出现的次数cnt[i] ++
 
-```C++
+```cpp
 #include <iostream>
 #include <cstring>
 #include <algorithm>
@@ -1522,7 +1522,7 @@ int main()
 >
 > > Tip: 注意数据范围$2*10^5$ 累加的 $sum_a$可能爆int
 
-```C++
+```cpp
 #include <iostream>
 #include <cstring>
 #include <algorithm>
@@ -1572,7 +1572,7 @@ int main()
 
 > 需要知识点：平衡树/Splay，树状数组+离散化可以替代
 
-```C++
+```cpp
 #include <iostream>
 #include <cstring>
 #include <algorithm>
@@ -1655,7 +1655,7 @@ int main()
 > 1.不能有环——不能走重复的格子。
 > 2.整条路径中，走的格子不能相邻（三面）。
 
-```C++
+```cpp
 #include <iostream>
 #include <cstring>
 #include <algorithm>
@@ -1737,7 +1737,7 @@ int main()
 
 > https://www.acwing.com/problem/content/4397/
 
-```C++
+```cpp
 #include<bits/stdc++.h>
 
 using namespace std;
@@ -1788,7 +1788,7 @@ int main()
 
 > <img src="acwing%E9%A2%98%E8%AE%B0.assets/image-20220404220132792.png" alt="image-20220404220132792" style="zoom:40%;" />
 
-```C++
+```cpp
 #include <iostream>
 #include <cstring>
 #include <algorithm>
