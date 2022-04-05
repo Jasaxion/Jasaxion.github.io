@@ -5,24 +5,9 @@
   <title>Jasaxion's 个人博客</title>
   <link rel="icon" href="NotebookIcon.ico" >
   <meta name="description" content="Description">
-  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.5, maximum-scale=2.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="//unpkg.com/element-ui/lib/theme-chalk/index.css">
-  <link rel="stylesheet" href="css/compatible.css">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
-  <style>
-    .blog-corner {
-      position: fixed;
-      right: 0;
-      bottom: 0;
-      width: 0;
-      height: 0;
-      border-top: 40px solid transparent;
-      border-left: 40px solid transparent;
-      border-right: 40px solid #606266;
-      border-bottom: 40px solid #606266;
-      z-index: 1;
-    }
-  </style>
+  <link rel="stylesheet" href="https://unpkg.com/docsify-toc@1.0.0/dist/toc.css">
 </head>
 <body>
   <div id="app">正在加载中~✌</div>
@@ -37,120 +22,6 @@
   <script src="//unpkg.com/docsify-plugin-codefund/index.js"></script>
 
   <script>
-    Vue.use(DataTables)
-    ELEMENT.locale(ELEMENT.lang.en)
-
-    var data, titles;
-    var id = 0;
-
-    var define =
-  `data = [{
-    "content": "Water flood",
-    "flow_no": "FW201601010001",
-    "flow_type": "Repair",
-    "flow_type_code": "repair",
-    }, {
-    "content": "Lock broken",
-    "flow_no": "FW201601010002",
-    "flow_type": "Repair",
-    "flow_type_code": "repair",
-    }, {
-    "content": "Help to buy some drinks",
-    "flow_no": "FW201601010003",
-    "flow_type": "Help",
-    "flow_type_code": "help"
-  }];
-  titles = [{
-    prop: "flow_no",
-    label: "NO."
-    }, {
-    prop: "content",
-    label: "Content"
-    }, {
-    prop: "flow_type",
-    label: "Type"
-  }]`
-
-    var fakeHttp =
-`
-// fake server
-let serverData = []
-for (let i = 0; i < 1000; i++) {
-  serverData.push({
-    'content': 'Lock broken' + i,
-    'flow_no': 'FW20160101000' + i,
-    'flow_type': i % 2 === 0 ? 'Repair' : 'Help',
-    'flow_type_code': i % 2 === 0 ? 'repair' : 'help',
-  })
-}
-let mockServer = function(res) {
-  let datas = serverData.slice()
-  let allKeys = Object.keys(data[0])
-  // do filter
-  res && res.filters && res.filters.forEach(filter => {
-    datas = datas.filter(data => {
-      let props = (filter.search_prop && [].concat(filter.search_prop)) || allKeys
-      return props.some(prop => {
-        if (!filter.value || filter.value.length === 0) {
-          return true
-        }
-        return [].concat(filter.value).some(val => {
-           return data[prop].toString().toLowerCase().indexOf(val.toLowerCase()) > -1
-        })
-      })
-    })
-  })
-  // do sort
-  if (res.sort && res.sort.order) {
-    let order = res.sort.order
-    let prop = res.sort.prop
-    let isDescending = order === 'descending'
-    datas.sort(function(a, b) {
-      if (a[prop] > b[prop]) {
-        return 1
-      } else if (a[prop] < b[prop]) {
-        return -1
-      } else {
-        return 0
-      }
-    })
-    if (isDescending) {
-      datas.reverse()
-    }
-  }
-  return {
-    data: datas.slice((res.page - 1) * res.pageSize, res.page * res.pageSize),
-    req: res,
-    ts: new Date(),
-    total: datas.length
-  }
-}
-let i = 1
-// fake http
-function http(res, time = 200) {
-  return new Promise((resolve, reject) => {
-    setTimeout(_ => {
-      var data = mockServer(res)
-      console.log('fake server return data: ', data)
-      resolve(data)
-    }, time)
-  })
-}`
-    eval(define)
-    eval(fakeHttp)
-
-    var jsResources = '<scr' + 'ipt src="//unpkg.com/vue/dist/vue.js"></scr' + 'ipt>'
-      + '\n<scr' + `ipt src="//unpkg.com/element-ui/lib/index.js"></scr` + 'ipt>'
-      + '\n<scr' + `ipt src="//unpkg.com/element-ui/lib/umd/locale/en.js"></scr` + 'ipt>'
-      + '\n<scr' + `ipt src="//unpkg.com/vue-data-tables@3.4.4/dist/data-tables.min.js"></scr` + 'ipt>'
-    var cssResources = '@import url("//unpkg.com/element-ui/lib/theme-chalk/index.css");'
-    var bootCode =
-      'ELEMENT.locale(ELEMENT.lang.en)\n'
-      + 'Vue.use(DataTables.DataTables)\n'
-      + 'Vue.use(DataTables.DataTablesServer)\n'
-      + 'var data, titles\n\n' + define + '\n'
-      + fakeHttp + '\n\n';
-
     window.$docsify = {
 	  relativePath: true,
       coverpage: [
@@ -204,6 +75,11 @@ function http(res, time = 200) {
 		text: ">最后更新时间: {docsify-updated}",
 		formatUpdated: "{YYYY}/{MM}/{DD}",
 	  },
+	  toc: {
+		scope: '.markdown-section',
+		headings: 'h1, h2, h3, h4, h5, h6',
+		title: '目录',
+	  },
       plugins: [
         DemoBoxVue.create(jsResources, cssResources, bootCode),
         EditOnGithubPlugin.create(
@@ -248,7 +124,7 @@ function http(res, time = 200) {
   <script src="//unpkg.com/docsify-plugin-flexible-alerts"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/js/docsify-themeable.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/docsify-updated@1/src/time-updater.min.js"></script>
-  
+  <script src="https://unpkg.com/docsify-toc@1.0.0/dist/toc.js"></script>
 
 </body>
 </html>
