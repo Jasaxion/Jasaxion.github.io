@@ -6621,3 +6621,181 @@ int main()
     return 0;
 }
 ```
+
+
+
+### 2021年8月3日
+
+> Hash及其应用
+
+
+
+### 2022年3月19日
+
+#### P1955[NOI2015] 程序自动分析 [离散化]
+
+> https://www.luogu.com.cn/problem/P1955
+
+> 离散化的一般方法:
+>
+> 离散化，就是把一些很离散的点给重新分配。
+>
+> 举个例子，如果一个坐标轴很长(>1e10)，给你1e4个坐标，询问某一个点，坐标比它小的点有多少。
+>
+> 很容易就知道，对于1e4个点，我们不必把他们在坐标轴上的位置都表示出来，因为我们比较有多少比它小的话，只需要知道他们之间的相对大小就可以，而不是绝对大小，这，就需要离散化。
+>
+> 而离散化又分为两种，分为的两种是对于重复元素来划分的。第一种是重复元素离散化后的数字相同，第二种就是不同。
+>
+> > 第一种 yxc的离散化模板
+> >
+> > 其实就是用一个辅助的数组把你要[离散](https://so.csdn.net/so/search?q=离散&spm=1001.2101.3001.7020)的所有数据存下来。
+> >
+> > 然后排序，排序是为了后面的二分。
+> >
+> > 去重，因为我们要保证相同的元素离散化后数字相同。
+> >
+> > 再用二分把离散化后的数字放回原数组。
+>
+> > 第二种
+> >
+> > 第二种方式其实就是排序之后，枚举着放回原数组
+> >
+> > 用一个结构体存下原数和位置，按照原数排序
+> >
+
+> 先排序，把所有e\==1的操作放在前面，然后再进行e\==0的操作，在进行e\==1的操作的时候，我们只要把它约束的两个变量放在同一个集合里面即可。在e\==0，即存在一条不相等的约束条件，对于它约束的两个变量，如果在一个集合里面，那就不可能满足！如不相等的约束条件都满足，那就YES。
+>
+> 还有啊，我们要关注一下数据范围，是有10的9次方那么大，如果开一个10的9次方大的fa数组的话，空间肯定超限，超限就凉凉（亲身经历，请勿模仿，谢谢配合！！！）所以，各位亲爱的小伙伴们，我们需要用到离！散！化！。
+>
+> 总得来说离散化有三步走战略：
+>
+> 1.去重（可以用到unique去重函数）
+>
+> 2.排序
+>
+> 3.二分索引（可以用到lower_bound函数）
+>
+> 也要注意：相等具有传递性!!
+
+
+
+### 2022年3月26日
+
+#### 两道树状数组模板
+
+> https://www.luogu.com.cn/problem/P3374 ——单点更新与查询
+>
+> https://www.luogu.com.cn/problem/P3368 ——区间更新与查询
+>
+> 难的总不是数据结构的模板，而是那个思考的过程和转化成树状数组类型题目的能力！！
+
+```cpp
+#include<bits/stdc++.h>
+
+using namespace std;
+const int N = 1000010;
+typedef long long ll;
+ll a[N],c[N];
+int n,l,r,k,op;
+int lowbit(int x)
+{
+    return x&(-x);
+}
+void update(int i, int k)
+{
+    while(i <= n)
+    {
+        c[i] += k;
+        i += lowbit(i);
+    }
+}
+ll getsum(int i){//返回的是[1,i-1]之间的和
+    ll res = 0;
+    while(i > 0){
+        res += c[i];
+        i -= lowbit(i);
+    }
+    return res;
+}
+int main()
+{
+    scanf("%d%d",&n,&k);
+    for(int i = 1; i <= n; i ++)
+    {
+        scanf("%lld",&a[i]);
+        update(i,a[i]);
+    }
+    while(k--)
+    {
+        scanf("%d%d%d",&op,&l,&r);
+        if(op == 1){
+            //scanf("%d%d",&l,&r);
+            update(l,r);
+        }
+        else{
+            //scanf("%d%d",&l,&r);
+            printf("%lld\n",(ll)getsum(r) - (ll)getsum(l-1));
+        }
+    }
+    return 0;
+}
+```
+
+
+
+### 2022年4月4日
+
+#### P1004 [NOIP2000 提高组] 方格取数
+
+> 状态转移：
+>
+> 多一维度，需要判重 类似题：https://jasaxion.github.io/#/Acwing/acwing%E9%A2%98%E8%AE%B0?id=%e8%93%9d%e6%a1%a5%e6%9d%af%e7%9c%81%e8%b5%9b%e8%b5%b0%e6%96%b9%e6%a0%bc
+>
+> `dp[i][j][l][k] = max(max(dp[i-1][j][l-1][k],dp[i][j - 1][l][k-1]),max(dp[i - 1][j][l][k - 1],dp[i][j - 1][l - 1][k]))+g[i][j];`
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+const int N = 110;
+int g[N][N];
+int dx[2] = {0,1};
+int dy[2] = {-1,0};
+int dp[10][10][10][10];
+int n;
+int main()
+{
+    cin >> n;
+    int x,y,w;
+    do{
+        cin >> x >> y >> w;
+        g[x][y] = w;
+    }while(x != 0 && y != 0 && w != 0);
+    for(int i = 1; i <= n; i ++){
+        for(int j = 1; j <= n; j ++){
+            for(int l = 1; l <= n; l ++){
+                for(int k = 1; k <= n; k ++){
+                    dp[i][j][l][k] = max(max(dp[i-1][j][l-1][k],dp[i][j - 1][l][k-1]),max(dp[i - 1][j][l][k - 1],dp[i][j - 1][l - 1][k]))+g[i][j];
+                
+                    if(i != l && j != k) dp[i][j][l][k] += g[l][k]; //去重
+                }
+            }
+        }
+    }
+    cout << dp[n][n][n][n];
+    return 0;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
