@@ -4,13 +4,25 @@
   <meta charset="UTF-8">
   <title>Jasaxion's 个人博客</title>
   <link rel="icon" href="NotebookIcon.ico" >
-  <meta name="description" content="Description">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Jasaxion的个人博客@Github：Jasaxion(bai_bo)">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
+  <style>
+    nav.app-nav li ul {
+      min-width: 100px;
+    }
+
+    #carbonads {
+      box-shadow: none !important;
+      width: auto !important;
+    }
+  </style>
 </head>
 <body>
   <div id="app">正在加载中~✌</div>
-
+  <script src="//cdn.jsdelivr.net/npm/docsify-plugin-carbon@1"></script>
+  
   <script>
     window.$docsify = {
 	  relativePath: true,
@@ -20,7 +32,6 @@
       repo: 'https://github.com/Jasaxion',
       subMaxLevel: 2,
       loadSidebar: true,
-	  autoHeader: true,
       loadNavbar: true,
 	  notFoundPage: true,
       search: 'auto',
@@ -89,6 +100,8 @@
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-copy-code"></script>
+  <script src="//cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-markdown.min.js"></script>
   <script src="//unpkg.com/prismjs/components/prism-cpp.js"></script>
   <script src="//unpkg.com/prismjs/components/prism-cpp.min.js"></script>
   <script src="//unpkg.com/prismjs/components/prism-c.js"></script>
