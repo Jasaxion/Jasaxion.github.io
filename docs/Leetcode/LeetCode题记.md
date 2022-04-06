@@ -87,3 +87,66 @@ int main()
 }
 ```
 
+### 2022年4月6日
+
+> 动态规划：https://leetcode-cn.com/problems/regular-expression-matching/
+
+> 动态规划类：
+> 1.思考状态方程： $d[i][j] 表示s的前i个能否被p的前j个匹配$
+>
+> 2.属性：布尔值bool，True or False 表示是否能被匹配
+>
+> 3.状态转移：
+>
+> ``` 
+> 1. s[i] == p[j] : dp[i][j] = dp[i-1][j-1]
+> 2. p[j] == '.' : dp[i][j] = dp[i-1][j-1]
+> 3. p[j] == '*'  //DP难点
+> 	3.1 s[i] != p[j-1]: dp[i][j] = dp[i][j-2]
+> 	3.2 s[i] == p[j-1] or p[j-1] == '.'
+> 		dp[i][j] = dp[i-1][j] || dp[i][j] = dp[i][j-1] || dp[i][j] = dp[i][j-2]
+> 3.1 如果s[i]与p[j-1]不匹配的话
+> 此时p[j] = '*'  p[j-1]为某一个字符
+> 那么直接忽略掉 该字符和*号 所以：dp[i][j] = dp[i][j-2];
+> 3.2如果s[i] == p[j-1]或者p[j-1]='.'的话
+> 则说明 #* 能够对s[i]进行匹配
+> 难点二：如何进行匹配，只要满足其中一个条件既可以匹配
+> 1.#*匹配0个， 也就是可以直接去掉#*一样的道理，所以，dp[i][j] = dp[i][j-2]
+> 2.#*匹配1个，也就是去掉*，去匹配#号，所以，dp[i][j] = dp[i][j-1]
+> 3.#*匹配多个，这样的话，可以相当于在s中查看#是否多出了#，相当于去掉s[i]，看s[i-1]是否匹配，所以 dp[i][j] = dp[i-1][j]
+> 第三种情况的话，举个例子就是看 s 里 b 多不多， ### 和 ###b * 是否匹配，一旦匹配，s 后面再添个 b 也不影响，因为有 * 在，也就是 ###b 和 ###b *也会匹配。
+> ```
+
+```cpp
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        s = ' ' + s;
+        p = ' ' + p;
+        int slen = s.size();
+        int plen = p.size();
+        const int N = 500;
+        bool f[N][N];
+        memset(f,false,sizeof f);
+        f[0][0] = 1;
+        //要满足无后效性的原则，故此要从i-1,j-1去推导i,j！！！
+        for(int i = 1; i <= slen; i ++){
+            for(int j = 1; j <= plen; j ++){
+                if((s[i - 1] == p[j - 1]) || (p[j - 1] == '.')){
+                    f[i][j] = f[i-1][j-1];
+                }
+                else if(p[j - 1] == '*'){
+                    if(s[i - 1] != p[j - 2] && p[j - 2] != '.'){
+                        f[i][j] = f[i][j-2];
+                    }
+                    else{
+                        f[i][j] = f[i][j-1] || f[i][j-2] || f[i-1][j];
+                    }
+                }
+            }
+        }
+        return f[slen][plen];
+    }
+};
+```
+

@@ -1721,6 +1721,188 @@ int main()
 
 #### （44周赛） acwing4319. 合适数对
 
+> https://www.acwing.com/problem/content/4322/
+
+> 数论做法：
+>
+> 算术基本定理：每一个大于1的自然数，都能够唯一分解成唯一质数的乘积
+>
+> $N = p_1^{c_1}*p_2^{c_2}...*p_n^{c_n}$
+>
+> 数学推导可以发现，只要满足，$a*b的所有质因子的阶数之和是k的倍数$ 那么就能说明$a*b可以写成x^k的形式$
+> 例如：
+>
+> ```
+> Input:
+> 6 3
+> 1 3 9 8 24 1
+> Output:
+> 5
+> 
+> 1: 1 * 8 = 2^0 * 2^3 ===> 3
+> 2. 8 * 1 同理
+> 3. 3 * 9 = 3^3 ===> 3
+> 4. 1 * 1 = 2^0 ===> 0
+> 5. 9 * 24 = 3^3*2^3 ===> 6
+> ```
+>
+> > 代码中p和con_p表示其质数的阶数不等k的倍数的数-->找其互补的配成k
+
+```cpp
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+
+using namespace std;
+typedef long long LL;
+const int N = 100010;
+int n,k;
+int cur;
+LL cnt[N];
+LL ans;
+//求啊a^b
+LL power(int a, int b){
+    LL res = 1;
+    while(b > 0){
+        res = res * a;
+        b --;
+        if(res >= N) return 0; //根据推导，答案只可能在10^5的范围内，超过的话直接判0，防止LL溢出
+    }
+    return res;
+}
+
+int main()
+{
+    scanf("%d%d", &n, &k);
+    
+    for(int i = 1; i <= n; i ++)
+    {
+        scanf("%d", &cur);
+        
+        LL p = 1,con_p = 1; //数p和与其互补的数con_p
+        for(int j = 2; j * j <= cur; j ++){ //分解质因数
+            //时间复杂度降低可以换线性筛
+            if(cur % j == 0){
+                //找到一个因子，现在求他的阶数
+                int s = 0;
+                while(cur % j == 0){
+                    cur /= j;
+                    s++;
+                }
+                s %= k; //阶数限制在k以内，超过无意义
+                if(s){
+                    p *= power(j, s); 
+                    con_p *= power(j, k - s);
+                    //p * con_p = j^k
+                }
+            }
+        }
+        
+        
+        //如果进行因数分解后，目前输入的数cur仍然大于1，说明是个质数
+        //将其本身加进去
+        if(cur > 1){
+            p *= power(cur, 1);
+            con_p *= power(cur, k-1);
+        }
+        if(con_p >= N) con_p = 0; //如果互补的数大于N，说明无意义，置其为0
+        cout << cur << " :" << p << " " << con_p << endl;
+        ans += cnt[con_p]; //加上互补的匹配
+        cnt[p] ++; //存下匹配
+    }
+    
+    
+    printf("%lld\n", ans);
+    return 0;
+}
+```
+
+> 优化版：线性筛做法
+
+```cpp
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+
+using namespace std;
+typedef long long LL;
+const int N = 100010;
+int f[N]; //存下每个数所对应的最小的质因子
+int hashx[N];
+int cnt;
+int n,k;
+LL ans;
+int primes[N];//存下所有质数
+bool st[N];
+//nlogn
+void get_primes(int n){
+    for(int i = 2; i <= n; i ++){
+        if(!st[i]){
+            primes[cnt ++] = i;
+            f[i] = i;
+        }
+        for(int j = 0; primes[j] * i <= n; j ++){
+            st[primes[j] * i] = true;
+            f[primes[j] * i] = primes[j];
+            if(i % primes[j] == 0) break;
+        }
+    }
+}
+LL power(int a, int b){
+    LL res = 1;
+    while(b > 0){
+        res *= a;
+        b --;
+        if(res >= N ) return 0;
+    }
+    return res;
+}
+int main()
+{
+    scanf("%d%d", &n, &k);
+    get_primes(N);
+    /*
+    for(int i = 1; i <= 20; i ++)
+    {
+        cout << f[i] << " ";
+    }
+    cout << endl;
+    */
+    for(int i = 1; i <= n; i ++)
+    {
+        int cur;
+        scanf("%d", &cur);
+        int p = 1, con_p = 1;
+        while(cur != 1){
+            int j = f[cur];
+            int s = 0;
+            while(cur % j == 0){
+                cur /= j;
+                s ++;
+            }
+            s %= k;
+            if(s){
+                p *= power(j,s);
+                con_p *= power(j,k-s);
+            }
+        }
+        
+        if(cur > 1){
+            p *= power(cur,1);
+            con_p *= power(cur,k-1);
+        }
+        if(con_p >= N) con_p = 0;
+        
+        ans += hashx[con_p];
+        hashx[p] ++;
+    }
+    printf("%lld\n",ans);
+    return 0;
+}
+```
+
+
+
 
 
 
