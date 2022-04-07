@@ -285,3 +285,247 @@ int main()
 
 #### Codeforces Round #780 (Div. 3)
 
+##### B. Vlad and Candies
+
+> https://codeforces.com/contest/1660/problem/B
+>
+> 题意就是：给定一串糖果数字，$a_1,a_2,...,a_n$
+> 可以从这里面最多里面挑选一个，挑选完后改糖果-1，要满足，每次选的糖果都不一样，
+> 并且最后要能把所有糖果都吃完，也就是每一项最后都为0
+
+> 分类讨论：
+> ```
+> 1.a1=a2，那么可以这样 1，2，1，2，dot,1,2-->满足条件
+> 2.a1=a2+1,那么可以先吃一个糖果1，然后再按序列2,1,2,1...,2,1总是按这个规则
+> 3.a1>a2+1,我们先吃一个糖果1，但是现在最多的糖果仍然是1，那么答案就不存在
+> 故此只需要排序，只需要看最大的元素和次大的元素的关系即可
+> ```
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 200010;
+typedef long long ll;
+int n,T;
+int main()
+{
+    scanf("%d",&T);
+    while(T --){
+        ll a[N];
+        scanf("%d", &n);
+        for(int i = 0; i < n; i ++){
+            scanf("%lld",&a[i]);
+        }
+        sort(a,a+n);
+        if(n == 1){
+            if(a[0] > 1){
+                printf("NO\n");
+            }
+            else{
+                printf("YES\n");
+            }
+            continue;
+        }
+        if(a[n-1] <= a[n-2] + 1){
+            printf("YES\n");
+        }
+        else{
+            printf("NO\n");
+        }
+    }
+    return 0;
+}
+```
+
+##### C. Get an Even String
+
+> https://codeforces.com/contest/1660/problem/C
+
+> 题意：
+>
+> 给定一串字符串，你可以删除其中的字符让其出现的每个字符都连续出现偶数次。
+> 输出是删除的字符的最小数目
+
+> 采用贪心的策略
+> 首先用哈希表存下来二十六个字母的出现情况，st[26]表示字母是否有出现
+> 我们一对一对看其已出现的字母
+>
+> 遍历整个字符串，记录$st[i]$表示$str[i]$出现过一次
+> 如果$st[i] = 0$ 令其 $st[i] = 1, 则 ans +1$
+> 如果$st[i]=1$ 则之前已经出现过了，之前出现过的那个和当前这个可以组成一对，那么$ans-1$，然后将$st[N]数组置为0即可$
+> 可以证明   	$这样操作能够使得，字符串对的长度最小，从而删除的字符的数目最少$
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 200010;
+int st[26],n;
+string str;
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin >> n;
+    while(n --){
+        //scanf("%s",&str[0]);
+        cin >> str;
+        int ans = 0;
+        memset(st,0,sizeof st);
+        int len = str.size();
+        for(int i = 0; i < len; i ++){
+            if(!st[str[i] - 'a']){
+                st[str[i] - 'a'] ++;
+                ans ++;
+            }
+            else{
+                memset(st,0,sizeof st);
+                ans --;
+            }
+        }
+        cout << ans << endl;
+    }
+    return 0;
+}
+```
+
+##### D. Maximum Product Strikes Back
+
+> https://codeforces.com/contest/1660/problem/D
+
+> 咱先好好理解一下题意，大致就是说
+> 给定一串数字序列，$a_1,a_2,a_3,...a_n$
+>
+> 你可以在前面和后面进行删除元素操作，你也可以删除全部元素（这样的话令他的结果为1），
+> 要使得最后所有元素乘积达到最大值。
+
+> 首先，我们假设把整个序列的元素全部删除，那么此时的值为1。
+>
+> 因此，我们要保留下来的数，必须要为正数，并且乘积大于1，如果要为正数的话，那么肯定不能有0存在
+> 故此，凡是有0的全部移除。
+>
+> 最后获得，最有两边全是非零的序列。
+> 如果这个非零序列的乘积不是负数的话——那么这就是最佳的答案
+> 如果是负数的话，那就不断移除，直到移除一个负数为止——构成最佳答案
+
+> 即便知道做法了，代码能力不行，还是做的不好
+
+```cpp
+#include<bits/stdc++.h>
+
+using namespace std;
+const int N = 200010;
+int a[N],n,T;
+int main()
+{
+    scanf("%d",&T);
+    while(T --){
+        scanf("%d",&n);
+        memset(a,0,sizeof a);
+        int ans = 0;
+        int ansl = n;
+        int ansr = 0;
+        for(int i = 0; i < n; i ++){
+            scanf("%d",&a[i]);
+        }
+        for(int i = 0, l = -1; i <= n; i ++){
+            if(i == n || a[i] == 0){
+                int cnt = 0;
+                bool neg = 0;
+                int left = -1, right = -1;
+                int cl = 0, cr = 0;
+                for(int j = l + 1; j < i; j ++){
+                    neg ^= a[j] < 0;
+                    if(a[j] < 0){
+                        right = j;
+                        cr = 0;
+                    }
+                    if(abs(a[j]) == 2){
+                        cnt ++ ,cr ++;
+                        if(left == -1) cl ++;
+                    }
+                    if(a[j] < 0 && left == -1){
+                        left = j;
+                    }
+                }
+                if(neg){
+                    if(cnt - cl > cnt - cr){
+                        right = i;
+                        cnt -= cl;
+                    }
+                    else{
+                        left = l;
+                        cnt -= cr;
+                    }
+                }
+                else{
+                    left = l;
+                    right = i;
+                }
+                if(ans < cnt){
+                    ans = cnt;
+                    ansl = left + 1;
+                    ansr = n - right;
+                }
+                l = i;
+            }
+        }
+        printf("%d %d\n", ansl, ansr);
+    }
+    return 0;
+}
+```
+
+##### E. Matrix and Shifts
+
+> https://codeforces.com/contest/1660/problem/E
+
+> 题意：目的是把所有矩阵变成主对角线全是1其他位置全是0的矩阵
+>
+> 首先进行操作，这一步是不需要花费的，可以将矩阵进行 向上下左右进行平移
+>
+> 之后，计数将多少个1变成0以及将多少个0变成1，才能使得主对角线全为1 ，并且其他地方全为0
+> （每一次将0变成1，或者1变成0都需要花费1）
+>
+> 输出最小的花费
+
+> 思路：抽象推导公式求解，最后考验代码能力
+>
+> 1.首先找到`1`出现次数最多的对角线，把他当作基准，假设有$MAX$个1
+> 2.然后把该对角线中的0 变成1  花费 $n-MAX$
+> 3.然后把其他地方的1全部变成0 花费 $sum - MAX$ ($sum是记录整个矩阵中有多少个1$)
+>
+> 故此，最终答案为：$n+sum-2MAX$
+
+```cpp
+#include<bits/stdc++.h>
+
+using namespace std;
+int T,n;
+const int N = 2010;
+int main(){
+    cin >> T;
+    while(T --){
+        cin >> n;
+        int cnt1 = 0;
+        vector<int> cnt (n, 0);
+        for(int i = 0; i < n; i ++){
+            string s; cin >> s;
+            for (int j = 0, k = (n - i) % n; j < n; j++, k = (k + 1 == n ? 0 : k + 1)) if (s[j] == '1') {
+                cnt1++;
+                cnt[k]++;
+            }
+        }
+
+        int ans = INT_MAX >> 1;
+        for(int i = 0; i < cnt.size(); i ++){
+            ans = min(ans, cnt1 - cnt[i] + (n - cnt[i]));
+        }
+        printf("%d\n", ans);
+    }
+
+    return 0;
+}
+```
+
+##### F1. Promising String (easy version)
+
+> https://codeforces.com/contest/1660/problem/F1 
