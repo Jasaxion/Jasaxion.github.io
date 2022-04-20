@@ -529,3 +529,65 @@ int main(){
 ##### F1. Promising String (easy version)
 
 > https://codeforces.com/contest/1660/problem/F1 
+
+> 题意：
+>
+> 给定一串由 "+" "-" 构成的字符串
+> 计数有多少个子串，满足，"+" "-" 的数目相等，可以将连续两个"-"将其合成为一个"+"，满足这样的子串也可以算作一个平衡子串
+
+```
+根据抽屉原理。
+当“-”的个数比“+”的个数多两个时，则必然存在一对相邻的"-“号，"--"
+--当我们要去将两个相邻的负号转化成一个”+“时，那么当前串的平衡指数就会下降3.
+如  -+--- 平衡指数 3
+	-++-  平衡指数 0
+因此我们只需要去找子串中平衡指数是3的倍数的，然后应用如上操作直到平衡指数为0为止。
+=>该部分的平衡指数等于右边的平衡指数减去左边的平衡指数 （此处我们可以用前缀和来实现O(1)的时间复杂度）
+=>用一个前缀和数组b[N] 存放是时 不平衡指数，通过 b[j] - b[i - 1] 可以的到 [i,j]部分的不平衡指数
+```
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+int T,n;
+const int N = 3010;
+int main(){
+    ios::sync_with_stdio(false);
+    cin >> T;
+    while(T --){
+        cin >> n;
+        string str;
+        cin >> str;
+        int b[N]; //记录每个为止的平衡指数，
+        memset(b,0,sizeof b);
+        int balance = n; 
+        b[0] = balance; 
+        int ans = 0;
+        for(int i = 1; i <= n; i ++){
+            //计算当前为止的平衡指数
+            if(str[i-1] == '+'){
+                balance ++; //那么平衡指数则加1
+            }
+            else{
+                balance --;//那么则减1
+            }
+
+            b[i] = balance;
+
+            //分析此时的子串
+            for(int j = 0; j < i; j ++){
+                if(b[j] >= b[i] && (b[j] - b[i]) % 3 == 0){
+                    ans ++;
+                }
+            }
+        }
+        cout << ans << endl;
+    }
+    return 0;
+}
+```
+
+##### F2. Promising String (hard version)
+
+> https://codeforces.com/contest/1660/problem/F2
+

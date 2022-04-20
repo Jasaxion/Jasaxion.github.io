@@ -2026,3 +2026,224 @@ int main()
 }
 ```
 
+### 2022年4月10日
+
+#### (46周赛)4397. 卡牌
+
+> https://www.acwing.com/problem/content/4400/
+
+> 大意了没有闪，这道题分析清楚后，竟然是如此的容易
+>
+> 说白了，我就是没有去认真思考问题！！！！！！！！！！！！！！！！！！！！！！！！！！！
+>
+> 不能偷懒啊！！一定要认真去思考！！
+>
+> ```
+> 分析过程：
+> 一、首先是初始情况，所有牌都在正面，那么 此时结果 sum = a1 + a2 + a3 + ... + an;
+> 对于每一次翻转，对于b[N]: b1, b2, b3, ..., bn
+> 每次翻转可以定义一个对，b[i]-a[i] 表示经历了一次翻转
+> 二、贪心分析
+> 如果bi-ai >= 0 那么不进行翻转即可
+> 如果bi-ai < 0 那么进行一次翻转可以使得sum减小，那么便进行翻转
+> 如此，
+> 	只需将bi-ai进行排序，从最小的开始往sum里面加即可，直到bi-ai >= 0 或者 n-k == 0
+> ```
+
+```cpp
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+typedef long long LL;
+const int N = 200010;
+int a[N],b[N];
+int bsuba[N];
+int n,k;
+LL ans;
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin >> n >> k;
+    for(int i = 1; i <= n; i ++){
+        cin >> a[i];
+        ans += a[i];
+    }
+    for(int i = 1; i <= n; i ++){
+        cin >> b[i];
+        bsuba[i] = b[i] - a[i];
+    }
+    sort(bsuba+1,bsuba+n+1);
+    int cur = 1;
+    k = n - k;
+    while(bsuba[cur] < 0 && k > 0){
+        ans += bsuba[cur];
+        cur ++;
+        k --;
+    }
+    cout << ans;
+    return 0;
+}
+```
+
+#### (46周赛)4398. 查询字符串
+
+> https://www.acwing.com/problem/content/4401/
+
+> 分析发现：$1 <=f_i,s_i <=8$   //如果字符串很长的话，需要用字符串哈希（一遍预处理，O(1)取出哈希值）
+> 故此它的很少，≈3.6x10^5
+>
+> 本题需要两个哈希表：
+> 第一个用来存数量，第二个用来存具体的字符串
+
+```
+这道题也不难；
+难点就在于STL库 unordered_map和unordered_set 哈希表的应用
+
+本题当然也能用Trie树方法
+```
+
+> 哈希表 <unordered_map>
+
+```cpp
+#include <bits/stdc++.h>
+#include <unordered_map>
+#include <unordered_set>
+using namespace std;
+int n,m;
+unordered_map<string, int> num;
+unordered_map<string, string> strhash;
+
+int main()
+{
+    cin >> n;
+    while(n--){
+        string str;
+        unordered_set<string> tmp;
+        cin >> str;
+        //枚举所有子串，但要注意子串也可能出现重复，需要判重，set可以判重
+        for(int i = 0; i < str.size(); i ++){
+            string s;
+            for(int j = i; j < str.size(); j ++){
+                tmp.insert(str.substr(i, j - i + 1));
+                //s += str[j];
+                //tmp.insert(s);
+            }
+        }
+        for(auto& substr: tmp){
+            num[substr] ++;
+            strhash[substr] = str;
+        }
+    }
+    cin >> m;
+    while(m --){
+        string mstr;
+        cin >> mstr;
+        
+        cout << num[mstr];
+        cout << " ";
+        
+        if(num[mstr]){
+            cout << strhash[mstr] <<endl;
+        }
+        else{
+            cout << "-" << endl;
+        }
+    }
+    return 0;
+}
+```
+
+> O(n) 字典树算法
+>
+> ```
+> 对于每个字符串 f，将 f 的所有以 f 的最后一个字符结尾的子串加入字典树
+> 
+> 如：f = “.text”
+> 则将 “.text”,”text”,”ext”,”xt”,”t” 都加入字典树
+> 字典树的每个节点有一个指向字符串的指针集合 origin，记录其对应的字符串
+> 对于每个查询，包含它的字符串的数量就是其对应的字典树节点中 origin 的大小，origin 中的任意一个字符串都可以作为答案。
+> ```
+
+```cpp
+#include<iostream>
+#include<unordered_map>
+#include<unordered_set>
+#include<vector>
+
+using namespace std;
+
+struct TrieNode {
+    char ch;
+    unordered_map<char, TrieNode *> nexts = unordered_map<char, TrieNode *>();
+    unordered_set<string *> origin        = unordered_set<string *>();///< 父字符串的集合
+
+    explicit TrieNode(char ch)
+        : ch(ch) {}
+    //插入字符串
+    void insert(const string &str, int start, string *origin);
+    // 获得查询字符串对应的节点
+    [[nodiscard]] TrieNode *search(const string &str, int start);
+    ~TrieNode();
+};
+
+void TrieNode::insert(const string &str, int start, string *origin) {
+    if(!this->nexts.count(str[start])) {
+        this->nexts[str[start]] = new TrieNode(str[start]);
+    }
+    if(origin != nullptr) {
+        this->nexts[str[start]]->origin.insert(origin);
+    }
+    if(str.length() - start != 1) {
+        this->nexts[str[start]]->insert(str, start + 1, origin);
+    }
+}
+
+TrieNode *TrieNode::search(const string &str, int start) {
+    if(this->nexts.count(str[start])) {
+        if(start + 1 == str.length()) {
+            return this->nexts[str[start]];
+        }
+        return this->nexts[str[start]]->search(str, start + 1);
+    }
+    return nullptr;
+}
+
+TrieNode::~TrieNode() {
+    for(const auto [k, v]: this->nexts) {
+        delete v;
+    }
+}
+
+int main() {
+    int n;
+    int q;
+    cin >> n;
+    TrieNode tn(0);
+    vector<string> f(n);
+    for(int i = 0; i < n; i++) {
+        cin >> f[i];
+        for(int j = 0; j < f[i].length(); ++j) {
+            tn.insert(f[i], j, &f[i]);
+        }
+    }
+    cin >> q;
+    for(int i = 0; i < q; i++) {
+        string s;
+        cin >> s;
+        TrieNode *node = tn.search(s, 0);
+        if(node == nullptr) {
+            cout << "0 -" << endl;
+        } else {
+            cout << node->origin.size() << ' ' << **node->origin.begin() << endl;
+        }
+    }
+    return 0;
+}
+```
+
+
+
+
+
