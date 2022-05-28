@@ -2243,6 +2243,104 @@ int main() {
 }
 ```
 
+### 2022年5月28日
+
+#### (53周赛)4427. 树中节点和
+
+> https://www.acwing.com/problem/content/4430/
+>
+> > 思路：
+> >
+> > 1. 建树
+> > 2. dfs/bfs进行搜索
+> > 3. 求出每个节点的权重a的值
+> >    1. 如果是奇数层，那么当前的a的值就等于s[x] - sum 当前节点的s值减去父节点的sum值，当前节点权重减去父节点权重
+> >    2. 如果是偶数层，若有子节点，则选择子节点中权重最小的，若没有子节点，那么当前节点的权重a设置为0
+> >    3. 一旦出现子节点的权重小于父节点权重的情况，则直接退出程序，说明找不到
+> > 4. 累加所有的a的值
+
+```cpp
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+#include <queue>
+using namespace std;
+const int N = 2e5;
+typedef long long LL;
+int n,s[N],p[N],a[N];
+int h[N],ne[N],dep[N];
+const int inf = 0x3f3f3f3f;
+LL ans;
+
+//dfs深搜，把每个节点的权重a求出来再相加
+//重点特判偶数层
+void dfs(int u, int sum)
+{
+    dep[u] = dep[p[u]] + 1;
+    
+    if(dep[u] % 2 != 0) //奇数层
+    {
+        if(sum > s[u]) //子节点的值小于父节点的话，那么直接退出
+        {
+            puts("-1");
+            exit(0);
+        }
+        a[u] = s[u] - sum;
+    }
+    else{//偶数层
+        a[u] = inf;
+        //偶数层的情况
+        //如果有子节点，则选子结点中最小的
+        //如果没有的话，那么直接置为0就行。
+        for(int j = h[u]; j; j = ne[j]){
+            if(sum > s[j]){//子节点的值小于父节点的话，那么直接退出
+                puts("-1");
+                exit(0);
+            }
+            a[u] = min(a[u], s[j] - sum);
+        }
+        if(a[u] == inf) a[u]=0;
+    }
+    
+    sum += a[u];
+    for(int j = h[u]; j; j = ne[j]){
+        dfs(j,sum);
+    }
+}
+
+int main()
+{
+    scanf("%d", &n);
+    for(int i = 2; i <= n; i ++)
+    {
+        scanf("%d",p + i);
+        ne[i] = h[p[i]];
+        h[p[i]] = i;
+    }
+    for(int i = 1; i <= n; i ++)
+    {
+        scanf("%d", s + i);
+    }
+    dfs(1,0);
+    for(int i = 1; i <= n; i ++)
+    {
+        ans += a[i];
+    }
+    printf("%lld\n",ans);
+    return 0;
+}
+```
+
+> #### 图论的题目还是需要再多做一下
+
+
+
+
+
+
+
+
+
 
 
 
