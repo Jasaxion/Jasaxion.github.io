@@ -2333,9 +2333,79 @@ int main()
 
 > #### 图论的题目还是需要再多做一下
 
+### 2022年7月22日
 
+#### 4496. 吃水果
 
+> https://www.acwing.com/problem/content/4499/
 
+> 思路：DP动态规划思想解法。闫氏DP分析法
+>
+> <img src="acwing%E9%A2%98%E8%AE%B0.assets/image-20220722010256741.png" alt="image-20220722010256741" style="zoom:67%;" />
+
+```cpp
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+
+using namespace std;
+const int MOD = 998244353;
+int n,m,k;
+const int N = 4010;
+int f[N][N];
+int main()
+{
+    scanf("%d%d%d", &n, &m, &k);
+    f[1][0]=m;
+    for(int i = 2; i <= n; i ++)
+    {
+        for(int j = 0; j <= k && j < i; j ++)
+        {
+            f[i][j]=f[i-1][j]; //第一种情况，第i个和第i-1个相同的情况，是必然存在的。
+            if(j) f[i][j]=(f[i][j]+f[i-1][j-1]*(m-1ll))%MOD; //第二种情况，第i个和第i-1个不同的情况，可能不存在，那就是当j为0时，故此要单独讨论
+        }
+        //一定要时刻明白f[i][j]表示的含义，前i个小朋友中恰好有j个小朋友的与左边小朋友不相同的总的方案的数目，是一个总和
+    }
+    printf("%d\n",f[n][k]);
+    return 0;
+}
+```
+
+> 方法二：组合数学思维方式
+> 我们在$n−1$个人中挑选出$k$个人
+> 显然第一个人有$m$种选法,那么剩下的要么是和第一个人相同要么就是不同
+> 因此总共有$(m−1)^k$种选法,而对应这$k$个人又有$C^k_{n−1}$种
+>
+> 所以总方案数 $C^k_{n−1}∗m∗(m−1)^k$
+>
+> 注意取模和longlong的选取，以及快速幂和快速乘的运用。
+
+```cpp
+ll qmi(ll a,ll b){
+    ll res = 1;
+    while(b){
+        if(b&1) res = res*a%mod;
+        a = a*a%mod;
+        b>>=1;
+    }
+    return res;
+}
+ll f(ll x){
+    ll res = 1;
+    for(ll i=1;i<=x;i++) res = res*i%mod;
+    return res%mod;
+}
+ll inv(ll x){
+    return qmi(x,mod-2);
+}
+ll getC(ll a,ll b){
+    return f(a)*inv(f(a-b)*f(b)%mod)%mod;
+}
+void solve(){
+    cin>>n>>m>>k;
+    cout<<(getC(n-1,k)*m%mod)*qmi(m-1,k)%mod<<endl;
+}
+```
 
 
 
