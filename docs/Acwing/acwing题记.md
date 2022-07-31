@@ -2407,6 +2407,68 @@ void solve(){
 }
 ```
 
+### 2022年7月31日
+
+#### Acwing周赛：集合操作
+
+> https://www.acwing.com/problem/content/4505/
+
+> 数学+贪心
+
+> 数学方法上的思路：
+>
+> 前提假设：输入元素都是按递增的规律加入到集合当中的。
+> 并且最小的元素和最大的元素必定是需要加入到结果当中的。
+>
+> > ![image-20220731114531557](acwing%E9%A2%98%E8%AE%B0.assets/image-20220731114531557.png)
+
+```cpp
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+#include <set>
+
+using namespace std;
+const int N = 500010;
+typedef long long LL;
+LL a[N];
+int T;
+int op;
+int len; //总数
+int k; //选择的数
+double sum; //已选数的和
+int main()
+{
+    scanf("%d", &T);
+    while(T --)
+    {
+        scanf("%d",&op);
+        if(op == 1)
+        {
+            LL x;
+            scanf("%lld",&x);
+            a[++len]=x;
+        }
+        if(op == 2)
+        {
+            double curmax=a[len];
+            //这一步是考虑在 1~(n-1)中是否选取该元素
+            //因为元素插入保证是递增的，那么第n个元素的必须取的
+            while(k + 1 <= len && ((a[k + 1]) < ((sum + curmax) / (k + 1)))){
+                sum += a[++k];
+            }
+            
+            //把最后一个元素也就是最大的元素考虑进来
+            //这样不要考虑元素删除的问题
+            double res = (double)curmax - (double)((sum + (double)curmax) / (double)(k + 1)); //这一步保证最后一个元素也就是最大的元素的必须取到的
+            printf("%0.6f\n",res);
+        }
+    }
+    
+    return 0;
+}
+```
+
 
 
 
