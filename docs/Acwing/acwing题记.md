@@ -7,7 +7,9 @@
 > 第 i 次操作的具体流程如下：
 >
 > 从数组 V 尾部插入整数 0。
+>
 > 将位于数组 V 末尾的 ai 个元素都变为 1（已经是 1 的不予理会）。
+>
 > 注意：
 >
 > ai 可能为 0，即不做任何改变。
@@ -2469,9 +2471,60 @@ int main()
 }
 ```
 
+### 2022年10月1日
 
+####  4617.解方程
 
+> https://www.acwing.com/problem/content/4620/
 
+> 思路： 
+>
+> 可以从答案入手先猜一下，
+>
+> 假设：a全为1，有n个1则答案就是2的n次方
+>
+> > 每一位独立，只需要看这一个位应该填什么
+>
+> –> 有多少个1 ，那么答案就是2的多少次方
+
+```cpp
+#include<bits/stdc++.h>
+
+using namespace std;
+int T;
+typedef long long ll;
+
+ll qmi(ll x){
+    ll res = 1;
+    int t = 2;
+    while(x){
+        if(x&1) res = res * t;
+        t = t * t;
+        x >>= 1;
+    }
+    
+    return res;
+}
+ll find1(ll x){
+    ll res = 0;
+    while(x){
+        x = x - (x & (- x));
+        res ++;
+    }
+    return res;
+}
+int main()
+{
+    cin >> T;
+    while(T --)
+    {
+        ll n;
+        cin >> n;
+        cout << qmi(find1(n))<< endl;
+    }
+    return 0;
+}
+```
 
 
 
