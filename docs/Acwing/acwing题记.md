@@ -2526,7 +2526,122 @@ int main()
 }
 ```
 
+### 2022年10月2日
 
+#### Acwing周赛-第71场
 
+#### 4622. 整数拆分
 
+> https://www.acwing.com/problem/content/4625/
+
+> 思路：
+>
+> 如果一个数$x$是质数，那么其$f(x)=1$，显然将一个数转化为质数和的形式，其值达到最小，对于任意一个数，有如下几种情况：
+>
+> **哥德巴赫猜想：**
+>
+> 1. 如果$x$为偶数，那么$x$一定可以拆分为两个质数和的形式
+> 2. 如果$x$为奇数，如果其为质数，那么直接输出结果为1。
+>    1. 如果不为质数，那么，一个奇数可以由3个数组成
+>       1. 特殊情况：一个奇数也可以由2个数组成，当且仅当$x-2$为质数时成立
+
+```cpp
+#include<bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+ll n;
+bool is_prime(ll x)
+{
+    for(int i = 2; i <= x / i; i ++)
+    {
+        if(x % i == 0) return false;
+    }
+    return true;
+}
+int main()
+{
+    cin >> n;
+    if(is_prime(n))
+    {
+        cout << 1 << "\n";
+    }
+    else{
+        if(n % 2 == 0)
+        {
+            cout << 2 << "\n";
+        }
+        else{
+            if(is_prime(n-2)){
+                cout << 2 << "\n";
+            }
+            else{
+                cout << 3 << "\n";
+            }
+        }
+    }
+    return 0;
+}
+```
+
+#### 4623 买糖果
+
+> https://www.acwing.com/problem/content/4626/
+
+> 思路：
+>
+> 不要畏难去思考很复杂的解法，其实该题可以采用暴力遍历的方法。
+>
+> 记录可以购买的所有糖果的价格为$sum$，当不能够购买时，删除该店$sum - a[i]$，每次遍历能买的数量即可。
+
+```cpp
+#include <bits/stdc++.h>
+#include <vector>
+using namespace std;
+typedef long long ll;
+const int N = 200020;
+const ll inf = 0x3f3f3f3f3f3f3f3f;
+ll a[N];
+ll n,T,sum, ans;
+ll minn = inf;
+bool st[N];
+int main()
+{
+    scanf("%lld%lld",&n,&T);
+    for(int i = 0; i < n; i ++){
+        scanf("%lld",&a[i]);
+        minn = min(a[i], minn);
+        sum += a[i];
+        if(sum > T){
+            sum -= a[i];
+        }
+        else ans++;
+    }
+    // cout << "ans1: " << ans << endl;
+    // cout << "sum1: " << sum << endl;
+    ll res = 0;
+    while(T > 0){
+        if(sum <= 0) break; //注意除零错误
+        res += ans * (T / sum);
+        T %= sum;
+        for(int i = 0; i < n; i ++)
+        {
+            if(st[i]) continue;
+            if(T >= a[i]){
+                T -= a[i];
+                res ++;
+            }
+            else{
+                sum -= a[i];
+                st[i] = 1;
+                ans --;
+            }
+        }
+        if(T < minn) break;
+        // cout << "T2: " << T <<endl;
+    }
+    printf("%lld\n", res);
+    return 0;
+}
+```
 
