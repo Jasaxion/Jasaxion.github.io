@@ -2645,3 +2645,45 @@ int main()
 }
 ```
 
+### 2022年10月16日
+
+#### 4704. 数对  
+
+> 暴力解法都会，时间复杂度$O(n^2)$ 
+>
+> 优化解法：$O(nlogn)$ 双指针方法
+>
+> **双指针思路：** 很明显的一个做法就是排序，如何每个数都会有一个合法的区间，最后累加求和，很明显这里可以采用双指针算法的方法看这个$a_i$这个数最左能走到哪，最后记得需要$ans*2$
+
+```cpp
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <algorithm>
+using namespace std;
+int n,d;
+const int N = 1010;
+
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
+    cin >> n >> d;
+    vector<int> a(n);
+    for(int i = 0; i < n; i ++) cin >> a[i];
+    int ans = 0;
+    sort(a.begin(),a.end());
+    for(int i = 0, j = 0; i < n; i ++)
+    {
+        while(j < i && a[i] - a[j] > d)
+            j++;
+        ans += i - j;
+    }
+    ans *= 2;
+    cout << ans << "\n";
+    return 0;
+}
+```
+
+
+
