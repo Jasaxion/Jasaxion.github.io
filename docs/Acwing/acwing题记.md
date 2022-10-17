@@ -2685,5 +2685,138 @@ int main(){
 }
 ```
 
+#### 4705 矩阵
+
+> https://www.acwing.com/problem/content/description/4708/
+
+> 思路:
+>
+> 主要是哈希表的使用方法和字符串的处理要了解和熟练
+>
+> 也要善于自己构建结构体来使用哈希表
+
+```cpp
+#include <bits/stdc++.h>
+#include <unordered_set>
+using namespace std;
+const int N = 1010;
+int n;
+unordered_set<string> mp;
+void swapmatrix(string a[]){
+    swap(a[0][0],a[0][1]);
+    swap(a[0][0],a[1][1]);
+    swap(a[0][0],a[1][0]);
+    return;
+}
+// bool check(string s[]){
+//     string tmp;
+//     tmp = s[0] + s[1];
+//     for(int i = 0; i < 3; i ++)
+//     {
+//         swapmatrix(s);
+//         tmp = min(tmp,s[0]+s[1]);
+//     }
+//     if(mp.find(tmp) != mp.end()) return false;
+//     else{
+//         mp.insert(tmp);
+//     }
+//     return true;
+// }
+int main()
+{
+    int ans = 0;
+    cin >> n;
+    string s[2],t;
+    while(n--){
+        cin >> s[0] >> s[1];
+        t = s[0] + s[1];
+        for(int i = 0; i < 3; i ++)
+        {
+            swapmatrix(s);
+            t = min(t, s[0] + s[1]);
+        }
+        mp.insert(t);
+        // if(check(s)) ans ++;
+        cin >> t;
+    }
+    cout << mp.size() << "\n";
+    return 0;
+}
+```
+
+#### 4706 最短路径
+
+> https://www.acwing.com/problem/content/4709/
+
+> 思路：说是树的遍历问题，我觉得更像个推导题
+>
+> ```mermaid
+> graph 
+> a[1]---b[2]
+> a---c[3]
+> b---d[4]
+> b---e[5]
+> ```
+>
+> 对于这样一棵树，要想遍历完全部的节点，显然有一条路径 1 - 2 - 4 - 2 - 5 - 2 - 1 - 3
+>
+> 可以发现除了回到根节点的那条边外，每一条边都走了2遍，题目要求最短的距离，可以推导出来
+> $$
+> ans = e*2 - longest\_path
+> $$
+> 答案 = 边的权重*2 - 回到根节点的最大距离
+>
+> > 注⚠️：
+> >
+> > - 遍历时要记得引入父节点，为了防止遍历回到父节点
+> > - 关于树的问题，树和图的遍历方法还是存在一些区别的 n - 1
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+const int N = 100010;
+int n;
+ll ans;
+ll dist[N];
+int h[N],e[2*N],w[2*N],ne[2*N],idx;
+
+void add(int a, int b, int c){
+    e[idx] = b;
+    w[idx] = c;
+    ne[idx] = h[a];
+    h[a] = idx++;
+}
+void get_dist(int u, int fa, int c){
+    dist[u] = dist[fa] + c;
+    for(int i = h[u]; ~i; i = ne[i])
+    {
+        int j = e[i];
+        if(j == fa) continue;
+        get_dist(j, u, w[i]);
+    }
+}
+int main()
+{
+    memset(h,-1,sizeof h);
+    scanf("%d",&n);
+    for(int i = 1; i <= n-1; i ++)
+    {
+        int a,b,c;
+        scanf("%d%d%d",&a,&b,&c);
+        add(a,b,c);
+        add(b,a,c);
+        ans += 2*c;
+    }
+    get_dist(1,0,0);
+    ll curmax = 0;
+    for(int i = 1; i <= n; i ++) curmax = max(curmax, dist[i]);
+    printf("%lld\n",ans - curmax);
+    
+    return 0;
+}
+```
+
 
 
