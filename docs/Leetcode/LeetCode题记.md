@@ -152,4 +152,73 @@ public:
 
 
 
-国奖加油！⛽️
+### 2022年11月8日
+
+#### [816. 模糊坐标](https://leetcode.cn/problems/ambiguous-coordinates/)
+
+> 这道题也不是说有多难，思路很简单，难点在于编码能力。——**这是一道很简单又很难的题**
+>
+> **STL和string库的使用能力**、**很经典的拆分笛卡尔积的代码实现方法**、**C++的过硬语法能力**
+>
+> 一些迭代方法
+>
+> ```cpp
+> for(auto &x : a){}
+> =;
+> for(int i = 0; i < a.size(); i ++){x = a[i]}
+> ```
+>
+> 
+
+```cpp
+class Solution {
+public:
+    vector<string> ambiguousCoordinates(string s) {
+        int n = s.size();
+        vector<string> res;
+        // 枚举分隔线
+        for (int k = 1; k <= n - 3; k++) {
+            string l = s.substr(1, k);
+            string r = s.substr(k + 1, n - 2 - k);
+            vector<string> left = f(l);
+            vector<string> right = f(r);
+            for (string &x : left) {
+                for (string &y : right) {
+                    res.push_back("(" + x + ", " + y + ")");
+                }
+            }
+        }
+        return res;
+    }
+    
+private:
+    vector<string> f(string &s) {
+        int n = s.size();
+        
+      //这里return 回去也是返回一个string集合return {}
+        // 如果只有一个数，则不能加小数点
+        if (n == 1) return {s};
+        
+        // 如果前后都是 0，则不合法
+        if (s[0] == '0' && s[n - 1] == '0') return {};
+        
+        // 如果最后一个数是 0，则不能加小数点
+        if (s[n - 1] == '0') return {s};
+        
+        // 如果有前导零，则只能以 0. 开头
+        if (s[0] == '0') return {"0." + s.substr(1)};
+
+        vector<string> res;
+        // 不加小数点
+        res.push_back(s);
+        // 加小数点
+        for (int i = 1; i <= n - 1; i++) {
+            string a = s.substr(0, i);
+            string b = s.substr(i);
+            res.push_back(a + "." + b); 
+        }
+        return res;
+    }
+};
+```
+
