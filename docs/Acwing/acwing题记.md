@@ -2818,7 +2818,7 @@ int main()
 }
 ```
 
-### 2022年11月12日
+### 2022年11月12日 差分约束&找规律gcd
 
 > https://www.acwing.com/problem/content/4718/
 
@@ -2916,5 +2916,21 @@ int main()
 }
 ```
 
+> https://www.acwing.com/problem/content/4721/
 
+> gcd的一些规律题，如果发现一些规律题不妨往常见算法里面靠
+>
+> <img src="./acwing%E9%A2%98%E8%AE%B0.assets/%E6%88%AA%E5%B1%8F2022-11-13%2000.54.12.png" alt="截屏2022-11-13 00.54.12" style="zoom:50%;" />
+
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int n,m;
+    cin>>n>>m;
+    cout<<__gcd(n-1,m-1)+1;
+}
+```
 
