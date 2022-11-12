@@ -2818,5 +2818,103 @@ int main()
 }
 ```
 
+### 2022年11月12日
+
+> https://www.acwing.com/problem/content/4718/
+
+> 思路：**图论的查分约束**
+>
+> 固定解法：记完图之后记录一个**最长路**而且每个变量都可以独立取到最小值——总和最小
+>
+> 如果是最大值的话，那么就取**最短路**
+>
+> 将其转化为这样的形式：$x\ge y+w$
+>
+> —>$d_y \ge d_x + w$
+>
+> 将原问题进行转换
+>
+> 1. $a=b <==> \ a\ge b+0\  \& \ b \ge a +0$  – > b向a连一条长度为0的边，同时a向b连一条长度为0 的边
+> 2. $a >b <==>\ a \ge b+1$   – > b向a连一条长度为1的边
+> 3. $a<b <==> b\ge a+1$  —> a向b连一条长度为1 的边
+>
+> > 在提高课——图论-差分约束-套公式求解
+>
+> 为什么要选择最小值要最长路呢？
+>
+> 不妨推测 $x \ge x_1+c_1 \ge x_2+c_1+c_2 \ge x_3 + c_1 +c_2 +c_3 \ge .....\ge s+c_1+c_3+....+c_n$
+>
+> 对于$s+c_1+c_2+...+c_n$ 一定存在一个最小值下界，否则那么就是无穷小。
+>
+> -》 一般差分约束使用spfa()比较轻松
+
+```cpp
+#include <bits/stdc++.h>
+#include <cstring>
+#include <queue>
+using namespace std;
+string str;
+int n;
+const int N = 1010, M = 3*N;
+int dist[N];
+int st[N];
+int h[N],e[M],ne[M],w[M],idx;
+void add(int a,int b,int c){
+    w[idx] = c;
+    e[idx] = b;
+    ne[idx] = h[a];
+    h[a] = idx++;
+}
+void spfa(){
+    queue<int> q;
+    q.push(0);
+    //memset(dist,0,sizeof dist);
+    
+    while(q.size()){
+        int t = q.front();
+        q.pop();
+        st[t] = false;
+        
+        for(int i = h[t]; ~i ;i = ne[i]){
+            int j = e[i];
+            if(dist[j] < dist[t] + w[i]){
+                dist[j] = dist[t] + w[i];
+                if(!st[j]){
+                    q.push(j);
+                    st[j] = true;
+                }
+            }
+        }
+    }
+}
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    memset(h,-1,sizeof h);
+    cin >> n;
+    cin >> str;
+    for(int i = 1; i <= n;i ++) add(0,i,1);//从原点向i连一条边,等价于所有点a >= c+1;
+    for(int i = 0; i < n; i ++){
+        char op = str[i];
+        int a = i + 1;
+        int b = i + 2;
+        if(op == '='){
+            add(b,a,0);
+            add(a,b,0);
+        }else if(op == '>'){
+            add(b,a,1);
+        }else{
+            add(a,b,1);
+        }
+    }
+    spfa();
+    for(int i = 1; i <= n; i ++){
+        cout << dist[i] << " ";
+    }
+    return 0;
+}
+```
+
 
 
