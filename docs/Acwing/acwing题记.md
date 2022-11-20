@@ -2934,3 +2934,151 @@ int main()
 }
 ```
 
+### 2022年11月20日
+
+#### 4720. 字符串 && 栈队数据结构类型
+
+> https://www.acwing.com/problem/content/description/4723/
+
+> 这道题思路其实很重要，对于原始算法如果没有什么想法的话，不妨就是思考一下可能可以使用到的数据结构类型——该题就可以用到栈或者队列来解决这个问题。
+>
+> 同时也要注意STL库的一些使用方法。
+
+```cpp
+#include<bits/stdc++.h>
+#include<stack>
+#include<vector>
+using namespace std;
+string str;
+stack<char> sk;
+vector<char> ve;
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(0),cout.tie(0);
+    cin >> str;
+    for(int i = str.size() - 1; i >= 0; i --) sk.push(str[i]);
+    ve.push_back(sk.top());
+    sk.pop();
+    while(!sk.empty()){
+        if(ve.back() != sk.top()) ve.push_back(sk.top());
+        else ve.pop_back();
+        sk.pop();
+    }
+    for(auto x:ve){
+        cout << x;
+    }
+    return 0;
+}
+```
+
+#### 4721. 排队
+
+> https://www.acwing.com/problem/content/4724/
+
+> 思路解析：
+>
+> **思路一：排队+二分**：如果存在$a_k\le a_i \le a_j$ 那么$a_i$就没有存在的必要了，那么$a_k$右边的将会呈现一个单调递增的序列，因为只要找$a_k$最右边比他小的一个数即可。
+>
+> **思路二：树状数组+离散化**
+
+> **思路一：代码实现**
+
+```cpp
+#include<bits/stdc++.h>
+#include<stack>
+using namespace std;
+typedef long long ll;
+const int N = 100010;
+ll n;
+ll a[N];
+ll ans[N];
+ll st[N];
+int main()
+{
+    scanf("%lld",&n);
+    for(int i = 0; i < n; i ++) scanf("%lld",&a[i]);
+    int top = 0;
+    for(int i = n - 1; i >= 0; i --){
+        if(!top || a[i] <= a[st[top]]) ans[i] = -1;
+        else{
+            int l = 1, r = top;
+            while(l < r){
+                int mid = l + r >> 1;
+                if(a[st[mid]] < a[i]) r = mid;
+                else l = mid + 1;
+            }
+            ans[i] = st[r] - i - 1;
+        }
+        
+        if(!top || a[i] < a[st[top]]) st[++top] = i;
+    }
+    for(int i = 0; i < n; i ++) printf("%lld ",ans[i]);
+    return 0;
+}
+```
+
+> **思路二：**树状数组+离散化
+
+```cpp
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+const int N = 1e5 + 10;
+int a[N], res[N], tr[N];
+int n;
+vector<int> alls;
+int lowbit(int x)
+{
+    return x & -x;
+}
+//树状数组的建立
+void add(int x, int c)
+{
+    for(int i = x; i <= n; i += lowbit(i)) 
+        tr[i] = max(tr[i], c);
+}
+//树状数组的查询
+int query(int x)
+{
+    int ans = 0;
+    for(int i = x; i ; i -= lowbit(i))
+        ans = max(ans, tr[i]);
+    return ans;
+}
+//离散化
+int find(int x)
+{
+    int l = 0, r = alls.size() - 1;
+    while(l < r)
+    {
+        int mid = l + r >> 1;
+        if(alls[mid] >= x) r = mid;
+        else l = mid + 1;
+    }
+    return l + 1;
+}
+int main()
+{
+    cin >> n;
+    for(int i = 1; i <= n; i ++)
+    {
+        scanf("%d", &a[i]);
+        alls.push_back(a[i]);
+    }
+    sort(alls.begin(), alls.end());
+    alls.erase(unique(alls.begin(), alls.end()), alls.end());
+    for(int i = n; i >= 1; i --)
+    {
+        int x = find(a[i]);
+        add(x, i);
+        x = query(x - 1);
+        if(x < i) res[i] = -1;
+        else res[i] = x - i - 1;
+    }
+    for(int i = 1; i <= n; i ++)
+        printf("%d ", res[i]);
+    return 0;
+}
+```
+
