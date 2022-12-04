@@ -3082,3 +3082,51 @@ int main()
 }
 ```
 
+#### 4727. 摆放棋子
+
+> https://www.acwing.com/problem/content/4730/
+
+> 非常基础的DP问题。。。。
+>
+> <img src="./acwing%E9%A2%98%E8%AE%B0.assets/%E6%88%AA%E5%B1%8F2022-12-04%2011.48.45.png" alt="截屏2022-12-04 11.48.45" style="zoom:30%;" />
+
+```cpp
+#include<bits/stdc++.h>
+
+using namespace std;
+int n1,n2,k1,k2;
+const int MOD = 1e8;
+int f[110][110][20][20];
+int k,u;
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0),cout.tie(0);
+    cin >> n1 >> n2 >> k1 >> k2;
+    f[0][0][0][0] = 1;
+    
+    for(int i = 0; i <= n1; i ++){
+        for(int j = 0; j <= n2; j ++){
+            for(int k = 0; k <= k1; k ++){
+                for(int u = 0; u <= k2; u ++){
+                    if(i + 1 <= n1 && k + 1 <= k1){
+                        f[i+1][j][k+1][0] = (f[i+1][j][k+1][0] + f[i][j][k][u]) % MOD;
+                    }
+                    if(j + 1 <= n2 && u + 1 <= k2){
+                        f[i][j+1][0][u+1] = (f[i][j+1][0][u+1] + f[i][j][k][u]) % MOD;
+                    }
+                }
+            }
+        }
+    }
+    int ans = 0;
+    for(int i = 0; i <= k1; i ++){
+        for(int j = 0; j <= k2; j ++){
+            ans = (ans + f[n1][n2][i][j]) % MOD;
+        }
+    }
+    cout << ans << "\n";
+    return 0;
+}
+```
+
