@@ -48,3 +48,4 @@
 
 #### [王道保研复试提记](WDcs/wdcs.md)
 
+#### [如何成为一名具有竞争力的程序员](howtobecompetitive/Howtobecompetitive.md)
