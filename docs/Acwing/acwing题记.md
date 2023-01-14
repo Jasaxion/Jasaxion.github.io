@@ -3082,6 +3082,8 @@ int main()
 }
 ```
 
+### 12月4日
+
 #### 4727. 摆放棋子
 
 > https://www.acwing.com/problem/content/4730/
