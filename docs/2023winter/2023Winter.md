@@ -539,25 +539,333 @@ int main()
 > }
 > ```
 
+### 1月26日
 
+#### 4700. 何以包邮？
 
+> https://www.acwing.com/problem/content/description/4703/
 
+> **思路一：转化为背包DP问题**
+>
+> 转换思路：背包问题的m为当前区间，满足包邮条件下，最多还需要买一本书，具体买的哪本书的价格定义为x + max_a[i]为背包问题下的m值。
+>
+> dp[i]表示的是邮费定为i时，所需要购买书本的最小花费。
+>
+> 获取dp数组后，我们循环遍历，从最小邮费x开始循环求取其最小值即可。
+>
+> 注意细节：1.需要初始化dp数组为无穷大；2.需要初始化ans为无穷大；3.需要初始化dp[0]=0;
+>
+> **思路二：转化为0/1背包问题**——逆向转化，这里背包容量不是x，而是sum-x，我们这里转化为最多能去掉多少个物品！
+>
+> 将原问题向背包问题进行转化，背包容量为 sum - x，每个物品的体积：w[i]，每个物品的价值：w[i]；
+>
+> 也就是说我们需要选择一些物品，似的总体积不超过sum - x的条件下，总价值最大。 ——转化为0/1背包问题——时间复杂度 物品数量*总容量 $9 * 10^6$
+>
+> **思路三：转化为装箱DP问题**
+>
+> > 装箱问题：https://www.luogu.com.cn/problem/P1049
+>
+> <img src="./2023Winter.assets/%E6%88%AA%E5%B1%8F2023-01-26%2016.06.19.png" alt="截屏2023-01-26 16.06.19" style="zoom:50%;" />
 
+```cpp
+//方法一：传统背包DP思路
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 10010;
+const int M = 300010;
+typedef long long ll;
+int a[N];
+int dp[M];
+ll x;
+int n;
+int main()
+{
+    scanf("%d%lld",&n,&x);
+    memset(dp,0x3f,sizeof(dp));
+    dp[0] = 0;
+    for(int i = 1; i <= n; i ++){
+        scanf("%d", &a[i]);
+    }
+    for(int i = 1; i <= n; i ++){
+        for(int j = x + 10010; j >= a[i]; j --){
+            dp[j] = min(dp[j], dp[j - a[i]] + a[i]);
+        }
+    }
+    int ans = 0x3f3f3f3f;
+    for(int i = x; i <= x + 10010; i ++){
+        ans = min(ans,dp[i]);
+    }
+    printf("%d\n",ans);
+    
+    return 0;
+}
+```
 
+```cpp
+//思路二：0/1背包问题的转化
+#include<bits/stdc++.h>
 
+using namespace std;
+const int N = 10010;
+const int M = 300010;
+int a[N];
+int n,m;
+int dp[M];
+long long sum = 0;
+int main()
+{
+    scanf("%d%d",&n,&m);
+    for(int i = 1; i <= n; i ++){
+        scanf("%d",&a[i]);
+        sum += a[i];
+    }
+    m = sum - m; //表示最多去除的“体积”
+    for(int i = 1; i <= n; i ++){
+        for(int j = m; j >= a[i]; j --){
+            dp[j] = max(dp[j], dp[j - a[i]] + a[i]); //这里求最大值的目的是求取最多去掉的书本中的最大价值
+        }
+    }
+    printf("%d\n",sum - dp[m]); //sum-dp[m]则就表示剩下的就是满足条件的最小价值
+    
+    return 0;
+}
+```
 
+```cpp
+//装箱问题的转化
+#include <cstdio>
+#define N 35
+#define M 310005
+using namespace std;
 
+int n, m, a[N], f[M];
 
+int main ()
+{
+    scanf ("%d%d", &n, &m), f[0] = 1;
+    for (int i = 1; i <= n; i ++)
+    {
+        scanf ("%d", &a[i]);
+        for (int j = m + 10000; j >= a[i]; j --)
+        {
+            f[j] |= f[j - a[i]];
+        }
+    }
+    for (int i = m; ; i ++)
+    {
+        if (f[i])
+        {
+            printf ("%d", i);
+            return 0;
+        }
+    }
+    return 0;
+}
+```
 
+#### 4510. 寻宝！大冒险！
 
+> https://www.acwing.com/problem/content/4513/
 
+> **优化思路：**
+>
+> <img src="./2023Winter.assets/%E6%88%AA%E5%B1%8F2023-01-26%2020.07.44.png" alt="截屏2023-01-26 20.07.44" style="zoom:40%;" />
 
+```cpp
+//O2优化，100分
+#pragma GCC optimize(3)
+#pragma GCC optimize(2)
+//TLE map映射 70分  暴力枚举
+#include <bits/stdc++.h>
+#include <map>
+using namespace std;
+typedef pair<int,int> PII;
+map<PII,int> mp;
+int n,S;
+int g[110][110];
+typedef long long ll;
+ll L;
+int ans = 0;
+int main()
+{
+    scanf("%d%lld%d",&n,&L,&S);
+    for(int i = 0; i < n; i ++){
+        int x,y;
+        scanf("%d%d",&x,&y);
+        mp[{x,y}] = 1;
+    }
+    memset(g,-1,sizeof g);
+    for(int i = S; i >= 0; i --)
+    {
+        for(int j = 0; j <= S; j ++)
+        {
+            scanf("%d",&g[i][j]);
+        }
+    }
+    map<PII, int>::iterator iter;
+    for (iter = mp.begin(); iter != mp.end(); iter++) {
+        auto t = iter->first;
+        int tmpx = t.first, tmpy = t.second;
+        int flag = 0;
+        for(int i = 0; i <= S; i ++){
+            if(flag) break;
+            for(int j = 0; j <= S; j ++){
+                int nextx = tmpx + i;
+                int nexty = tmpy + j;
+                if(nextx > L || nexty > L){
+                    flag = 1;
+                    break;
+                }
+                if(mp.count({nextx,nexty}) != g[i][j]){
+                    flag = 1;
+                    break;
+                }
+            }
+        }
+        if(!flag){
+            ans ++;
+        }
+    }
+    printf("%d\n",ans);
+    return 0;
+}
+```
 
+```cpp
+//优化思路——比较巧妙
+//枚举左下角的树
+//看该区域内的树是否等于one
+#include <bits/stdc++.h>
+using namespace std;
 
+const int N = 1009;
+int n, l, s;
+int x[N], y[N], b[N][N];
+int main()
+{
+    cin >> n >> l >> s;
+    for (int i = 1; i <= n; i++)
+        cin >> x[i] >> y[i];
 
+    int one = 0;
+    for (int i = s; i >= 0; i--)
+        for (int j = 0; j <= s; j++)
+            cin >> b[i][j], one += b[i][j];
 
+    int ans = 0;
+    for (int i = 1; i <= n; i++)
+    {
+        if (x[i] + s > l || y[i] + s > l)
+            continue;
+        int cnt = 0;
+        for (int j = 1; j <= n; j++)
+        {
+            if (cnt == -1)
+                break;
+            if (x[j] >= x[i] && x[j] <= x[i] + s && y[j] >= y[i] && y[j] <= y[i] + s)
+            {
+                b[x[j] - x[i]][y[j] - y[i]] ? cnt++ : cnt = -1;
+            }
+        }
+        ans += (cnt == one ? 1 : 0);
+    }
+    cout << ans << '\n';
+    return 0;
+}
+```
 
+#### 3422. 左孩子右兄弟—🌲二叉树⭐️
 
+> https://www.acwing.com/problem/content/3425/
+
+> **思路**：多叉树转化为二叉树
+>
+> > **左孩子右兄弟转化法：**——数组模拟临接表
+>
+> <img src="./2023Winter.assets/%E6%88%AA%E5%B1%8F2023-01-26%2022.38.44.png" alt="截屏2023-01-26 22.38.44" style="zoom:20%;" />
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+const int N = 100010;
+int h[N],e[N],ne[N],idx;
+int n,p;
+void add(int a, int b){
+    e[idx] = b;
+    ne[idx] = h[a];
+    h[a] = idx++;
+}
+int dfs(int u){
+    int hmax = 0; //当前节点的最大高度
+    int cnt = 0; //子节点的个数
+    for(int i = h[u]; ~i; i = ne[i]){
+        int j = e[i];
+        hmax = max(hmax, dfs(j));
+        cnt ++;
+    }
+    
+    return hmax + cnt; //当前的最大高度+子节点个数为最大高度
+}
+int main()
+{
+    scanf("%d",&n);
+    memset(h, -1, sizeof h);
+    for(int i = 2; i <= n; i ++){ 
+        scanf("%d",&p); //输入父节点编号，连接子节点与父节点
+        add(p,i); //临接表进行存储和连接边
+    }
+    printf("%d", dfs(1));
+    return 0;
+}
+```
+
+#### 反素数（求约数个数最大的数）📖数论
+
+> https://www.acwing.com/problem/content/description/200/
+
+> **思路：通过数学方法摸清性质**
+>
+> <img src="./2023Winter.assets/%E6%88%AA%E5%B1%8F2023-01-26%2021.43.14.png" alt="截屏2023-01-26 21.43.14" style="zoom:40%;" />
+>
+> ```
+> 如果 N = p1^c1 * p2^c2 * ... *pk^ck
+> 约数个数： (c1 + 1) * (c2 + 1) * ... * (ck + 1)
+> 约数之和： (p1^0 + p1^1 + ... + p1^c1) * ... * (pk^0 + pk^1 + ... + pk^ck)
+> ```
+
+```cpp
+#include<bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+ll primes[11]={1,2,3,5,7,11,13,17,19,23,29},n;
+ll maxd; //枚举到的当前的拥有最大约数个数的数字
+ll sum_cnt; //当前最大的约数个数
+//u表示当前枚举的素数
+//last表示枚举的素数的次数
+void dfs(int u, ll last, ll p, int s){
+    if(s > sum_cnt || s == sum_cnt && p < maxd){
+        sum_cnt = s;
+        maxd = p;
+    }
+    if(u > 10) return;
+    for(int i = 1; i <= last; i ++){
+        if((ll)p * primes[u] > n) return;
+        p *= primes[u];
+        //这里为什么s*(i+1)，是利用的求约数个数的公式
+        dfs(u + 1, i, p, s * (i + 1));
+    }
+}
+
+int main()
+{
+    cin >> n;
+    dfs(0, 30, 1, 1);
+    cout << maxd << "\n";
+    return 0;
+}
+```
 
 
 
