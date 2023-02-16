@@ -591,3 +591,45 @@ int main(){
 
 > https://codeforces.com/contest/1660/problem/F2
 
+### 2023年2月15日
+
+#### A. Yet Another Promotion
+
+>贪心思路，第一天每次购买m kg，那么将会赠送1kg，这样就有m+1 kg，求第一种情况，尽可能多的赠送，那么最多可以赠送$n/(m+1)$次$m$kg，剩下的看第一天和第二天哪天比较便宜就全部哪天购买；
+>
+>贪心求解：
+>$$
+>ans:答案;a:第一天价格;b:第二天价格;需要购买nkg，每购买mkg送1kg
+>\\
+>1.ans1=a*n 全部在第一天购买\\
+>2.ans2=b*n 全部在第二天购买\\
+>3.ans3=a * n/(m+1) * m + min(a,b) * (n \% (m+1)) 尽可能多的送，剩下的花最少的钱\\
+>ans = min(ans1,ans2,ans3);
+>$$
+>
+
+```cpp
+#include<bits/stdc++.h>
+
+using namespace std;
+int T;
+typedef long long ll;
+int main()
+{
+    scanf("%d",&T);
+    while(T--){
+        ll a,b,n,m;
+        scanf("%lld%lld",&a,&b);
+        scanf("%lld%lld",&n,&m);
+        ll cnt = 0x3f3f3f3f3f3f3f3f;
+        cnt = min(cnt, a*n);
+        cnt = min(cnt, b*n);
+        ll t = n / (m + 1);
+        ll c = n % (m + 1);
+        cnt = min(cnt, t * m * a + min(a,b)*c);
+        printf("%lld\n",cnt);
+    }
+    return 0;
+}
+```
+

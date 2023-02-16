@@ -867,11 +867,152 @@ int main()
 }
 ```
 
+### 2月11日
 
+#### Acwing周赛：找数字
 
+> https://www.acwing.com/problem/content/description/4810/
 
+> **思路：分类讨论+贪心**
+>
+> - 贪心找最大：枚举每一位都是9，直到填9不能满足条件的时候进行处理；
+> - 贪心找最小：首先第一个位置应从$1$开始枚举$i$，假设后面的所有位置全为$9$，如果后面的所有位置填$9$的总和要比$sum - i $小的话，那么当前填的$i$应该增大，从第二个位置开始枚举$i$需要从0开始进行。
 
+```cpp
+#include <bits/stdc++.h>
+#include <vector>
+using namespace std;
+vector<int> ve,ve2;
+int m,sum;
+int main()
+{
+    scanf("%d%d",&m,&sum);
+    if(m == 0){ //特殊情况1，如果m为0的话，那肯定找不到，直接输出-1 -1
+        printf("-1 -1");
+        return 0;
+    }
+    if(m == 1 && sum == 0){ //如果sum = 0点情况要满足条件的话，只有当m=1时，存在0 0满足条件
+        printf("0 0");
+        return 0;
+    }
+    if(sum == 0){ //其他sum = 0的情况，均不能满足条件
+        printf("-1 -1");
+        return 0;
+    }
+    //最容易想到的是贪心的方法求最大的情况
+    //每次都放最大的9，直到比9小的时候
+    int tsum = sum;
+    for(int i = 0; i < m; i ++){
+        int t = 9;
+        while(tsum > 0){
+            if(tsum - t < 0){
+                t --;
+                continue;
+            }
+            ve.push_back(t);
+            tsum -= t;
+            break;
+        }
+    }
+    if(tsum > 0) //如果搜最大的情况下，不能tsum仍然大于0，也就是没有构成一个等于sum的数的话，则求解失败
+    {
+        printf("-1 -1");
+        return 0;
+    }
+    //现在贪心求最小的情况
+    //我们也是一样从第一位开始进行枚举，这里注意到是，每次看后面几位都是9时，是否能满足条件
+    //后面位置取得最大的情况，那么就能得到当前位置到最小值
+    int tmp = 1, tmpj = 1;
+    tsum = sum;
+    for(int i = 0; i < m; i ++){
+        //要求填最小，我们假设后面的全部填9，如果能满足那么这里可以填这个最小的数
+        while((m - tmp) * 9 < tsum - tmpj){
+            tmpj ++;
+        }
+        ve2.push_back(tmpj);
+        tsum -= tmpj;
+        tmp ++;
+        tmpj = 0;
+    }
+    while(ve2.size() < m) ve.push_back(0);
+    for(int i = 0; i < ve2.size(); i ++){
+        printf("%d",ve2[i]);
+    }
+    printf(" ");
+    while(ve.size() < m) ve.push_back(0);
+    for(int i = 0; i < ve.size(); i ++){
+        printf("%d",ve[i]);
+    }
+    return 0;
+}
+```
 
+#### ⭐️Acwing周赛：构造字符串
+
+> https://www.acwing.com/problem/content/4811/
+
+> **KMP方法或者Cpp的substr方法；**
+>
+> 找到从头开始和从尾部开始的相同的最长子串，然后往后面进行添加即可。
+>
+> 例如:abcab，从前往后和从后往前能得到的最长相同子串为ab，那么只需要往后面添加k-1个cab即可得到满足条件的子串
+
+```cpp
+//Substr方法
+#include <bits/stdc++.h>
+#include <cstring>
+using namespace std;
+string t,t1;
+int n,k;
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    cin >> n >> k;
+    cin >> t;
+    cout << t;
+    for(int i = 0; i < n; i ++){
+        if(t.substr(0, i) == t.substr(n - i, i))  t1 = t.substr(0, i); 
+    }
+    while(--k){
+        for(int i = t1.size(); i < n; i ++)
+        {
+            cout << t[i];
+        }
+    }
+    return 0;
+}
+//KMP方法
+#include <iostream>
+#include <cstring>
+#include <vector>
+using namespace std;
+const int N = 1e4;
+int n, k;
+char c[N];
+int ne[N];
+int main()
+{
+    cin >> n >> k;
+    cin >> c + 1;//从c[1]开始输入
+    for (int i = 2, j = 0; i <= n; i ++ )
+    {
+        while (j && c[i] != c[j + 1]) j = ne[j];
+        if (c[i] == c[j + 1]) j ++ ;
+        ne[i] = j;
+    }
+    int g = ne[n];//最后一个的ne， 一个一个填单词，只要最后一个的ne就行
+
+    for (int i = 1; i <= n; i ++ ) cout << c[i];//先塞一个单词
+    k -- ;
+    while (k -- )
+    {
+        for (int i = g + 1; i <= n; i ++ ) cout << c[i];//每次从第g + 1位开始填字母
+    }
+    return 0;
+}
+```
 
 
 
