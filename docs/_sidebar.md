@@ -9,6 +9,6 @@
 * [模板](模板/模板.md)
 * [ACM赛制杂题与思考](ACM/Acm赛制比赛杂题.md)
 * [2023寒假题记](2023winter/2023Winter.md)
-* [王道保研复试题记](WDcs/wdcs.md)
+* [计算机机试复试题记](WDcs/wdcs.md)
 
 - [如何成为一名具有竞争力的程序员](howtobecompetitive/Howtobecompetitive.md)
