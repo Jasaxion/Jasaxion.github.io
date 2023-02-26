@@ -655,3 +655,54 @@ int main()
 }
 ```
 
+```cpp
+//两个序列，一个从前往后，一个从后往前寻找两个序列的下标，使得a[i] + b[j] = k的i，j值
+//注意，这里成立的前提条件是a,b是升序序列
+int main()
+{
+    scanf("%d%d%lld",&n,&m,&x);
+    for(int i = 0;i < n; i ++) scanf("%d",&a[i]);
+    for(int i = 0;i < m; i ++) scanf("%d",&b[i]);
+    for(int i = 0, j = m - 1; i < n; i ++){
+        while(a[i] + b[j] > x) j --; //与暴力的区别，j不会回退
+        if(a[i] + b[j] == x) printf("%d %d\n",i,j);
+    }
+    return 0;
+}
+```
+
+#### 1238.日志统计（双指针经典II）
+
+> https://www.acwing.com/problem/content/1240/
+
+```cpp
+int main()
+{
+    scanf("%d%d%d", &n, &d, &k);
+    for (int i = 0; i < n; i ++ ) scanf("%d%d", &logs[i].x, &logs[i].y);
+    sort(logs, logs + n); //先给时间排个序!
+  //这一步跟上面经典的双指针算法如出一辙，变了一点点，一定要灵活应对。
+    for (int i = 0, j = 0; i < n; i ++ )//将j---i,这里i为右端点进行枚举
+    {
+        int id = logs[i].y;
+        cnt[id] ++ ; //也是一样记录当前元素的个数
+        while (logs[i].x - logs[j].x >= d) //给定两端点的枚举条件
+        {
+            cnt[logs[j].y] -- ; //当j需要移动的情况
+            j ++ ; //现在移动j左端点指针
+        }
+        if (cnt[id] >= k) st[id] = true; //当满足题目所给条件时进行输出
+    }
+    for (int i = 0; i <= 100000; i ++ )
+        if (st[i])
+            printf("%d\n", i);
+    return 0;
+}
+```
+
+
+
+
+
+
+
