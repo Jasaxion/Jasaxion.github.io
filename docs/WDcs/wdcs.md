@@ -278,7 +278,7 @@ int main()
 
 > https://www.acwing.com/problem/content/3732/
 
-> 平平无奇的差分数组方法
+> 平平无奇的差分数组方法，对于差分数组，脑袋里面一定要时刻有那个差分/前缀和的概念
 
 ```cpp
 #include <bits/stdc++.h>
@@ -377,9 +377,195 @@ double bsearch_3(double l, double r)
 
 有单调性一定可以二分，但没有单调性有可能可以二分，所以二分的本质不是单调性
 
-==**本质：把整个区间一分为二，一部分满足、一部分不满足；二分能找到边界点分出这两个部分 [本质：边界]**==
+**本质：把整个区间一分为二，一部分满足、一部分不满足；二分能找到边界点分出这两个部分 [本质：边界]**
 
+> 模板题：查找数的范围，分别是选择的lower和upper两种二分查找的方式，最终获得其区间。https://www.acwing.com/problem/content/791/
+>
+> ```cpp
+> #include<bits/stdc++.h>
+> 
+> using namespace std;
+> int n,q,k;
+> const int N = 100010;
+> int a[N];
+> int main()
+> {
+>     scanf("%d%d",&n,&q);
+>     for(int i = 0; i < n; i ++){
+>         scanf("%d",&a[i]);
+>     }
+>     while(q --){
+>         scanf("%d",&k);
+>         int l = 0,r = n - 1;
+>       	//lower方式获取下区间边界
+>         while(l < r){
+>             int mid = l + r >> 1;
+>             if(a[mid] >= k){
+>                 r = mid;
+>             }
+>             else{
+>                 l = mid+1;
+>             }
+>         }
+>       	//找不到的情况
+>         if(a[l] != k) printf("-1 -1\n");
+>         else{//upper方式获取上区间边界
+>             printf("%d ",l);
+>             l = 0, r = n-1;
+>             while(l < r){
+>                 int mid = l + r + 1 >> 1;
+>                 if(a[mid] <= k){
+>                     l = mid;
+>                 }
+>                 else{
+>                     r = mid - 1;
+>                 }
+>             }
+>             printf("%d\n",l);
+>         }
+>     }
+>     return 0;
+> }
+> ```
 
+#### 1460.我在哪？（哈希+二分）
 
+> https://www.acwing.com/problem/content/1462/
 
+```cpp
+//本题主要难点在于获取当前字符串的所有子串，用二分的方法查找合适情况。
+#include <bits/stdc++.h>
+#include <cstring>
+#include <unordered_set>
+using namespace std;
+int n;
+string str;
+bool check(int mid){
+    unordered_set<string> st; //set来代替字符串哈希
+    for(int i = 0; i + mid <= n; i ++){
+        string curstr = str.substr(i,mid);
+        if(st.count(curstr)) return false;
+        st.insert(curstr);
+    }
+    return true;
+}
+int main()
+{
+    scanf("%d",&n);
+    cin >> str;
+    int l = 0, r = n;
+    while(l < r){ //二分查找
+        int mid = l + r >> 1;
+        if(check(mid)){
+            r = mid;
+        }
+        else{
+            l = mid + 1;
+        }
+    }
+    printf("%d\n",l);
+    return 0;
+}
+```
+
+#### 1221.四平方和 （哈希+二分）以及几点启发
+
+> https://www.acwing.com/problem/content/1223/
+
+> 1. 符号重载的方式，代码示例种使用得很经典，还有另外的方式，通过手写bool cmp，导入到sort(a,a+n,cmp)中
+> 2. 关于二分中L和R的边界值的选取，应该要选择满足要答案要求的边界范围，不能盲目将LR区间设置很大！！比如说在本题，二分查找答案是在0~pos中寻找满足条件的下标，因此此时L=0,R=pos才行！
+
+```cpp
+#include <bits/stdc++.h>
+#include <vector>
+using namespace std;
+typedef long long ll;
+int n;
+const int N = 2500010;
+struct sumup4{
+    ll sum,c,d;
+    bool operator< (const sumup4 &t) const{ //符号重载，主要用于sort函数
+        if(sum != t.sum) return sum < t.sum;
+        if(c != t.c) return c < t.c;
+        return d < t.d;
+    }
+}sumup4[N];
+int main()
+{
+    scanf("%d",&n);
+    int pos = 0;
+    for(int c = 0; c*c <= n; c ++){
+        for(int d = c; c*c+d*d <= n; d++){
+            sumup4[pos++] = {c*c+d*d,c,d}; //充分利用C++11的特性
+        }
+    }
+    sort(sumup4,sumup4+pos);
+    for(int a = 0; a*a <= n; a ++){
+        for(int b = 0; a*a+b*b <= n; b ++){
+            ll t = n - (a*a+b*b);
+            int l = 0, r = pos-1;
+            while(l < r){
+                int mid = l + r >> 1;
+                if(sumup4[mid].sum >= t) r=mid;
+                else l=mid+1;
+            }
+            if(sumup4[l].sum == t){
+                printf("%d %d %d %d\n",a,b,sumup4[l].c,sumup4[l].d);
+                return 0;
+            }
+        }
+    }
+    return 0;
+}
+```
+
+#### 1227.分巧克力
+
+> https://www.acwing.com/problem/content/1229/
+
+```cpp
+//关于二分边界问题——此路不通走彼路
+//r=mid不行就换成l=mid试一下
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 100010;
+int n,k;
+int pos = 0;
+struct Cake{
+    int h;
+    int w;
+}cake[N];
+bool check(int mid){
+    int cnt = 0;
+    for(int i = 0; i < pos; i ++){
+        int h = cake[i].h, w = cake[i].w;
+        if(mid > h || mid > w) continue;
+        int hnum = h / mid;
+        int wnum = w / mid;
+        cnt += hnum*wnum;
+        if(cnt >= k) return true;
+    }
+    return false;
+}
+int main()
+{
+    scanf("%d%d",&n,&k);
+    int maxsize = 0;
+    for(int i = 0; i < n; i ++){
+        int h,w;
+        scanf("%d%d",&h,&w);
+        cake[pos ++] = {h,w};
+        maxsize = max(maxsize,h);
+        maxsize = max(maxsize,w);
+    }
+    int l = 0, r = maxsize;
+    while(l < r){
+        int mid = l + r + 1 >> 1;
+        if(check(mid)) l = mid;
+        else r = mid - 1;
+    }
+    printf("%d\n",l);
+    return 0;
+}
+```
 
