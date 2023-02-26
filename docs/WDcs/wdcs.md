@@ -317,7 +317,67 @@ int main()
 }
 ```
 
+### 二分
 
+#### 模版回顾
+
+```cpp
+//整数二分【易错点：边界问题的选取】
+当l = mid 的时候要补上l+r+1;
+当r = mid 的时候不需要补上;
+
+//模版一：
+适用条件：区间[L,R]被划分为[L,mid], [mid+1,R]时使用;
+//区间[l,r] 被划分位[l,mid] 和[mid+1,r]时使用
+int bsearch_1(int l, int r)
+{
+    while (l < r)
+    {
+        int mid = l + r >> 1; //取中间值 相当于 (l+r)/2;
+        if (check(mid)) r = mid;  // check()判定mid是否满足性质
+        else l = mid + 1;
+    }
+    return 1;
+}
+
+//模版二
+适用条件：区间[L,R]被划分为[L,mid-1],[mid,R]时使用;
+int bsearch_2(int l, int r)
+{
+    while(l < r)
+    {
+        int mid = l + r + 1 >> 1;
+        if (check(mid)) l = mid;
+        else r = mid - 1;
+    }
+    return 1;
+}
+```
+
+```cpp
+//浮点数二分
+特点：没有整除的概念，所以没有整数二分的边界问题，可以严格的二分
+不断二分，直到二分的长度足够小的时候可以认为二分获得的是一个数了;
+bool check(double x);
+
+double bsearch_3(double l, double r)
+{
+    const double eps=1e-6; //精度
+    while (r-l > eps)
+    {
+        double mid = (l+r)/2;
+        if (check()) r=mid;
+        else l=mid;
+    }
+    return l;
+}
+注意：精确度比要求的精确度多两位的情况下是比较保险的
+如：保留6位，1e-8更为保险。
+```
+
+有单调性一定可以二分，但没有单调性有可能可以二分，所以二分的本质不是单调性
+
+==**本质：把整个区间一分为二，一部分满足、一部分不满足；二分能找到边界点分出这两个部分 [本质：边界]**==
 
 
 
