@@ -569,3 +569,89 @@ int main()
 }
 ```
 
+#### 113.特殊排序（交互题）
+
+> https://www.acwing.com/problem/content/115/
+> 读懂题目甚至比题目本身还难；
+> 反对称性：$a>b,b<a$
+> 传递性：$a<b,b<c\rightarrow a<c$
+
+```cpp
+// Forward declaration of compare API.
+// bool compare(int a, int b);
+// return bool means whether a is less than b.
+//**这道题目其实就可以转化为对于一个已排好序多数组，插入元素**
+//**选择合适的位置插入元素，这里选择位置时，可以使用二分查找算法**
+class Solution {
+public:
+    vector<int> specialSort(int N) {
+        scanf("%d", &N);
+        vector <int> ans;
+        ans.push_back(1); //插入二分，先把1插进去，这样其他数就能和1进行比较了
+        for(int i = 2 ; i <= N ; i ++)
+        {
+            int l = 0 , r = ans.size(); //在ans中进行二分
+            while(l < r)
+            {
+                int mid = (l + r) >> 1; //大于mid 的 第一个数
+                if(compare(i,ans[mid])) //
+                r = mid;
+                else l = mid + 1;
+            }
+            ans.insert(ans.begin() + l, i);//然后在给定位置插入i
+        }
+        return ans;
+    }
+};
+```
+
+### 双指针算法
+
+```cpp
+实际上将原来的多重循环，使用双指针的方式在一个循环内完成
+for (int i = 0, j = 0; i < n; i ++ )
+{
+    while (j < i && check(i, j)) j ++ ;
+
+    // 具体问题的逻辑
+}
+核心思想--->将穷举O(n^2)算法优化到O(n)
+常见问题分类：
+    (1) 对于一个序列，用两个指针维护一段区间
+    (2) 对于两个序列，维护某种次序，比如归并排序中合并两个有序序列的操作
+```
+
+**窍门**：先写一个暴力解法，去思考**限制条件**和**单调性关系**，然后想办法去优化，将On2 --> On;
+
+#### 799.最长连续不重复字序列（双指针经典咏流传）
+
+> https://www.acwing.com/problem/content/801/
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 100010;
+int a[N],n;
+int x[N];
+int main()
+{
+    scanf("%d",&n);
+    for(int i = 0; i < n; i ++) scanf("%d",&a[i]);
+    int ans = 0;
+    // --j------------i--，考虑i为右端点去思考j的情况，双指针算法常用
+    //特别经典，一定要熟透于心，很多时候都要想到，固定一个端点
+    for(int i = 0, j = 0; i < n; i ++){
+        x[a[i]] ++;
+        int res = 0;
+        while(j < i && x[a[i]] > 1){ // 经典咏流传， 这里j < i和x[a[i]] > 1都很经典
+            x[a[j]] --;
+            j++;
+        }
+        res = i - j + 1;
+        ans = max(ans,res);
+    }
+    printf("%d\n",ans);
+    return 0;
+}
+```
+
