@@ -2,6 +2,10 @@
 
 > 打响计算机CSP算法以及机试必胜的第一战✌️
 
+**算法解题思路七步法：**
+
+![image-20230305220940231](./wdcs.assets/image-20230305220940231.png)
+
 ### 前缀和
 
 #### 模板回顾
@@ -843,7 +847,438 @@ int main()
 }
 ```
 
+#### 约数之和【经典数学知识】
+
+> https://www.acwing.com/problem/content/99/
+
+##### 补充数学知识（1）约数相关性质
+
+> [1，n]里约数有i的个数是$\lfloor\frac{n}{i}\rfloor$ 
+>
+> 如上，n = 12时；
+>
+> 1~12之间的数，有以1为约数的有 12/1 = 12个
+> 							有以2为约数的有 12/2 = 6个
+> 							有以3为约数的有  12/3 = 4个
+>
+> 求所有约数的和，可以使用 s+=n/i
+>
+> > **上述算法的进一步优化**：
+> >
+> > 打表后发现，表中有很多$\lfloor\frac{n}{i}\rfloor$是相等的，比如12的5、6都是一样的。
+> >
+> > 对于这些一样的数每次都计算一次非常浪费时间，可以每次$i$跳转到$\lfloor\frac{n}{j}\rfloor = \lfloor\frac{n}{i}\rfloor+1$
+> >
+> > 这样的j上 对于中间一样的数一次性计算完毕。
+> >
+> > ```cpp
+> > for(int i = 1, j; i <= n; i=j+1)
+> > {
+> > 	j = n/(n/i);
+> >  ans += (n/i)*(j-i+1);
+> > }
+> > ```
+>
+> 试除法求所有约数
+>
+> ```cpp
+> vector<int> get_divisors(int x)
+> {
+>     vector<int> res;
+>     for (int i = 1; i <= x / i; i ++ )
+>         if (x % i == 0)
+>         {
+>             res.push_back(i);
+>             if (i != x / i) res.push_back(x / i);//如果n是i的平方，可能有两个，这里目的是只存下一个
+>         }
+>     sort(res.begin(), res.end());
+>     return res;
+> }
+> ```
+
+**约数个数与约数之和**$N = p_1^{c_1} * p_2^{c_2} * ... *p_k^{c_k}$ 
+
+```cpp
+如果 N = p1^c1 * p2^c2 * ... *pk^ck
+约数个数： (c1 + 1) * (c2 + 1) * ... * (ck + 1)
+约数之和： (p1^0 + p1^1 + ... + p1^c1) * ... * (pk^0 + pk^1 + ... + pk^ck)
+```
+
+**数论常见的问题：**
+
+- 对于每一个大于等于2的正整数n，都有$N=p_1^{c_1}*p_2^{c_2}*...*p_m^{c_m}$
+- 正整数N的欧拉函数$phi(N)=N*(1-\frac{1}{p_1})*(1-\frac{1}{p_2})*...*(1-\frac{1}{p_m})=p_1^{c_1-1}*(p_1-1)*p_2^{c_2-1}*(p_2-1)*...*p_m^{c_m-1}*(p_m-1)$
+- 正整数N的约数个数：$d(N)=(1+c_1)*(1+c_2)*...*(1+c_m)$
+- 正整数N的所有约数和：$s(N)=(1+p_1+p_1^2+...+p_1^{c_1})*(1+p_2+p_2^2+...+p_2^{c_2})*(1+p_m+p_m^2+...+p_m^{c_m})$
+
+##### 欧拉筛约数的方法⭐️
+
+> 证明见：https://blog.csdn.net/weixin_43896346/article/details/88396182
+
+- 欧拉筛
+
+```cpp
+inline void sieve(int x) {
+    for(reg int i = 2;i <= x;i ++) {
+        if(! vis[i])
+            prim[++ len] = i;
+        for(reg int j = 1;j <= len && i * prim[j] <= x;j ++) {
+            vis[i * prim[j]] = 1;
+            if(i % prim[j] == 0)
+                break;
+        }
+    }
+}
+//试除法求质数
+for (int i = 2; i <= x / i; i ++ ){
+  while(x%i == 0){
+    x/=i;
+    primes[i]++;
+  }
+  if(x > 1) primes[x]++;
+}
+```
+
+- 欧拉函数
+
+```cpp
+inline void sieve(int x) {
+	phi[1] = 1;
+    for(reg int i = 2;i <= x;i ++) {
+        if(! vis[i]) {
+        	prim[++ len] = i;
+        	phi[i] = i - 1;	//因为欧拉函数代表小于这个数的且与这个数互质的数的个数，所以质数的欧拉函数为它本身减1
+        }
+        for(reg int j = 1;j <= len && i * prim[j] <= x;j ++) {
+            vis[i * prim[j]] = 1;
+            if(i % prim[j] == 0) {
+            	phi[i * prim[j]] = phi[i] * prim[j];
+                break;
+            }
+            phi[i * prim[j]] = phi[i] * (prim[j] - 1);
+        }
+    }
+}
+```
+
+- 约数个数
+
+```cpp
+inline void sieve(int x) {
+    for(reg int i = 2;i <= x;i ++) {
+        if(! vis[i]) {
+        	prim[++ len] = i;
+        	d[i] = 2;	//质数的约数只有1和它本身
+        	sum[i] = 1;
+        }
+        for(reg int j = 1;j <= len && i * prim[j] <= x;j ++) {
+            vis[i * prim[j]] = 1;
+            if(i % prim[j] == 0) {
+            	sum[i * prim[j]] = sum[i] + 1;
+            	d[i * prim[j]] = d[i] / (sum[i] + 1) * (sum[i] + 2);
+                break;
+            }
+            sum[i * prim[j]] = 1;
+            d[i * prim[j]] = d[i] * 2;
+        }
+    }
+}
+```
+
+- 约数和
+
+```cpp
+inline void sieve(int x) {
+    for(reg int i = 2;i <= x;i ++) {
+        if(! vis[i]) {
+        	prim[++ len] = i;
+        	psum[i] = s[i] = i + 1;
+        }
+        for(reg int j = 1;j <= len && i * prim[j] <= x;j ++) {
+            vis[i * prim[j]] = 1;
+            if(i % prim[j] == 0) {
+            	psum[i * prim[j]] = psum[i] * prim[j] + 1;
+            	s[i * prim[j]] = s[i] / psum[i] * psum[i * prim[j]]
+                break;
+            }
+            psum[i * prim[j]] = prim[j] + 1;
+            s[i * prim[j]] = s[i] * psum[i * prim[j]];
+        }
+    }
+}
+```
+
+> 本题思路：【分治法(分解为k为偶数和k为奇数的情况进行分治讨论)+约数+快速幂】
+
+```cpp
+#include<iostream>
+#include<unordered_map>
+using namespace std;
+typedef long long LL;
+const int mod = 9901;
+int A, B;
+//保存质因子以及出现的次数
+unordered_map<int, int> primes;
+//试除法质因子分解
+void divide(int n) {
+    for(int i = 2; i <= n / i; i++) {
+        if(n % i == 0) {
+            while(n % i == 0) {
+                primes[i]++;
+                n /= i;
+            }
+        }
+    }
+    if(n > 1) {
+        primes[n]++;
+    }
+}
+//快速幂
+int qmid(int a, int b) {
+    int res = 1;
+    while(b) {
+        if(b & 1) res = (LL)res * a % mod;
+        a = (LL)a * a % mod;
+        b >>= 1;
+    }
+    return res;
+}
+//p0 + .. + pk-1
+int sum(int p, int k) {
+    if(k == 1) return 1;  //边界
+    if(k % 2 == 0) {  
+        return (LL)(qmid(p, k / 2) + 1) * sum(p, k / 2) % mod;
+    }
+    return (qmid(p, k - 1) + sum(p, k - 1)) % mod;
+}
+int main(){
+    cin >> A >> B;
+
+    //对A分解质因子
+    divide(A);
+
+    int res = 1;
+    for(auto it : primes) {
+        //p是质因子，k是质因子的次数
+        int p = it.first, k = it.second * B;
+        // res要乘上每一项, 注意这里是k + 1
+        res = (LL)res * sum(p, k + 1) % mod;
+    }
+    if(!A) res = 0;
+
+    cout << res << endl;
+
+    return 0;
+}
+```
+
+### 并查集
+
+- 朴素的并查集
+
+  ```cpp
+  int p[N]; //存储每个点的祖宗节点
+  //返回x的祖宗节点
+  int find(int x)
+  {
+      if(p[x] != x) p[x] = find(p[x]); //如果p[x]不是根节点的话，那么就让p[x]为他的祖宗结点
+      return p[x];
+  }
+  
+  //初始化，假设节点编号是1~n
+  for(int i = 1; i <= n; i ++) p[i] = i;
+  
+  //合并a和b所在的两个集合
+  p[find(a)] = find(b); //合并操作 也就是让a的祖宗结点的父亲等于b的祖宗结点
+  ```
+
+- 维护size的并查集
+
+  ```cpp
+  int p[N], size[N];
+  //p[]存储每个点的祖宗结点，size[]只有祖宗结点的有意义，表示祖宗结点所在集合中的点的数量
+  
+  //返回x的祖宗结点
+  int find(int x)
+  {
+      if(p[x] != x) p[x] = find(p[x]);
+      return p[x];
+  }
+  //初始化，假定结点编号1~n
+  for(int i = 1; i <= n; i ++)
+  {
+      p[i] = i;
+      size[i] = 1;
+  }
+  
+  //合并a和b所在的两个集合
+  size[find(b)] += size[find(a)];
+  p[find(a)] = find(b);
+  ```
+
+- 维护到祖宗节点的并查集
+
+  ```cpp
+  int p[N],d[N];
+  //p[]存储每个点的祖宗结点，d[x]存储x到p[x]的距离
+  
+  //返回x的祖宗结点
+  int find(int x)
+  {
+      if(p[x] != x)
+      {
+          int u = find(p[x]);
+          d[x] += d[p[x]];
+          p[x] = u;
+      }
+      return p[x];
+  }
+  
+  //初始化，假定结点编号是1~n
+  for(int i = 1; i <= n; i ++)
+  {
+      p[i] = i;
+      d[i] = 0;
+  }
+  
+  //合并a和b所在的两个集合
+  p[find(a)] = find(b);
+  d[find(a)] = distance; //根据具体问题，初始化find(a)的偏移量
+  ```
+
+#### 带权的综合并查集
+
+> https://www.acwing.com/problem/content/240/
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+const int N = 30010,M = 30000;
+int T;
+int p[N];
+int dist[N],s[N];
+int find(int x){
+    if(p[x] != x){
+        int u = find(p[x]);
+        dist[x] += dist[p[x]];
+        p[x] = u;
+    }
+    return p[x];
+}
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0),cout.tie(0);
+    cin >> T;
+    for(int i = 1; i <= M; i ++){
+        p[i] = i;
+        s[i] = 1;
+    }
+    while(T --){
+        string op;
+        int a,b;
+        cin >> op >> a >> b;
+        int pa = find(a), pb = find(b);
+        if(op == "M"){
+            if(pa != pb){
+                p[pa] = pb;
+                dist[pa] = s[pb];
+                s[pb] += s[pa];
+            }
+        }
+        else{
+            if(pa != pb) cout << "-1\n";
+            else{
+                cout << max(0,abs(dist[a] - dist[b]) - 1) << "\n";
+            }
+        }
+    }
+    return 0;
+}
+```
+
+### 哈希
+
+- 一般哈希
+
+```cpp
+(1) 拉链法
+    int h[N], e[N], ne[N], idx;
+
+    // 向哈希表中插入一个数
+    void insert(int x)
+    {
+        int k = (x % N + N) % N;
+        e[idx] = x;
+        ne[idx] = h[k];
+        h[k] = idx ++ ;
+    }
+
+    // 在哈希表中查询某个数是否存在
+    bool find(int x)
+    {
+        int k = (x % N + N) % N;
+        for (int i = h[k]; i != -1; i = ne[i])
+            if (e[i] == x)
+                return true;
+        return false;
+    }
+(2) 开放寻址法
+    //注意开坑位N的时候要多开比原数据多两到三倍
+    const int null = 0x3f3f3f3f;
+    int h[N];
+
+    // 如果x在哈希表中，返回x的下标；如果x不在哈希表中，返回x应该插入的位置
+    int find(int x)
+    {
+        int t = (x % N + N) % N;
+        while (h[t] != null && h[t] != x)
+        {
+            t ++ ;
+            if (t == N) t = 0;
+        }
+        return t;
+    }
+//开放寻址法的话，如果是删除，就是先找到那个数，然后打上一个标记，表示这个数被删除了
+```
+
+- 字符串哈希
+
+```cpp
+核心思想：将字符串看成P进制数，P的经验值是131或13331，取这两个值的冲突概率低
+小技巧：取模的数用2^64，这样直接用unsigned long long存储，溢出的结果就是取模的结果
+
+typedef unsigned long long ULL; //可以不用取模了，这个溢出就等价于进行取模
+ULL h[N], p[N]; // h[k]存储字符串前k个字母的哈希值, p[k]存储 P^k mod 2^64
+
+// 初始化
+p[0] = 1;
+for (int i = 1; i <= n; i ++ )
+{
+    h[i] = h[i - 1] * P + str[i];
+    p[i] = p[i - 1] * P;
+}
+
+// 计算子串 str[l ~ r] 的哈希值
+ULL get(int l, int r)
+{
+    return h[r] - h[l - 1] * p[r - l + 1];
+}
+```
 
 
 
 
+
+
+
+
+
+
+
+### 树状数组
+
+
+
+### 线段树
