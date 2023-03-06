@@ -1522,6 +1522,26 @@ int main()
 }
 ```
 
+> 滑动窗口扩展——前缀和的滑动窗口
+>
+> ```cpp
+> for(int i = 1; i <= n; i ++){
+>         cin >> a[i];
+>         s[i] = s[i-1]+a[i];
+>     }
+>     q.push_back(0);//放入一个0，因为前缀和是从下标1开始的，这里也要放入一个0，防止前缀和计算时越界
+>     for(int i = 1; i <= n; i ++){
+>         if(i - q.front() > m && !q.empty()){
+>             q.pop_front();
+>         }
+>         ans = max(ans, s[i] - s[q.front()]); //为什么要递增滑动窗口？因为s[i] - s[q.front()]
+>         while(!q.empty() && s[q.back()] >= s[i]){ //这里应该是要递增的滑动窗口才行
+>             q.pop_back();
+>         }
+>         q.push_back(i);
+>     }
+> ```
+
 ### KMP
 
 > 注意去体会next数组的含义
@@ -1531,17 +1551,18 @@ int main()
 求模式串的Next数组：
 for (int i = 2, j = 0; i <= m; i ++ )
 {
-    while (j && p[i] != p[j + 1]) j = ne[j];
-    if (p[i] == p[j + 1]) j ++ ;
-    ne[i] = j;
+  	//模式串第一个位置不存在公共前后缀，故为j初始化为0开始；
+    while (j && p[i] != p[j + 1]) j = ne[j];//如果不相等，则回溯
+    if (p[i] == p[j + 1]) j ++ ;//如果j+1个位置的字符和第i个位置的字符相等，j++
+    ne[i] = j;//j值就是截止到第i个位置，最长前后缀子串的长度
 }
 
 // 匹配
 for (int i = 1, j = 0; i <= n; i ++ )
 {
-    while (j && s[i] != p[j + 1]) j = ne[j];
-    if (s[i] == p[j + 1]) j ++ ;
-    if (j == m)
+    while (j && s[i] != p[j + 1]) j = ne[j];//如果不相等，则回溯
+    if (s[i] == p[j + 1]) j ++ ;//如果模式串的j+1个位置的字符和字符串第i个位置的字符相等，j++
+    if (j == m) //如果此时的长度与模式串一样的话，则匹配成功 
     {
         j = ne[j];
         // 匹配成功后的逻辑
@@ -1549,11 +1570,74 @@ for (int i = 1, j = 0; i <= n; i ++ )
 }
 ```
 
+> ```cpp
+> #include <bits/stdc++.h>
+> using namespace std;
+> int m,n;
+> const int N = 1000010;
+> char s[N],p[N];
+> int ne[N];
+> int main()
+> {
+>     cin >> m >> p + 1; //按下面的写法的话应该注意下标从1开始
+>     cin >> n >> s + 1;
+>     //Get next
+>     for(int i = 2, j = 0; i <= m; i ++){
+>         while(j && p[i] != p[j + 1]) j = ne[j];
+>         if(p[i] == p[j + 1]) j ++;
+>         ne[i] = j;
+>     }
+>     for(int i = 1, j = 0; i <= n; i ++){
+>         while(j && s[i] != p[j + 1]) j = ne[j];
+>         if(s[i] == p[j + 1]) j ++;
+>         if(j == m){
+>             cout << i - m << " ";
+>             j = ne[j];
+>         }
+>     }
+>     return 0;
+> }
+> ```
 
+#### Next数组周期
 
+> next数组存在周期性，**循环元**
+> $$
+> 对于next数组，从前往后进行遍历;\\
+> if\ i \% (i - ne[i])->则表示S[1\sim (i-ne[i])]是S[1\sim i]的最小循环元\\
+> 那么存在多少个最小循环元呢，答案是：i/(i-ne[i])
+> $$
 
-
-
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
+const int N = 1000010;
+int n;
+int main()
+{
+    for(int p = 1; p; p ++){
+        cin >> n;
+        if(n == 0) break;
+        char str[N];
+        cin >> str + 1;
+        cout << "Test case #" << p << "\n";
+        int ne[N];
+        //next数组,next数组存在周期性，要利用这个性质
+        for(int i = 2, j = 0; i <= n; i ++){
+            while(j && str[i] != str[j+1]) j = ne[j];
+            if(str[i] == str[j + 1]) j ++;
+            ne[i] = j;
+        }
+        for(int i = 2; i <= n; i ++){
+            if(i % (i - ne[i])==0 && ne[i]){
+                cout << i << " " << i / (i - ne[i]) << "\n";
+            }
+        }
+        cout << "\n";
+    }
+    return 0;
+}
+```
 
 
 
