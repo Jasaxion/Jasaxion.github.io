@@ -1267,7 +1267,287 @@ ULL get(int l, int r)
 }
 ```
 
+### 数据结构｜栈｜队列｜单调栈&单调队列⭐️
 
+- **单链表**
+
+```cpp
+// head存储链表头，e[]存储节点的值，ne[]存储节点的next指针，idx表示当前用到了哪个节点
+int head, e[N], ne[N], idx;
+
+// 初始化
+void init()
+{
+    head = -1;
+    idx = 0;
+}
+
+// 在链表头插入一个数a
+void insert(int a)
+{
+    e[idx] = a, ne[idx] = head, head = idx ++ ;
+}
+
+// 将头结点删除，需要保证头结点存在
+void remove()
+{
+    head = ne[head];
+}
+```
+
+- **双链表**
+
+```cpp
+// e[]表示节点的值，l[]表示节点的左指针，r[]表示节点的右指针，idx表示当前用到了哪个节点
+int e[N], l[N], r[N], idx;
+
+// 初始化
+void init()
+{
+    //0是左端点，1是右端点
+    r[0] = 1, l[1] = 0;
+    idx = 2;
+}
+
+// 在节点a的右边插入一个数x
+void insert(int a, int x)
+{
+    e[idx] = x;
+    l[idx] = a, r[idx] = r[a];
+    l[r[a]] = idx, r[a] = idx ++ ;
+}
+
+// 删除节点a
+void remove(int a)
+{
+    l[r[a]] = l[a];
+    r[l[a]] = r[a];
+}
+```
+
+- **栈**
+
+```cpp
+// tt表示栈顶
+int stk[N], tt = 0;
+
+// 向栈顶插入一个数
+stk[ ++ tt] = x;
+
+// 从栈顶弹出一个数
+tt -- ;
+
+// 栈顶的值
+stk[tt];
+
+// 判断栈是否为空，如果 tt > 0，则表示不为空
+if (tt > 0)
+{
+
+}
+```
+
+- **队列**
+
+```cpp
+// hh 表示队头，tt表示队尾
+int q[N], hh = 0, tt = -1;
+
+// 向队尾插入一个数
+q[ ++ tt] = x;
+
+// 从队头弹出一个数
+hh ++ ;
+
+// 队头的值
+q[hh];
+
+// 判断队列是否为空，如果 hh <= tt，则表示不为空
+if (hh <= tt)
+{
+
+}
+```
+
+- **循环队列**
+
+```cpp
+// hh 表示队头，tt表示队尾的后一个位置
+int q[N], hh = 0, tt = 0;
+
+// 向队尾插入一个数
+q[tt ++ ] = x;
+if (tt == N) tt = 0;
+
+// 从队头弹出一个数
+hh ++ ;
+if (hh == N) hh = 0;
+
+// 队头的值
+q[hh];
+
+// 判断队列是否为空，如果hh != tt，则表示不为空
+if (hh != tt)
+{
+
+}
+```
+
+> - 单调递增栈：单调递增栈就是从栈底到栈顶数据是从大到小
+> - 单调递减栈：单调递减栈就是从栈底到栈顶数据是从小到大
+>
+> ```cpp
+> //单调递增栈
+> while(!st.empty() && a[i] <= st.top()){
+>             st.pop();
+>             if(st.empty()) cout << "-1 ";
+>         }
+>         if(!st.empty()) cout << st.top() << " ";
+>         st.push(a[i]);
+> ```
+
+```cpp
+stack<int> st;
+//此处一般需要给数组最后添加结束标志符，具体下面例题会有详细讲解
+for (遍历这个数组)
+{
+	if (栈空 || 栈顶元素大于等于当前比较元素)
+	{
+		入栈;
+	}
+	else
+	{
+		while (栈不为空 && 栈顶元素小于当前元素)
+		{
+			栈顶元素出栈;
+			更新结果;
+		}
+		当前数据入栈;
+	}
+}
+//单调栈的一般模板，数组栈
+常见模型：找出每个数左边离它最近的比它大/小的数
+int tt = 0;
+for (int i = 1; i <= n; i ++ )
+{
+    while (tt && check(stk[tt], i)) tt -- ;
+    stk[ ++ tt] = i;
+}
+```
+
+> 单调队列的实现方式
+
+```cpp
+常见模型：找出滑动窗口中的最大值/最小值
+int hh = 0, tt = -1;
+for (int i = 0; i < n; i ++ )
+{
+    while (hh <= tt && check_out(q[hh])) hh ++ ;  // 判断队头是否滑出窗口
+    while (hh <= tt && check(q[tt], i)) tt -- ;
+    q[ ++ tt] = i;
+}
+```
+
+#### 滑动窗口
+
+```cpp
+//STL法
+#include<bits/stdc++.h>
+#include<queue>
+using namespace std;
+const int N = 1000010;
+int a[N],n,k;
+deque<int> q;
+int main()
+{
+    scanf("%d%d",&n,&k);
+    for(int i = 1; i <= n; i ++) scanf("%d",&a[i]);
+    for(int i = 1; i <= n; i ++){
+        while(!q.empty() && a[i] < q.back()){ //新加入的值要小于队尾元素的话，则弹出
+            q.pop_back();
+        }
+        q.push_back(a[i]);//加入新的元素
+        //判断队头是否出队
+        if(i - k > 0 && q.front() == a[i - k]){
+            q.pop_front();
+        }
+        //如果满足的话，输出队首元素
+        if(i - k >= 0) cout << q.front() << " ";
+    }
+    q.clear(); //记得清空一下队列；
+    cout << endl;
+    for(int i = 1; i <= n; i ++){
+        while(!q.empty() && a[i] > q.back()){
+            q.pop_back();
+        }
+        q.push_back(a[i]);
+        if(i - k > 0 && q.front() == a[i - k]){
+            q.pop_front();
+        }
+        if(i - k >= 0) cout << q.front() << " ";
+    }
+    return 0;
+}
+```
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 1000100;
+int n,k;
+int a[N];
+int q[N];
+int hh = 0, tt = -1;
+int main()
+{
+    cin >> n >> k;
+    for(int i = 1; i <= n; i ++) cin >> a[i];
+    for(int i = 1; i <= n; i ++)
+    {
+        while(hh <= tt && q[hh] + k <= i) hh ++;
+        while(hh <= tt && a[q[tt]] >= a[i]) tt--;
+        q[++tt] = i;
+        if(i >= k) cout << a[q[hh]] << " ";
+    }
+    cout << endl;
+    hh = 0, tt = -1;
+    for(int i = 1; i <= n; i ++)
+    {
+        while(hh <= tt && q[hh] + k <= i) hh ++;
+        while(hh <= tt && a[q[tt]] <= a[i]) tt --;
+        q[++tt] = i;
+        if(i >= k) cout << a[q[hh]] << " ";
+    }
+    return 0;
+}
+```
+
+### KMP
+
+> 注意去体会next数组的含义
+
+```cpp
+// s[]是长文本，p[]是模式串，n是s的长度，m是p的长度
+求模式串的Next数组：
+for (int i = 2, j = 0; i <= m; i ++ )
+{
+    while (j && p[i] != p[j + 1]) j = ne[j];
+    if (p[i] == p[j + 1]) j ++ ;
+    ne[i] = j;
+}
+
+// 匹配
+for (int i = 1, j = 0; i <= n; i ++ )
+{
+    while (j && s[i] != p[j + 1]) j = ne[j];
+    if (s[i] == p[j + 1]) j ++ ;
+    if (j == m)
+    {
+        j = ne[j];
+        // 匹配成功后的逻辑
+    }
+}
+```
 
 
 
