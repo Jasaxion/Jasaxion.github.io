@@ -2059,7 +2059,81 @@ bool topsort()
 }
 ```
 
+> **时刻注意看到DAG就耀想到拓扑排序！！！！** 有向无环图
 
+#### 3696. 构造有向无环图
+
+> https://www.acwing.com/problem/content/3699/
+>
+> 先看已经有的有向边，如果已经构成了环，那么肯定不能输出一个DAG
+> 如果没有的话，那么后续的无向边只需按top顺序输出即可
+
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
+const int N = 200010;
+int h[N],ne[N],e[N],d[N],idx,n,m,t,k,x,y;
+vector<int> anstop;
+struct Edge{
+    int a,b;
+}edge[N];
+int pos[N];
+void add(int a,int b){
+    e[idx] = b, ne[idx] = h[a], h[a] = idx++;
+}
+bool topsort(){
+    queue<int> q;
+    for(int i = 1; i <= n; i ++){
+        if(!d[i]) q.push(i);
+    }
+    while(q.size()){
+        auto t = q.front();
+        q.pop();
+        anstop.push_back(t);
+        for(int i = h[t]; ~i; i=ne[i]){
+            int j = e[i];
+            if(--d[j] == 0) q.push(j);
+        }
+    }
+    if(anstop.size() == n) return true;
+    return false;
+}
+int main()
+{
+    scanf("%d",&t);
+    while(t --){
+        int cnt = 0;
+        scanf("%d%d",&n,&m);
+        memset(h,-1,sizeof h);
+        memset(d,0,sizeof d);
+        idx = 0;
+        anstop.clear();
+        for(int i = 0; i < m; i ++){
+            scanf("%d%d%d",&k,&x,&y);
+            if(!k) edge[cnt ++] = {x,y};
+            else{
+                add(x,y);
+                d[y] ++;
+            }
+        }
+        if(!topsort()) puts("NO");
+        else{
+            puts("YES");
+            for(int i = 1; i <= n; i ++){
+                for(int j = h[i]; ~j; j = ne[j]){
+                    printf("%d %d\n",i, e[j]); //注意⭐️ i --> e[j]
+                }
+            }
+            for(int i = 0; i < n; i ++) pos[anstop[i]] = i; //标记拓扑顺序
+            for(int i = 0; i < cnt; i ++){ //找拓扑顺序
+                int a = edge[i].a, b = edge[i].b;
+                if (pos[a] > pos[b]) swap(a, b);
+                printf("%d %d\n", a, b);
+            }
+        }
+    }
+}
+```
 
 
 
