@@ -1639,6 +1639,430 @@ int main()
 }
 ```
 
+### Trie树
+
+```
+Trie的基本操作过程：
+1.初始化
+	一棵空Trie仅包含一个根节点，该点的字符指针均指向空。
+2.插入
+	当需要插入一个字符串S时，我们令一个指针P起初指向根节点。然后，依次扫描S中的每个字符c;
+	1)若P的c字符指针指向一个已经存在的结点Q,则令P = Q
+	2)若P的c字符指针指向空，则新建一个结点Q，令P的c字符指针指向Q,然后令P = Q
+	当S中的字符扫描完毕时，在当前结点P上标记它是一个字符串的末尾
+3.检索
+	当需要检索一个字符串S在Trie中是否存在时，我们令一个指针P起初指向根节点，然后依次扫描S中的每个字符c;
+	1)若P的c字符指针指向空，则说明S没用被插入过Trie，结束检索。
+	2)若P的c字符指针指向一个已经存在的结点Q,则令P = Q
+	当S中的字符扫描完毕时，若当前结点P被标记为一个字符串的末尾，则说明S在Trie中存在，否则说明S没有被插入过Trie
+```
+
+```cpp
+int trie[SIZE][26], tot = 1; //初始化，假设字符串由小写字母构成
+void insert(char *str)
+{//插入一个字符串
+ int len = strlen(str), p = 1;
+ for(int k = 0; k < len; k ++)
+ {
+     int ch = str[k] - 'a';
+     if(trie[p][ch] == 0) trie[p][ch] = ++tot;
+     p = trie[p][ch];
+ }
+ end[p] = true;
+}
+bool search(char *str)
+{//检索字符串是否存在
+ int len = strlen(str), p = 1;
+ for(int k = 0; k < len; k ++)
+ {
+     p = trie[p][str[k] - 'a'];
+     if(p == 0) return false;
+ }
+ return true;
+}
+```
+
+> yxc模版
+>
+> ```cpp
+> int son[N][26], cnt[N], idx;
+> // 0号点既是根节点，又是空节点 <---
+> // son[][]存储树中每个节点的子节点
+> // cnt[]存储以每个节点结尾的单词数量
+> 
+> // 插入一个字符串
+> void insert(char *str)
+> {
+>     int p = 0;
+>     for (int i = 0; str[i]; i ++ )
+>     {
+>         int u = str[i] - 'a';
+>         if (!son[p][u]) son[p][u] = ++ idx;
+>         p = son[p][u];
+>     }
+>     cnt[p] ++ ;
+> }
+> 
+> // 查询字符串出现的次数
+> int query(char *str)
+> {
+>     int p = 0;
+>     for (int i = 0; str[i]; i ++ )
+>     {
+>         int u = str[i] - 'a';
+>         if (!son[p][u]) return 0;
+>         p = son[p][u];
+>     }
+>     return cnt[p];
+> }
+> ```
+
+#### 最大异或和
+
+> https://www.acwing.com/problem/content/3488/
+
+> 一看到区间和——>就要想到前缀和
+>
+> > Trie树_最大异或对(Trie建树求解思想) —⭐️在这个基础上增加了长度限制（是关键）
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+const int N = 3100010;
+int trie[N][2],n,m;
+int s[N],idx; //idx索引编号
+int cnt[N];//cnt[n]的作用是标记滑动窗口内0，1的数量
+void insert(int x, int v){
+    int p = 0;
+    for(int i = 30; ~i; i --){
+        int t = x >> i & 1;
+        if(!trie[p][t]) trie[p][t] = ++idx;
+        p = trie[p][t];
+        cnt[p] += v;//⭐️:v表示有多少个节点可以到达此处
+    }
+}
+int query(int x){
+    int p = 0;
+    int res = x;
+    for(int i = 30; ~i; i --){
+        int t = x >> i & 1;
+        if(cnt[trie[p][!t]] > 0){//当x对面的那个数！x存在时(0,1)，另外一个分支⭐️
+            t = (t + 1) % 2;//x就变成另外一个数 !x
+        }
+        res ^= t << i;
+        p = trie[p][t];
+    }
+    return res;
+}
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0),cout.tie(0);
+    cin >> n >> m;
+    for(int i = 1; i <= n; i ++){
+        cin >> s[i];
+        s[i] = s[i - 1] ^ s[i];
+    }
+    int ans = 0;
+    insert(0,1); //先插入一个0
+    for(int i = 1;i <= n;i ++){
+        if(i > m) insert(s[i - m - 1], -1);//将滑动窗口外的数除去，这时就要修改cnt，故-1
+        ans = max(ans,query(s[i]));//在滑动窗口内求最大值
+        insert(s[i], 1);//求完后记得插入该值，方便后面的值进行异或
+    }
+    cout << ans << "\n";
+    return 0;
+}
+```
+
+### BFS广度优先遍历
+
+bfs模版：
+
+```cpp
+queue<int> q;
+st[1] = true; // 表示1号点已经被遍历过
+q.push(1);
+while (q.size())
+{
+    int t = q.front();
+    q.pop();
+
+    for (int i = h[t]; i != -1; i = ne[i])
+    {
+        int j = e[i];
+        if (!st[j])
+        {
+            st[j] = true; // 表示点j已经被遍历过
+            q.push(j);
+        }
+    }
+}
+```
+
+#### 1562.微博转发
+
+> https://www.acwing.com/problem/content/1564/
+
+> 思路点：bfs广度优先遍历，别忘了怎么建图，与此同时，这里限制bfs的层数的方面值得学习！
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+const int N = 1100;
+int h[N],ne[N*100],e[N*100],idx;
+int vis[N];
+int n,l,k;
+void add(int a, int b){
+    e[idx] = b;
+    ne[idx] = h[a];
+    h[a] = idx++;
+}
+int bfs(int x){
+    queue<int> q;
+    q.push(x);
+    memset(vis,0,sizeof vis);
+    vis[x] = 1;
+    int res = 0;
+    for(int u = 0; u < l; u ++){//限制遍历层数
+        int sz = q.size(); //每一层的节点
+        while(sz --){
+            auto t = q.front();
+            q.pop();
+            for(int i = h[t]; ~i; i = ne[i]){
+                int j = e[i];
+                if(!vis[j]){
+                    q.push(j);
+                    vis[j] = 1;
+                    res ++;
+                }
+            }
+        }
+    }
+    return res;
+}
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0),cout.tie(0);
+    cin >> n >> l;
+    memset(h,-1,sizeof h);
+    for(int i = 1; i <= n; i ++){
+        int m;
+        cin >> m;
+        while(m --){
+            int a;
+            cin >> a;
+            add(a,i);
+        }
+    }
+    cin >> k;
+    while(k --){
+        int x;
+        cin >> x;
+        cout << bfs(x) << "\n";
+    }
+    return 0;
+}
+```
+
+### DFS深度优先遍历
+
+dfs模版：
+
+```
+int dfs(int u)
+{
+    st[u] = true; // st[u] 表示点u已经被遍历过
+
+    for (int i = h[u]; i != -1; i = ne[i])
+    {
+        int j = e[i];
+        if (!st[j]) dfs(j);
+    }
+}
+```
+
+#### 165. 小猫爬山⭐️
+
+> 因为这里N比较小，但M比较大，故此这里不是一个背包问题，是一个DFS搜索问题。
+> 同时也要想到怎么样才能不重不漏地枚举到每一个元素：
+> $$
+> 对于每一个C_i 都有\\
+> 	\begin{eqnarray}
+> 		C_i=
+> 		\begin{cases}
+> 			放到已有的车& 枚举每辆车看是否超重，若没有超过则继续递归 (1)\\
+> 			放到新的车& 新加一辆车(2)
+> 		\end{cases}
+> 	\end{eqnarray}
+> $$
+> dfs的参数dfs(u,k) u表示当前枚举的猫的个数，k表示当前车的个数
+> $$
+> 剪枝优化\\
+> (1)k\ge ans & return\\
+> (2)dfs是一棵递归树，尽可能考虑决策少的分支 &\\
+> (3)对于（10）中的（1）可以进行划分，重的猫选择更少，可以优先选择重的猫
+> $$
+
+```cpp
+int n, m;
+int w[N];
+int sum[N];
+int ans = N; //注意首先就是，每只猫都安排一辆车，此时ans最大
+void dfs(int u, int k)
+{
+    // 最优性剪枝
+    if (k >= ans) return;
+    if (u == n)
+    {
+        ans = k;
+        return;
+    }
+    for (int i = 0; i < k; i ++ )
+        if (sum[i] + w[u] <= m) // 可行性剪枝
+        {
+            sum[i] += w[u];
+            dfs(u + 1, k);
+            sum[i] -= w[u]; // 恢复现场
+        }
+    // 新开一辆车
+    sum[k] = w[u];
+    dfs(u + 1, k + 1);
+    sum[k] = 0; // 恢复现场
+}
+int main()
+{
+    cin >> n >> m;
+    for (int i = 0; i < n; i ++ ) cin >> w[i];
+    // 优化搜索顺序
+    sort(w, w + n);
+    reverse(w, w + n);
+    dfs(0, 0);
+    cout << ans << endl;
+    return 0;
+}
+```
+
+#### 1209.带分数（强化版全排列）
+
+> 很有意思的题
+>
+> 1. 运用到了dfs的全排列；
+> 2. 将除法运算转化为了乘法运算；
+> 3. 将全排列分成了三个部分进行分析计算；
+>
+> ```cpp
+> //stl函数的方法
+>   do {
+>     for (int i = 0; i < 9; i++) {
+>       for (int j = i + 1; j < 9; j++) {
+>         int a = calc(0, i);
+>         int b = calc(i + 1, j);
+>         int c = calc(j + 1, 8);
+>         if (a == 0 || b == 0 || c == 0) {
+>           continue;
+>         }
+>         if (a * c + b == c * target) {
+>           ++res;
+>         }
+>       }
+>     }
+>     // 调用函数生成全排列
+>   } while (next_permutation(num, num + 9));
+> ```
+
+```cpp
+//全排列升级版
+#include<bits/stdc++.h>
+using namespace std;
+const int N = 110;
+int num[N],vis[N];
+int ans,n;
+int calnum(int l, int r){
+    int res = 0;
+    for(int i = l; i <= r; i ++){
+        res = res*10+num[i];
+    }
+    return res;
+}
+void dfs(int u){
+    //递归出口
+    if(u == 9){
+        //这里我们应该将原问题分成三个部分
+        for(int i = 0; i < 7; i ++){
+            for(int j = i + 1; j < 8; j ++){
+                int a = calnum(0,i);
+                int b = calnum(i+1,j);
+                int c = calnum(j+1,8);
+                //将除法转化为乘法⭐️
+                if(n*c == a*c+b) ans++;
+            }
+        }
+        return;
+    }
+    //全排列的递归搜索
+    for(int i = 1; i <= 9; i ++){
+        if(!vis[i]){
+            num[u] = i;
+            vis[i] = 1;
+            dfs(u+1);
+            num[u] = 0;
+            vis[i] = 0;
+        }
+    }
+}
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0),cout.tie(0);
+    cin >> n;
+    dfs(0);
+    cout << ans << "\n";
+    return 0;
+}
+```
+
+### 拓扑排序
+
+> - 必须是有向图
+> - 是宽搜的扩展
+
+```cpp
+int d[N]; //存放每个点的入度 ，注意输入时候需要给入度自增
+//邻接表完成算法，头插法可以使用y总的模板，尾插法可以使用 vector<int> Gt[N]; 直接push_back可以在尾部增加结点。
+bool topsort()
+{
+    int hh = 0, tt = -1;//数组模拟队列
+
+    // d[i] 存储点i的入度
+    for (int i = 1; i <= n; i ++ )
+        if (!d[i])
+            q[ ++ tt] = i; //存入队列为0的点
+
+    while (hh <= tt) //队列不为空
+    {
+        int t = q[hh ++ ]; //获取队头元素，并出队操作
+
+        for (int i = h[t]; i != -1; i = ne[i]) //第i个单链表往后查找
+        {
+            int j = e[i]; 
+            if (-- d[j] == 0) //如果j的入度也为0了，则也将j入队
+                q[ ++ tt] = j;
+        }
+    }
+
+    // 如果所有点都入队了，说明存在拓扑序列；否则不存在拓扑序列。
+    return tt == n - 1;
+}
+```
+
+
+
+
+
 
 
 ### 树状数组
