@@ -8,6 +8,10 @@
 
 ![image-20230305220940231](./wdcs.assets/image-20230305220940231.png)
 
+**算法复杂度分析**
+
+<img src="./wdcs.assets/%E7%94%B1%E6%95%B0%E6%8D%AE%E8%8C%83%E5%9B%B4%E5%8F%8D%E6%8E%A8%E7%AE%97%E6%B3%95%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6.png" alt="由数据范围反推算法的时间复杂度" style="zoom:80%;" />
+
 ### 前缀和
 
 #### 模板回顾
@@ -3918,11 +3922,11 @@ int lucas(LL a, LL b, int p)
 > 分治法所能解决的问题一般具有以下几个特征：
 >
 >     1) 该问题的规模**缩小到一定的程度**就可以容易地解决
->
+>    
 >     2) 该问题可以**分解为若干个规模较小的相同问题**，即该问题**具有最优子结构性质**。
->
+>    
 >     3) 利用该问题分解出的子问题的解**可以合并为该问题的解**；
->
+>    
 >     4) 该问题所分解出的**各个子问题是相互独立的**，即**子问题之间不包含公共的子子问题**。
 >
 > > > 第一条特征是绝大多数问题都可以满足的，因为问题的计算复杂性一般是随着问题规模的增加而增加；
@@ -5786,6 +5790,134 @@ bitset, 圧位
     reset() 把所有位变成0
     flip() 等价于~
     flip(k)把第k位取反
+```
+
+### 骗分技巧
+
+可以先跳过第三题，看第四第五题，不会就打暴力骗一些分
+
+> 语言混用
+>
+> C++、python、JAVA都能用
+
+#### 无解的情况
+
+`若无解，请输出-1`
+`printf("-1");` -->可以拿10分
+
+#### 样例包含解的情况
+
+`直接把样例输出出来没准也能拿分！`
+
+#### 万能钥匙——DFS 暴力搜索
+
+如果有的题目很难想出来DP的方法，可以把所有情况都搜索一遍，找出答案
+
+#### 听天由命法
+
+> 有的问题会问你 "YES" 或者 "NO" 或者等式是否成立
+
+```C++
+#include <cstdlib>
+#include <ctime>
+
+srand(time(NULL));
+
+printf("%d",rand()%X); //生成 0 ~ X-1的随机整数
+
+```
+
+#### 根据题意猜答案
+
+#### 打表找规律
+
+> 有些DP问题可以找出一些递推式
+
+#### 傻瓜式贪心求法
+
+> 根据题意对一些小数据范围的数据进行贪心求法
+
+#### 字符串处理
+
+```C++
+#include <sstream>
+
+stringstream ssin;  // 类似于cin ，可以从string读double
+str.c_str();
+sscanf("");
+sprintf("");
+
+substr(); //返回一个string的某一个子串
+
+str + 'a', s + s;
+
+strstr(); //kmp O(n)级别的kmp
+
+s.find(); //查找某个字符在某个地方出现 n^2
+
+string to int; ---> stoi(s);
+string to long long ---> stoll(s);
+string to float ---> stof(s);
+string to double ---> stod(S);
+
+char str[N] to int ---> atoi(str); atoll; atof;
+
+isdigit(); 判断是否是数字;
+tolower(); 变成小写;
+toupper(); 变成大写;
+
+s.c_str();
+
+
+#include <string>
+#include <sstream>
+#include <iostream>
+using namespace std;
+/*
+在<sstream>中有一个类 istringstream可以把字符串根据空格分开。
+*/
+
+int main()
+{
+    string str="AA  BB  CC    B  1 123 ";
+    istringstream stream(str); //声明一个istingstream的对象，并且绑定一个字符串。
+    string s;
+    while(stream>>s){
+        cout<<s<<endl;
+    }
+    return 0;
+}
+
+/*
+方法stringstream，可以看成一个缓冲区，经常用来string<-->int转换。
+*/
+
+int main()
+{
+    stringstream stream;
+    int n;
+    string str="1234567";
+    stream<<str;//向stream中插入str
+    stream>>n;
+    //从strea中提取刚才装入的字符串，并将其付给n。并且完成从string 到int的转换。
+    cout<<"int型数据："<<n;
+    return 0;
+}
+
+//Tip: 如果这个stream要多次使用的话，记得每次使用完以后清空一下，stream.clear();
+
+
+char *strstr(const char *haystack, const char *needle)
+
+//strstr()函数 ---> 这是一个时间复杂度为O(n)的KMP匹配算法
+//strstr(模式串, 匹配串) ---> 该函数返回在 haystack 中第一次出现 needle 字符串的位置，如果未找到则返回 null。
+```
+
+#### 常数优化
+
+```
+·可以在一些非递归函数前 加一个 inline 
+·可以在一些变量前加上 register   //register int
 ```
 
 
