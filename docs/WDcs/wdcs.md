@@ -1650,6 +1650,86 @@ int main()
 >     }
 > ```
 
+> 类似题：第十四届蓝桥杯 —>把滑动窗口变成一个二维的
+>
+> https://www.acwing.com/problem/content/4967/ 
+
+> 思路：我们可以固定列的表示，将其转化为一个一维的问题，例如对于A\*B窗口，我们首先对于每一个A\*1求一个最值$b_i$——>滑动窗口模版
+>
+> <img src="./wdcs.assets/image-20230415153514323.png" alt="image-20230415153514323" style="zoom:40%;" />
+
+```cpp
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+
+using namespace std;
+
+typedef long long LL;
+const int N = 1010, MOD = 998244353;
+
+int n, m, A, B;
+int w[N][N];
+int rmax[N][N], rmin[N][N];
+int q[N];
+
+void get_max(int a[], int b[], int tot, int k)//滑动窗口求最大值模版
+{
+    int hh = 0, tt = -1;
+    for (int i = 0; i < tot; i ++ )
+    {
+        if (hh <= tt && q[hh] <= i - k) hh ++ ;
+        while (hh <= tt && a[q[tt]] <= a[i]) tt -- ;
+        q[ ++ tt] = i;
+        b[i] = a[q[hh]];
+    }
+}
+
+void get_min(int a[], int b[], int tot, int k) //滑动窗口求最小值模版
+{
+    int hh = 0, tt = -1;
+    for (int i = 0; i < tot; i ++ )
+    {
+        if (hh <= tt && q[hh] <= i - k) hh ++ ;
+        while (hh <= tt && a[q[tt]] >= a[i]) tt -- ;
+        q[ ++ tt] = i;
+        b[i] = a[q[hh]];
+    }
+}
+
+int main()
+{
+    scanf("%d%d%d%d", &n, &m, &A, &B);
+    for (int i = 0; i < n; i ++ )
+        for (int j = 0; j < m; j ++ )
+            scanf("%d", &w[i][j]);
+
+    for (int i = 0; i < n; i ++ )
+    {
+        get_max(w[i], rmax[i], m, B);
+        get_min(w[i], rmin[i], m, B);
+    }
+
+    int res = 0;
+
+    int a[N], b[N], c[N];
+    for (int i = B - 1; i < m; i ++ )
+    {
+        for (int j = 0; j < n; j ++ ) a[j] = rmax[j][i];
+        get_max(a, b, n, A);
+        for (int j = 0; j < n; j ++ ) a[j] = rmin[j][i];
+        get_min(a, c, n, A);
+        for (int j = A - 1; j < n; j ++ )
+            res = (res + (LL)b[j] * c[j]) % MOD;
+    }
+
+    printf("%d\n", res);
+    return 0;
+}
+```
+
+
+
 ### KMP
 
 > 注意去体会next数组的含义
@@ -3922,11 +4002,11 @@ int lucas(LL a, LL b, int p)
 > 分治法所能解决的问题一般具有以下几个特征：
 >
 >     1) 该问题的规模**缩小到一定的程度**就可以容易地解决
->    
+>        
 >     2) 该问题可以**分解为若干个规模较小的相同问题**，即该问题**具有最优子结构性质**。
->    
+>        
 >     3) 利用该问题分解出的子问题的解**可以合并为该问题的解**；
->    
+>        
 >     4) 该问题所分解出的**各个子问题是相互独立的**，即**子问题之间不包含公共的子子问题**。
 >
 > > > 第一条特征是绝大多数问题都可以满足的，因为问题的计算复杂性一般是随着问题规模的增加而增加；
@@ -4449,6 +4529,106 @@ void dfs(int u, int start, int sum) {
         dfs(u + 1, i ,sum);
         sum -= i;
     }
+}
+```
+
+> **典型例题：**第十四届蓝桥杯——接龙数列——**类似于最长公共子序列问题** ⭐️本题DP真的很巧妙，小技巧！！大妙招！！！大突破！！！
+>
+> https://www.acwing.com/problem/content/4961/ 
+>
+> 题目描述：对于一个数列 删除数字使其构造的接龙数列的长度最大
+> 接龙数列：前一个数的末尾等于后一个数的前面
+>
+> **思路：**
+>
+> 1. 求删除最少的数使其构造的接龙数列最长=该数列中存在的最长的接龙数列，然后使用数列的长度-最大的接龙数列的长度=需要删除的最少的数
+>
+> 2. 传统的DP动态规划的求解子问题；「每一个数是否为接龙数只取决于上一个数的某尾是否与当前数字的前面相等」
+>
+> 3. 分析过程「类似最长公共子序列分析过程」
+>
+>    1. 状态表示$F[i]$
+>
+>       - 集合：表示以第i个数结尾的所有接龙子序列的集合
+>       - 属性：子序列的最长长度
+>
+>       <img src="./wdcs.assets/image-20230415161034618.png" alt="image-20230415161034618" style="zoom:40%;" />
+>
+>    2. 状态计算
+>
+>       - 由1状态表示可以得到f[i]可以分为如上几个类：
+>         1. 无：表示没有办法找出i的前一个数与其组成接龙序列
+>         2. $a_1$：表示$a_i$可以与$a_1$组成接龙序列
+>         3. 最大可以到$a_{i-1}$能够与$a_i$组成接龙序列
+>       - 我们要求$f(i)$所有集合中的最大长度。
+>         1. 对于无的空集，那么最大子集就是本身，长度为1；
+>         2. 对于其中每个子集，他们的最大值就是$f[j]+1$
+>         3. 那么对于$$f[i]$$集合的长度，就是取$$max(1, f[j]+1)$$的最大值
+>
+>    3. 时间复杂度的优化
+>
+>       - 如果直接按上面的方法进行求解的话，得到的是$O(n^2)$的算法，只能过50%的样例;
+>         1. 因为在j循环中，我们只关心$back[i] == pre[j]$的数的情况，也就是说其他情况不用去考虑；
+>         2. 我们可以开一个辅助数组g[10]，用于求解其中以数字0,1,2,3,4,5,6,7,8,9结尾的数中最大的长度，这样的话每次求最大长度就不需要遍历i-1次了，直接获取其最大的集合数$g[pre[i]]$ 
+
+```cpp
+// 50%的求法 O(n^2)时间复杂度
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 100010;
+int a[N],dp[N];
+int n;
+char ch[30];
+int pre[N],back[N];//分别存每个数的前缀和末尾
+int main()
+{
+    scanf("%d",&n);
+    for(int i = 0; i < n; i ++){
+        scanf("%s",ch);
+        pre[i] = ch[0] - '0';
+        back[i] = ch[strlen(ch) - 1] - '0';
+    }
+    int ans = 0;
+    for(int i = 0; i < n; i ++){
+        dp[i] = max(1, dp[i]);
+        for(int j = 0; j < i; j ++){
+            if(back[j] == pre[i]){
+                dp[i] = max(dp[i], dp[j] + 1);
+            }
+        }
+        ans = max(ans, dp[i]);
+    }
+    printf("%d", n - ans);
+    return 0;
+}
+```
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 100010;
+int a[N],dp[N];
+int n;
+char ch[30];
+int pre[N],back[N];//分别存每个数的前缀和末尾
+int g[10]; //数组优化循环，存的是以某个数字结尾的最大的长度
+int main()
+{
+    scanf("%d",&n);
+    for(int i = 0; i < n; i ++){
+        scanf("%s",ch);
+        pre[i] = ch[0] - '0';
+        back[i] = ch[strlen(ch) - 1] - '0';
+    }
+    int ans = 0;
+    for(int i = 0; i < n; i ++){
+        dp[i] = max(1, dp[i]);
+        dp[i] = max(dp[i], g[pre[i]] + 1); //思维很重要，优化思维！！！
+        g[back[i]] = max(g[back[i]], dp[i]);
+        ans = max(ans, dp[i]);
+    }
+    printf("%d", n - ans);
+    return 0;
 }
 ```
 
