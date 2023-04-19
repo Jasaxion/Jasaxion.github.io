@@ -4002,11 +4002,11 @@ int lucas(LL a, LL b, int p)
 > 分治法所能解决的问题一般具有以下几个特征：
 >
 >     1) 该问题的规模**缩小到一定的程度**就可以容易地解决
->        
+>                
 >     2) 该问题可以**分解为若干个规模较小的相同问题**，即该问题**具有最优子结构性质**。
->        
+>                
 >     3) 利用该问题分解出的子问题的解**可以合并为该问题的解**；
->        
+>                
 >     4) 该问题所分解出的**各个子问题是相互独立的**，即**子问题之间不包含公共的子子问题**。
 >
 > > > 第一条特征是绝大多数问题都可以满足的，因为问题的计算复杂性一般是随着问题规模的增加而增加；
@@ -4435,6 +4435,99 @@ return dp[n][m];
 
 > LCS转化为LIS问题洛谷P1439
 > https://www.luogu.com.cn/problem/P1439
+
+变题：最长连续公共子串问题
+
+> https://www.acwing.com/problem/content/3511/
+
+```
+思路：MLE //注意辨别与LCS问题的区别
+f[i][j]表示 1~ai,1~bj且ai,bj为结尾的所有公共子串
+属性：最长公共串长度
+转移：
+1.如果ai==bj且ai,bj都是字母，则f[i][j]=f[i-1][j-1]+1
+2.其他，f[i][j]=0
+```
+
+```cpp
+//MLE
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 20010;
+int f[N][N];
+char p[N],s[N];
+int res = 0;
+int main()
+{
+    scanf("%s", p + 1);
+    scanf("%s", s + 1);
+    int n = strlen(p+1);
+    int m = strlen(s+1);
+    for(int i = 1; i <= n; i ++){
+        for(int j = 1; j <= m; j ++){
+            if(p[i] == s[j] && !(p[i] >= '0' && p[i] <= '9')){
+                f[i][j] = max(f[i][j], f[i - 1][j - 1] + 1);
+                res = max(f[i][j], res);
+            }
+            else f[i][j] = 0;
+        }
+    }
+    printf("%d\n",res);
+    return 0;
+}
+```
+
+> 上面的代码内存超限，观察优化可以得到`for(int j = 1; j <= m; j ++)`类似于01背包的优化方法，可以采用滑动数组的方式对空间进行优化。
+>
+> 采用类似01背包的方式进行优化后如下所示：
+> 需要注意的是：这里写成`` f[j] = max(f[j], f[j-1]+1)`` 会出问题
+>
+> 这里绝对不能生搬硬套0/1背包的解问题，为什么呢？`一定要自己思考，不要生搬硬套`
+>
+> 我们可以将原问题转换到二维之前的情况：
+> 对于本体，原来的转移方式是`f[i][j] = f[i-1][j-1] + 1`
+>
+> ```
+> 此时i只取决于上一步的i-1，故此可以优化第一维度。
+> 如果这里取f[j] = max(f[j], f[j-1]+1)的话
+> 表示f[i][j] = max(f[i - 1][j], f[i - 1][j - 1] + 1);
+> ```
+>
+> 对比优化前的0/1背包：`f[i][j] = max(f[i-1][j], f[i-1][j-v] + w)` 这样才能优化为`f[j]=max(f[j],f[j-v]+w)`
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+const int N = 10010;
+int f[N];
+char p[N],s[N];
+int res = 0;
+int n,m;
+int main()
+{
+    scanf("%s%s", p + 1, s + 1);
+    n = strlen(p+1);
+    m = strlen(s+1);
+    // for(int i=1;i<=n;i++){
+    //     for(int j=m;j>=1;j--){
+    //         if(p[i]==s[j] && isalpha(p[i]) && isalpha(s[j]))f[j]=f[j-1]+1;
+    //         else f[j]=0;
+    //         res=max(res,f[j]);
+    //     }
+    // }
+    for(int i = 1; i <= n; i ++){
+        for(int j = m; j >= 1; j --){
+            if(p[i] == s[j] && !(p[i] >= '0' && p[i] <= '9')){
+                f[j] = f[j - 1] + 1; //IMPORTANT！
+            }
+            else f[j] = 0;
+            res = max(res, f[j]);
+        }
+    }
+    printf("%d\n",res);
+    return 0;
+}
+```
 
 ##### 数字三角形
 
