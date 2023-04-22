@@ -710,6 +710,155 @@ int main()
 }
 ```
 
+### 高精度
+
+> <center>高精度总结</center>
+>
+> ![IMG_2675](./wdcs.assets/IMG_2675.jpg)
+
+**下面函数中vector 取引用 &A ,&B 目的是为了节省内存空间。只取引用。不单独开辟空间！**
+
+#### 大整数相加
+
+```cpp
+//大整数相加模板
+vector<int> add (vector<int> &A, vector<int> &B)
+{
+    if (A.size() < B.size()) return add(B,A);
+    
+    vector<int> C;
+    int t = 0; //t表示进位数
+    for (int i = 0;i < A.size() || i < B.size();i++)
+    {
+        if (i < A.size()) t = t + A[i];
+        if (i < B.size()) t = t + B[i];
+        C.push_back(t%10);  //只存进位数的个位
+        t = t/10; //如果进位大于10的话，进到下一位
+    }
+    if (t) C.push_back(t);
+    return C;
+}
+```
+
+#### 大整数相减 
+
+##### 易错点：
+
+1. 字符串转整型 善用ASCII码
+2. **该模板一定要先判断是否A>=B！！** （要注意负数可能存在的情况！）
+
+```cpp
+//大整数的减法模板
+vector<int> sub (vector<int> &A,vector<int> &B)
+{
+    vector<int> C;
+    for(int i = 0, t = 0;i < A.size(); i ++)
+    {
+        t = A[i] - t;
+        if (i < B.size()) t = t - B[i];
+        C.push_back((t + 10) % 10);
+        if (t < 0) t = 1;  //说明借了一位
+        else t = 0;  //说明没有借
+    }
+    
+    while (C.size() > 1 && C.back() == 0) C.pop_back(); //把最后的 0 的弄出去
+    return C;
+}
+```
+
+#### 大整数 乘以 小整数 A*b
+
+```cpp
+//把 b 看成一个整体去和A相乘
+string A;
+int b;
+vector<int> mu;
+
+vector<int> mul(vector<int> &A, int b)
+{
+    vector<int> C;
+    int t = 0;
+    for (int i = 0;i < A.size() || t;i ++)
+    {
+        if (i < A.size()) t = t + A[i] * b;
+        C.push_back(t % 10);
+        t = t / 10;
+    }
+    while (C.size() > 1 && C.back == 0) C.pop_back();
+    return C;
+}
+```
+
+##### 大整数 乘以 大整数 A*A
+
+> <img src="./wdcs.assets/image-20210412113525577.png" alt="image-20210412113525577" style="zoom:50%;" />
+
+```cpp
+//分治算法！先不处理进位！
+#include<iostream>
+#include<string>
+#include<algorithm>
+#define N 11000
+using namespace std;
+int main(){
+    string s1,s2;
+    cin>>s1>>s2;
+    //首先倒序输入
+    reverse(s1.begin(),s1.end());
+    reverse(s2.begin(),s2.end());
+   
+    int a[N]={0};//初始化结果数组
+    for(int i=0;i<s1.length();++i){
+        for(int j=0;j<s2.length();++j){
+            a[i+j]+=(s1[i]-'0')*(s2[j]-'0');
+        }
+    }//先不处理进位
+    
+    for(int i=0;i<N-1;++i){
+        a[i+1]+=a[i]/10;
+        a[i]=a[i]%10;
+    }
+    //处理进位
+    
+    int i=N-1;
+    while(a[i]==0)
+        i--;
+    for(int j=i;j>=0;--j)
+        cout<<a[j];
+    //倒序输出！
+    return 0;
+}
+```
+
+#### 大整数 除以 小整数
+
+##### 易错点：
+
+1.为了与其他几个运算更为通用，大整数的存储方式仍是倒着储存，但是，切记结果应该再倒数一次
+这时候可利用 algorithm头文件中的 reverse函数进行倒置
+2.记得倒序输出的时候也要删除前导0 pop_back()
+3.同样写 主函数的时候不要忘了 写输入，然后一定要记得 利用ASCII 进行字符与整数之间的转换！
+
+```cpp
+//A / b = C （商）  ....r为余数, A >= 0, b > 0
+
+#include <algorithm>        ----- reverse
+vector<int> div(vector<int> &A, int b, int &r)
+{
+    vector<int> C;
+    r = 0;
+    for (int i = A.size() - 1; i >= 0; i --)
+    {
+        r = r * 10 + A[i];
+        C.push_back(r/b);
+        r %= b;
+    }
+    reverse(C.begin(), C.end());  //除法是从高位开始计算的，但为了通用(+ - x)起见，一律逆序存数。最后输出的时候需要倒过来。
+    while (C.size() > 1 && C.back() == 0) C.pop_back(); //删除前导0
+    return C;
+}
+```
+
 ### 递推
 
 > 这就像道智力题啦，要发现规律
@@ -4002,11 +4151,11 @@ int lucas(LL a, LL b, int p)
 > 分治法所能解决的问题一般具有以下几个特征：
 >
 >     1) 该问题的规模**缩小到一定的程度**就可以容易地解决
->                
+>                    
 >     2) 该问题可以**分解为若干个规模较小的相同问题**，即该问题**具有最优子结构性质**。
->                
+>                    
 >     3) 利用该问题分解出的子问题的解**可以合并为该问题的解**；
->                
+>                    
 >     4) 该问题所分解出的**各个子问题是相互独立的**，即**子问题之间不包含公共的子子问题**。
 >
 > > > 第一条特征是绝大多数问题都可以满足的，因为问题的计算复杂性一般是随着问题规模的增加而增加；
