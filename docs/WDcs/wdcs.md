@@ -859,6 +859,89 @@ vector<int> div(vector<int> &A, int b, int &r)
 }
 ```
 
+#### 高精度综合「进制转换」——清华大学机试
+
+> **大致思路：**将原来的大整数转化为二进制，然后将二进制数进行倒置，再将其转化为十进制。
+> 需要用到高精度除法和高精度加法
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+//高精度除法
+vector<int> div(vector<int> &A, int b, int &r)
+{
+    r = 0;
+    vector<int> C;
+    reverse(A.begin(), A.end());
+    for(int i = 0; i < A.size(); i ++)
+    {
+        r = r * 10 + A[i];
+        C.push_back(r / b);
+        r %= b;
+    }
+
+    reverse(C.begin(), C.end());
+    while(C.size() > 1 && C.back() == 0) C.pop_back();
+    return C;
+}
+
+//高精度加法
+vector<int> add(vector<int> A,vector<int> B)
+{
+    vector<int> C;
+    int t = 0;
+    for(int i = 0; i < A.size(); i ++)
+    {
+        t += A[i];
+        if(i < B.size()) t += B[i];
+
+        C.push_back(t % 10);
+        t /= 10;
+    }
+    if(t) C.push_back(t);
+    return C;
+}
+
+//高精度十进制转二进制
+vector<int> dec_to_bin(vector<int> &D)
+{
+    vector<int> B;
+    int r = 0;
+    while(D.size() > 1 || (D.size() == 1 && D[0] != 0))
+    {
+        D = div(D, 2, r);
+        B.push_back(r);
+    }
+    return B;
+}
+
+//高进度二进制转十进制
+vector<int> bin_to_dec(vector<int> &B)
+{
+    vector<int> D;
+    D.push_back(0);
+    for(int i = 0; i < B.size(); i ++)
+    {
+        D = add(add(D, D), {B[i]});
+    }
+    return D;
+}
+
+int main()
+{
+    string a;
+    cin >> a;
+    vector<int> A;
+    for(int i = a.size() - 1; i >= 0; i --) A.push_back(a[i] - '0');
+    vector<int> B = dec_to_bin(A);
+    vector<int> D = bin_to_dec(B);
+    for(int i = D.size() - 1; i >= 0; i --) cout << D[i];
+    cout << endl;
+    return 0;
+}
+```
+
 ### 递推
 
 > 这就像道智力题啦，要发现规律
@@ -4151,11 +4234,11 @@ int lucas(LL a, LL b, int p)
 > 分治法所能解决的问题一般具有以下几个特征：
 >
 >     1) 该问题的规模**缩小到一定的程度**就可以容易地解决
->                    
+>                        
 >     2) 该问题可以**分解为若干个规模较小的相同问题**，即该问题**具有最优子结构性质**。
->                    
+>                        
 >     3) 利用该问题分解出的子问题的解**可以合并为该问题的解**；
->                    
+>                        
 >     4) 该问题所分解出的**各个子问题是相互独立的**，即**子问题之间不包含公共的子子问题**。
 >
 > > > 第一条特征是绝大多数问题都可以满足的，因为问题的计算复杂性一般是随着问题规模的增加而增加；
