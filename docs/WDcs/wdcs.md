@@ -2994,6 +2994,50 @@ int main()
 }
 ```
 
+【Floyd的妙用2】
+
+> https://www.acwing.com/problem/content/3515/
+>
+> 【深刻理解floyd】
+> floyd动态规划过程：f(k,i,j) 表示从i到j在只经过1~k中的点作为中间点的所有路径的最短距离
+>
+> 在这里可以逆序枚举k点
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+ll res = 0;
+const int N = 510;
+int n;
+ll ans[N];
+int d[N][N];
+bool st[N];
+int main()
+{
+    scanf("%d",&n);
+    //memset(d,0x3f,sizeof d);
+    for(int i = 1; i <= n; i ++){
+        for(int j = 1; j <= n; j ++){
+            scanf("%d",&d[i][j]);
+        }
+    }
+    for(int k = n; k > 1; k --){//逆序枚举删点，当k==1表示只剩下最后一个点
+        for(int i = 1; i < n; i ++){
+            for(int j = i + 1; j <= n; j ++){
+                d[i][j] = d[j][i] = min(d[i][k] + d[k][j], d[i][j]); //枚举一半，优化速度
+                if(i >= k && j >= k){ //i和j不能在1～k的范围内
+                    res += 2 * d[i][j];
+                }
+            }
+        }
+    }
+    printf("%lld\n",res);
+    return 0;
+}
+```
+
 ### 最小生成树
 
 #### 朴素版Prim算法
@@ -4234,11 +4278,11 @@ int lucas(LL a, LL b, int p)
 > 分治法所能解决的问题一般具有以下几个特征：
 >
 >     1) 该问题的规模**缩小到一定的程度**就可以容易地解决
->                        
+>                            
 >     2) 该问题可以**分解为若干个规模较小的相同问题**，即该问题**具有最优子结构性质**。
->                        
+>                            
 >     3) 利用该问题分解出的子问题的解**可以合并为该问题的解**；
->                        
+>                            
 >     4) 该问题所分解出的**各个子问题是相互独立的**，即**子问题之间不包含公共的子子问题**。
 >
 > > > 第一条特征是绝大多数问题都可以满足的，因为问题的计算复杂性一般是随着问题规模的增加而增加；
