@@ -325,3 +325,240 @@ public:
 
 
 
+### 大整数专题，超大整数A+B、A-B、A*B 「|A|，|B| $<= 10^{400}$」
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+vector<int> printnum(vector<int> &num){
+    for(int i = num.size() - 1; i >= 0; i --){
+        cout << num[i];
+    }
+    cout << "\n";
+}
+bool cmpad(vector<int> &A, vector<int> &B){
+    if(A.size()!=B.size()) return A.size()>B.size();
+    for(int i=A.size()-1;i>=0;i--)
+        if(A[i]!=B[i])
+            return A[i]>B[i];
+    return true;
+}
+vector<int> add(vector<int> &A, vector<int> &B){
+    vector<int> C;
+    for(int i=0,t=0;i<A.size() || i<B.size() || t;i++)
+    {
+        if(i<A.size()) t+=A[i];
+        if(i<B.size()) t+=B[i];
+        C.push_back(t%10);
+        t/=10;
+    }
+    return C;
+}
+vector<int> sub(vector<int> &A, vector<int> &B){
+    vector<int> C;
+    for(int i=0,t=0;i<A.size();i++)
+    {
+        t=A[i]-t;
+        if(i<B.size()) t-=B[i];
+        C.push_back((t+10)%10);
+        if(t<0) t=1;
+        else t=0;
+    }
+    while(C.size()>1 && C.back()==0) C.pop_back();
+    return C;
+}
+//重点关注！！！！
+vector<int> mul(vector<int> &A, vector<int> &B){
+    vector<int> C(A.size()+B.size(),0); //A*B必须这样进行初始化
+    for(int i=0;i<A.size();i++)
+        for(int j=0;j<B.size();j++)
+            C[i+j] += A[i]*B[j];
+    for(int i=0,t=0;i<C.size();i++)
+    {
+        t+=C[i];
+        C[i]=t%10;
+        t/=10;
+    }
+    while(C.size()>1 && C.back()==0) C.pop_back();
+    return C;
+}
+int main()
+{
+    vector<int> A,B;
+    vector<int> C1,C2,C3;
+    string a,b;
+    cin >> a >> b;
+    for(int i = a.size() - 1; i >= 0; i --) A.push_back(a[i] - '0');
+    for(int i = b.size() - 1; i >= 0; i --) B.push_back(b[i] - '0');
+    int flag1 = 0, flag2 = 0;
+    if(a[0] == '-'){
+        flag1 = 1;
+        A.pop_back();
+    }
+    if(b[0] == '-'){
+        flag2 = 1;
+        B.pop_back();
+    }
+    //A + B;
+    if(flag1 == 0 && flag2 == 0){
+        C1 = add(A,B);
+        for(int i = C1.size() - 1; i >= 0; i --) cout << C1[i]; cout << "\n";
+        if(cmpad(A,B)){
+            C2 = sub(A,B);
+            for(int i = C2.size() - 1; i >= 0; i --) cout << C2[i]; cout << "\n";
+        }
+        else{
+            C2 = sub(B,A);
+            cout << "-";
+            for(int i = C2.size() - 1; i >= 0; i --) cout << C2[i]; cout << "\n";
+        }
+        C3 = mul(A,B);
+        for(int i = C3.size() - 1; i >= 0; i --) cout << C3[i]; cout << "\n";
+    }
+    else if(flag1 == 1 && flag2 == 1){
+        //ADD
+        cout << "-"; //加法
+        C1 = add(A,B);
+        for(int i = C1.size() - 1; i >= 0; i --) cout << C1[i]; cout << "\n";
+        if(cmpad(A,B)){
+            cout << "-";
+            C2 = sub(A,B);
+            for(int i = C2.size() - 1; i >= 0; i --) cout << C2[i]; cout << "\n";
+        }
+        else{
+            C2 = sub(B,A);
+            for(int i = C2.size() - 1; i >= 0; i --) cout << C2[i]; cout << "\n";
+        }
+        C3 = mul(A,B);
+        for(int i = C3.size() - 1; i >= 0; i --) cout << C3[i]; cout << "\n";
+    }
+    else if(flag1 == 1 && flag2 == 0){
+        if(cmpad(A,B)){
+            cout << "-";
+            C1 = sub(A, B);
+            for(int i = C1.size() - 1; i >= 0; i --) cout << C1[i]; cout << "\n";
+        }
+        else{
+            C1 = sub(B, A);
+            for(int i = C1.size() - 1; i >= 0; i --) cout << C1[i]; cout << "\n";
+        }
+        cout << "-";
+        C2 = add(A,B);
+        for(int i = C2.size() - 1; i >= 0; i --) cout << C2[i]; cout << "\n";
+        C3 = mul(A,B);
+        if(C3.size() != 1 || C3[0] != 0) cout << "-";
+        for(int i = C3.size() - 1; i >= 0; i --) cout << C3[i]; cout << "\n";
+    }
+    else if(flag1 == 0 && flag2 == 1){
+        if(cmpad(A,B)){
+            C1 = sub(A,B);
+            for(int i = C1.size() - 1; i >= 0; i --) cout << C1[i]; cout << "\n";
+        }
+        else{
+            cout << "-";
+            C1 = sub(B,A);
+            for(int i = C1.size() - 1; i >= 0; i --) cout << C1[i]; cout << "\n";
+        }
+        C2 = add(A,B);
+        for(int i = C2.size() - 1; i >= 0; i --) cout << C2[i]; cout << "\n";
+        C3 = mul(A,B);
+        if(C3.size() != 1 || C3[0] != 0) cout << "-";
+        for(int i = C3.size() - 1; i >= 0; i --) cout << C3[i]; cout << "\n";
+    }
+    return 0;
+}
+```
+
+## LeetCode HOT100「专为机试准备」
+
+### 一、哈希
+
+#### 1. 两数之和 「暴力枚举or哈希表」
+
+> 最容易想到的方法是枚举数组中的每一个数 x，寻找数组中是否存在 target - x。
+>
+> 当我们使用遍历整个数组的方式寻找 target - x 时，需要注意到每一个位于 x 之前的元素都已经和 x 匹配过，因此不需要再进行匹配。而每一个元素不能被使用两次，所以我们只需要在 x 后面的元素中寻找 target - x。
+>
+> **机试可能常常会考到的内容：擅于使用哈希表来降低时间复杂度**
+
+```cpp
+class Solution {
+public:
+  	//方法一：暴力
+    // vector<int> twoSum(vector<int>& nums, int target) {
+    //     vector<int> ans;
+    //     for(int i = 0; i < nums.size(); i ++){
+    //         for(int j = i + 1; j < nums.size(); j ++){
+    //             if(nums[i] + nums[j] == target){
+    //                 ans.push_back(i);
+    //                 ans.push_back(j);
+    //                 return ans;
+    //             }
+    //         }
+    //     }
+    //     return ans;
+    // }
+  //方法二：哈希表
+    vector<int> twoSum(vector<int>& nums, int target) {
+        map<int,int> mp;
+        vector<int> ans;
+        for(int i = 0; i < nums.size(); i ++){
+            if(mp.count(target - nums[i])){
+                ans.push_back(mp[target - nums[i]]);
+                ans.push_back(i);
+                break;
+            }
+            mp[nums[i]] = i;
+        }
+        return ans;
+    }
+};
+```
+
+#### 2. [字母异位词分组](https://leetcode.cn/problems/group-anagrams/) 「常回来复习」
+
+> 方法一：哈希方法一：直接对于每个字符串进行排序，然后将其作为关键字使用到哈希表中，注意STL库的正确使用！！「`emplace能用则用,emplace()只支持加载一个值，能够在索引的前面加入一个值` 」「`emplace_back()支持加载多个值`」
+>
+> 方法二：
+
+```cpp
+//方法一：
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        vector<vector<string>> ans;
+        map<string, vector<string>> mp;
+        for(auto str: strs){
+            string tmp = str;
+            sort(tmp.begin(), tmp.end()); //对每个字符串进行排序
+            mp[tmp].emplace_back(str); //将排序结果作为键
+        } 
+        for(auto it = mp.begin(); it != mp.end(); ++ it){
+            ans.emplace_back(it -> second);//将每一个键后的值全部加载到ans
+        }
+        return ans;
+    }
+};
+```
+
+```cpp
+//方法二：
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        vector<vector<string>> ans;
+        map<string, vector<string>> mp;
+        for(auto str : strs){
+            string sts = string(26, '0'); //00000000000000000000000000
+            for(auto c : str) ++ sts[c - 'a']; //真的值得好好学习一下STL的用法
+            //例如eat，最终sts为：100010000000000000010000000
+            mp[sts].emplace_back(str);
+        }
+        for(auto i : mp) ans.emplace_back(i.second); //引用的方式加载数据
+        return ans;
+    }
+};
+```
+
+
+
