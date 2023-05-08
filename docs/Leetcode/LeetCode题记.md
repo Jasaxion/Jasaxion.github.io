@@ -519,7 +519,7 @@ public:
 
 > 方法一：哈希方法一：直接对于每个字符串进行排序，然后将其作为关键字使用到哈希表中，注意STL库的正确使用！！「`emplace能用则用,emplace()只支持加载一个值，能够在索引的前面加入一个值` 」「`emplace_back()支持加载多个值`」
 >
-> 方法二：
+> 方法二：使用长度为26的数字字符串表示一个单词中不同字母出现的频数当作哈希的键，原始字符串作为哈希的值。「这里对于字符串的操作其实挺巧妙的，注意进行学习」
 
 ```cpp
 //方法一：
@@ -560,5 +560,94 @@ public:
 };
 ```
 
+#### [128. 最长连续序列](https://leetcode.cn/problems/longest-consecutive-sequence/)
 
+> 思路：首先使用哈希表进行去重，然后对于每个数枚举其前面一个数，如果在集合中则继续，「仅循环枚举没有前驱的的第一个数」从而达到降低时间复杂度的效果
+>
+> $O(n)$ //当然也可以直接排序$O(nlogn)$
+
+```cpp
+//官解
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        unordered_set<int> num_set;
+        for (const int& num : nums) {
+            num_set.insert(num);
+        }
+
+        int longestStreak = 0;
+
+        for (const int& num : num_set) {
+            if (!num_set.count(num - 1)) {
+                int currentNum = num;
+                int currentStreak = 1;
+
+                while (num_set.count(currentNum + 1)) {
+                    currentNum += 1;
+                    currentStreak += 1;
+                }
+
+                longestStreak = max(longestStreak, currentStreak);
+            }
+        }
+
+        return longestStreak;           
+    }
+};
+```
+
+### 二、双指针
+
+#### [283. 移动零](https://leetcode.cn/problems/move-zeroes/)
+
+> 「个人愚笨」：队列做法]
+>
+> 「Leetcode优化」：双指针
+>
+> - **一次遍历**
+>   - 使用前驱指针记录所有的非0元素，最后将剩下的0元素进行补全即可
+> - **二次遍历**
+>   - 类似于快速排序的思想，使用后驱指针对数字进行遍历，前驱指针始终指向0，当后驱指针直到非0元素时，交换前后驱指针的值。
+
+```cpp
+//26ms
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums){
+        int length = nums.size();
+        int j = 0;
+        //首先统计非0 元素 
+        for(int i = 0; i < length; i ++){
+            if(nums[i] != 0){
+                nums[j ++] = nums[i];
+            }
+        }
+        //然后将剩下的0元素补全
+        for(int i = j; i < length; i ++){
+            nums[i] = 0;
+        }
+    }
+};
+```
+
+```cpp
+//一次遍历：类似于快速排序的思想 16ms
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums){
+        int length = nums.size();
+        int j = 0;
+        for (int i = 0; i < length; i++) {
+            if(nums[i] != 0) {//类似于快排的思想，交换0元素与非0 元素的位置
+                if(i > j) {
+                    nums[j] = nums[i];
+                    nums[i] = 0;
+                }
+                j++;
+            }
+        }
+    }
+};
+```
 
