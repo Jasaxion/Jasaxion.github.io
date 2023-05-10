@@ -651,3 +651,261 @@ public:
 };
 ```
 
+#### [11. 盛最多水的容器](https://leetcode.cn/problems/container-with-most-water/)
+
+> **思路**：总的来说，前驱指针从0开始遍历，后取指针从末尾开始，这样的话可以保证长度是最大的，现在我们需要让高度也尽可能最大。
+>
+> 那么如何才能让高度尽可能最大呢，前驱和后驱指针移动的时候，应该尽可能让比较高的高度保留下来，然后移动较低高度的指针，这样能够保证每次所留下来的面积尽可能大。遍历所有情况，取最大值作为问题的解。时间复杂度$O(N)$
+
+```cpp
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        typedef long long ll;
+        ll ans = 0;
+        //暴力 TLE
+        // for(int i = 0; i < height.size(); i ++){
+        //     for(int j = 0; j < height.size(); j ++){
+        //         ll cnt = (j - i)*min(height[i],height[j]);
+        //         ans = max(ans, cnt);
+        //     }
+        // }
+        int len =height.size();
+        for(int i = 0, j = len - 1; i < j;){
+            ll cur_area = (j - i) * min(height[i], height[j]);
+            ans = max(ans, cur_area);
+
+            if(height[i] < height[j]) i ++;
+            else j --;
+        }
+        return ans;
+    }
+};
+```
+
+#### [15. 三数之和](https://leetcode.cn/problems/3sum/)
+
+> **思路：**对于该题的话，我觉得一定要脑子里面一直有数组的指针到底指向哪的这个概念，不能鲁莽行事，要不然很容易出现指针溢出的情况。
+>
+> 解题：首先将原数组进行排序，如果排序后第一个数就已经大于0的话「不可以≥0，因为[0,0,0]是合法答案」，那么就一定不存在答案，故此特判直接返回。
+> 此时，对于每个枚举的结果$i$，另左指针$l=i+1$，右指针$r=n-1$进行枚举，
+>
+> - 如果此时$nums[i]+nums[l]+nums[r]>0$则说明结果偏大，右指针应该减小；
+> - 如果此时$nums[i]+nums[l]+nums[r]<0$则说明结果偏小，左指针应该增大；
+> - 如果相等的话，将答案加入进去，然后对于$L$指针进行去重处理，再对$R$指针进行去重处理，最后对于枚举的$i$指针进行去重处理。
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> ans;
+        if(nums.size() < 3) return ans; //特判1
+        sort(nums.begin(), nums.end());
+        int len = nums.size();
+        if(nums[0] > 0) return ans;
+        for(int i = 0; i < len; i ++){
+            if(nums[i] > 0) break;
+            int l = i + 1, r = len - 1;
+            while(l < r){
+                int tmp = nums[i] + nums[l] + nums[r];
+                if(tmp > 0) r --;
+                else if(tmp < 0) l ++;
+                else{
+                    ans.push_back({nums[i], nums[l], nums[r]});
+                    while(l < r && nums[l] == nums[l + 1]) l ++; //去重L
+                    while(l < r && nums[r] == nums[r - 1]) r --; //去重R
+                    l ++;
+                    r --;
+                }
+            }
+            while(i + 1 < len && nums[i] == nums[i + 1]) i ++; //去重i；注意细节防止溢出！！⚠️
+        }
+        return ans;
+    }
+};
+```
+
+#### [42. 接雨水](https://leetcode.cn/problems/trapping-rain-water/)
+
+> - 解法一：
+>   - 首先存下左边的最大值以及右边的最大值数组，然后每次取左右两边最小的高度减去当前的高度即为所能手机的最多的水。「求每一列的水，我们只需要关注当前列，以及左边最高的墙，右边最高的墙就够了。」
+>   - <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230509165753513.png" alt="image-20230509165753513" style="zoom:25%;" />
+> - 解法二：
+>   - 按行求，对于每一行，看能有装载多少水，比较暴力的方法。「从下往上，一行一行求」时间复杂度$O(maxheight*n)$
+>   - <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230509165453700.png" alt="image-20230509165453700" style="zoom:33%;" />
+> - 解法三：解法一中左右两边最高的墙仅仅用到的一次，故此可以采用双指针算法，不必存下所有最高的墙，左指针指向左边最高的墙，右指针指向右边最高的墙
+>   - 
+> - 解法四：「类比括号匹配问题」——使用栈来求解该问题
+>   - <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230510093156367.png" alt="image-20230510093156367" style="zoom:33%;" />
+>   - <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230510093240473.png" alt="image-20230510093240473" style="zoom:33%;" />
+>   - 类比括号匹配问题⬆️，使用栈来进行匹配，如果当前元素要大于栈内的元素，那么就取得改部分所有水的面积累加到答案内：要点：水的宽度*水的高度，栈内存储的是枚举的下标「这样便于求宽度」
+
+```cpp
+//解法一：
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int ans = 0;
+        int n = height.size();
+        vector<int> l(n),r(n); //这一步(n)表示初始化容器，要有这一步才能随机访问容器元素
+        for(int i = 1; i < height.size(); i ++){ //存放左边的最大值
+            l[i] = max(l[i-1], height[i-1]);
+        }
+        for(int i = height.size() - 2; i >= 0; i --){ //存放右边的最大值
+            r[i] = max(r[i + 1], height[i + 1]);
+        }
+        for(int i = 0; i < height.size(); i ++){
+            int level = min(l[i], r[i]); //每次获取左右两边的最小值
+            ans += max(0,level - height[i]); //求能容纳的水的最大值
+        }
+        return ans;
+    }
+};
+```
+
+```cpp
+//解法三：双指针
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int ans = 0;
+        int n = height.size();
+        int l = 0, r = 0; //分别存在左右最高的墙
+        int li = 1, ri = height.size() - 2; //左右指针
+        for(int i = 1; i < height.size() - 1; i ++){
+            if(height[li - 1] < height[ri + 1]){
+                l = max(l , height[li - 1]);
+                if(l > height[li]){
+                    ans += (l - height[li]);
+                }
+                li ++;
+            }
+            else{
+                r = max(r, height[ri + 1]);
+                if(r > height[ri]){
+                    ans += (r - height[ri]);
+                }
+                ri --;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+```cpp
+//解法四：栈
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int ans = 0;
+        int n = height.size();
+        stack<int> stk;
+        for(int i = 0; i < n; i ++){
+            while(!stk.empty() && height[i] > height[stk.top()]){//如果栈不空且当前元素要大于栈顶元素的话
+                int t = height[stk.top()]; //去除栈顶元素
+                stk.pop();
+                if(stk.empty()) break; //如果此时栈为空 直接退出
+                int distance = i - stk.top() - 1; //求水的宽度
+                int minheight = min(height[stk.top()], height[i]); //求最小的水高度
+                ans += distance * (minheight - t);  //求该区域的大小「矩形面积」
+            }
+            stk.push(i); //压入当前元素
+        }
+        return ans;
+    }
+};
+```
+
+### 三、滑动窗口
+
+#### [3. 无重复字符的最长子串](https://leetcode.cn/problems/longest-substring-without-repeating-characters/)
+
+> 滑动窗口的方法解题，不过本题还要注意使用一个哈希表来存放滑动窗口内已经存在了哪些元素，必须要保证窗口内不能出现重复元素
+
+```cpp
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int ans = 0;
+        deque<int> q;
+        map<char,int> mp; //哈希表 记录当前窗口内有哪些已有元素
+        for(int i = 0; i < s.size(); i ++){
+            char c = s[i];
+            while( (!q.empty() && s[q.front()] == c) || mp[c] == 1){ //滑动窗口,如果队列不空，并且队头元素等于当前元素，或者当前元素已经在滑动窗口中出现了
+                mp[s[q.front()]] --; //哈希表中去除该元素
+                q.pop_front(); //那么去除队头
+            }
+            q.push_back(i); //推入队尾
+            mp[c] ++; //哈希表更新该元素
+            int cur = q.size();
+            ans = max(ans, cur); //ans记录最大的滑动窗口的大小
+        }
+        return ans;
+    }
+};
+```
+
+#### [438. 找到字符串中所有字母异位词](https://leetcode.cn/problems/find-all-anagrams-in-a-string/)
+
+> **个人解法：**哈希表+滑动窗口，在这里哈希表使用字符串存储——>方便比较频数
+>
+> **其他解法：**初始化p的字符数组然后维护数组每个元素不小于0。 开始向右滑动窗口，减去并相应字符，如果频率小于0就收缩左侧边界直到频率不再小于0。窗口长度与p长度一致时达成条件。
+>
+> **官方解法：**类似于个人解法，不过不使用字符串哈希表的方式进行比较的，也是使用的vector进行比较，使用一个新的变量differ表示是否相同，如果differ=0，表示与p串相等，如果不等于0表示不等。
+
+```cpp
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        vector<int> ans;
+        int cur;
+        deque<int> dq;
+        string sts1 = string(26, '0'); //哈希方式存放字符串p中各字符的频数
+        string sts2 = string(26, '0'); //哈希方式存放字符串s中各字符的频数
+        for(int i = 0; i < p.size(); i ++){ //更新sts1,p串中各字符的频数
+            ++ sts1[p[i] - 'a'];
+        }
+        for(int i = 0; i < s.size(); i ++){ //枚举s
+            char c = s[i];
+            dq.push_back(i);
+            ++ sts2[s[i] - 'a']; //更新s的字符出现频数
+            while(dq.size() == p.size() && sts1 != sts2){ //如果窗口大小一致，但出现频数不一致的话，则弹出队头
+                -- sts2[s[dq.front()] - 'a'];
+                dq.pop_front();
+            }
+            if(dq.size() == p.size()){ //如果此时队列大小与p串的大小一致的话，则将队头元素作为答案
+                ans.emplace_back(dq.front());
+                -- sts2[s[dq.front()] - 'a'];
+                dq.pop_front();
+            }
+        }
+        return ans;
+    }
+};
+```
+
+```cpp
+//其他解法：枚举的是滑动窗口的左右两边
+//初始化p的字符数组然后维护数组每个元素不小于0。 开始向右滑动窗口，减去并相应字符，如果频率小于0就收缩左侧边界直到频率不再小于0。窗口长度与p长度一致时达成条件。
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        int m = s.size(), n = p.size();
+        if(m < n) return {};
+        vector<int> hashTable(26);
+        for(auto ch : p) ++hashTable[ch - 'a'];
+        vector<int> ret;
+        for(int l = 0, r = 0; r < m; ++r) {
+            --hashTable[s[r] - 'a'];
+            while(hashTable[s[r] - 'a'] < 0) {
+                ++hashTable[s[l] - 'a'];
+                ++l;
+            }
+            if(r - l + 1 == n) ret.push_back(l);
+        }
+        return ret;
+    }
+};
+```
+
