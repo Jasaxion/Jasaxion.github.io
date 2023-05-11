@@ -909,3 +909,135 @@ public:
 };
 ```
 
+### 四、子串
+
+#### [560. 和为 K 的子数组](https://leetcode.cn/problems/subarray-sum-equals-k/)
+
+> 方法一：哈希表+前缀和「暴力方法的优化」
+> 	定义哈希表存放，可能的前缀和的情况，定义$前缀和数组pre[i]$
+> $pre[i] - pre[j-1] = k$时则满足情况，移项可得：$pre[j-1] == pre[i] -k $
+>
+> <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230511142844236.png" alt="image-20230511142844236" style="zoom:33%;" />
+>
+> > 为什么要不能用滑动窗口缩减边界的方法进行求解？
+> > 答：因为在本题中存在负数和0，也就是说右指针`i`向后移1位不能保证区间会增大，左指针`j`向后移1位也不能保证区间和会减小。给定`j`，`i`的位置没有二段性
+
+```cpp
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        int ans = 0;
+        map<int,int> mp //哈希表
+        mp[0] = 1; //因为存在负数，故此当sum=0时，需要定义mp[0]=1
+        int sum = 0;
+        for(auto num : nums){
+            sum += num; //前缀和
+            if(mp.count(sum - k)) ans += mp[sum - k]; //ans += [pre[i] - k]的数量
+            mp[sum] ++; //当前前缀和++
+        }
+        return ans;
+    }
+};
+```
+
+> 暴力方法：
+>
+> ```cpp
+> class Solution {
+> public:
+>     int subarraySum(vector<int>& nums, int k) {
+>         int count = 0;
+>         for (int start = 0; start < nums.size(); ++start) {//定义区间和-->sum
+>             int sum = 0;
+>             for (int end = start; end >= 0; --end) {
+>                 sum += nums[end];
+>                 if (sum == k) { //如果相等时则cnt++
+>                     count++;
+>                 }
+>             }
+>         }
+>         return count;
+>     }
+> };
+> ```
+
+#### [239. 滑动窗口最大值](https://leetcode.cn/problems/sliding-window-maximum/)
+
+```cpp
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        vector<int> ans;
+        deque<int> dq; //滑动窗口
+        for(int i = 0; i < nums.size(); i ++){
+            while(!dq.empty() && nums[i] > nums[dq.back()]){
+                dq.pop_back(); //如果当前元素大于队尾元素，则弹出队尾元素-->保证队头元素永远最大
+            }
+            dq.push_back(i);
+            //如果滑动窗口超过大小，并且队头元素与滑动窗口元素相等的话，则说明超出滑动窗口大小则弹出队头
+            if(i - k + 1 > 0 && nums[dq.front()] == nums[i - k]){ //检测是否超过滑动窗口的大小，需要注意的是下标的变化
+                dq.pop_front(); //那么就弹出队头元素，
+            }
+            if(i - k + 1 >= 0) ans.push_back(nums[dq.front()]);
+        }
+        return ans;
+    }
+};
+```
+
+#### [76. 最小覆盖子串](https://leetcode.cn/problems/minimum-window-substring/)
+
+> 又是滑动窗口的变题思想：
+> 对于这一道题，我们采用的是缩减滑动窗口的左右两边的边界进行求解，
+>
+> 1. 首先记录所需要的t中字符串中的字符数量
+> 2. 然后枚举字符串s，固定l=r=0，然后开始对于右边界进行枚举
+>    1. 使用`cnt`变量，表示当前窗口内所需要的t的字符的数量
+>    2. 当`cnt==0`时说明此时窗口内已经包含了全部所需要的字符
+> 3. 对左端点进行处理，枚举左端点，直到左端点再移动一次就导致窗口内不满足要求为止
+>    1. 记录左端点和右端点，更新最大的长度`size`
+>    2. 将左端点进行移，然后更新所需要的`cnt`数量
+> 4. 反复操作直到`r == m`
+>
+> <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230511162226866.png" alt="image-20230511162226866" style="zoom:50%;" />
+
+```cpp
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        string ans = "";
+        int m = s.size(), n = t.size();
+        if(m < n) return ans;
+        unordered_map<int,int> need;
+        for(auto c : t){
+            need[c] ++;
+        }
+        int cnt = n;
+        int l = 0, size = INT_MAX, start = 0;
+        for(int r = 0; r < m; r ++){ //枚举滑动窗口的右端点
+            if(need[s[r]] > 0){ //如果此时的字符在t字符串以内
+                cnt --; //那么还需要的t字符串长度--
+            }
+            need[s[r]] --; //需要的字符减去该字符，在这里还包括无关字符
+            if(!cnt){ //如果需要的全部字符都已经在窗口内的话
+                while(l < r && need[s[l]] < 0){ //保证l<r，l去掉无关字符「在t字符串中不存在字符」
+                    need[s[l]] ++;
+                    l ++;
+                }
+                if(r - l  + 1 < size){ //更新最小的size
+                    size = r - l + 1;
+                    start = l; //字符串子串的开始位置应该是l
+                }
+                //遍历完后，那么就使得其不满足条件
+                //所需要的t的字符数量+1
+                need[s[l]] ++;
+                l ++;
+                cnt ++;
+            }
+        }
+        size == INT_MAX ? ans="" : ans = s.substr(start, size); //注意，如果size没有发生变化的话，则直接输出“”空字符串
+        return ans;
+    }
+};
+```
+
