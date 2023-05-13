@@ -1041,3 +1041,129 @@ public:
 };
 ```
 
+### 五、普通数组
+
+#### [53. 最大子数组和](https://leetcode.cn/problems/maximum-subarray/)
+
+> 方法一：动态规划：定义属性：dp[i]表示以nums[i]结尾的子序列的最大的和
+> 状态转移方程：
+> $$
+> dp[i]=max(nums[i], dp[i-1]+nums[i])
+> $$
+> 方法二：分治法：
+
+```cpp
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int ans = nums[0];
+        int sum = 0;
+        for(auto num : nums){
+            if(sum > 0) sum += num;
+            else sum = num;
+            ans = max(ans, sum);
+        }
+        return ans;
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    struct Status {
+        int lSum, rSum, mSum, iSum;
+    };
+
+    Status pushUp(Status l, Status r) {
+        int iSum = l.iSum + r.iSum;
+        int lSum = max(l.lSum, l.iSum + r.lSum);
+        int rSum = max(r.rSum, r.iSum + l.rSum);
+        int mSum = max(max(l.mSum, r.mSum), l.rSum + r.lSum);
+        return (Status) {lSum, rSum, mSum, iSum};
+    };
+
+    Status get(vector<int> &a, int l, int r) {
+        if (l == r) {
+            return (Status) {a[l], a[l], a[l], a[l]};
+        }
+        int m = (l + r) >> 1;
+        Status lSub = get(a, l, m);
+        Status rSub = get(a, m + 1, r);
+        return pushUp(lSub, rSub);
+    }
+
+    int maxSubArray(vector<int>& nums) {
+        return get(nums, 0, nums.size() - 1).mSum;
+    }
+};
+```
+
+#### [189. 轮转数组](https://leetcode.cn/problems/rotate-array/)
+
+> 思路一：额外数组
+>
+> 思路二：一个变量代替额外数组
+>
+> <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230513201959860.png" alt="image-20230513201959860" style="zoom:50%;" />
+>
+> 思路三：翻转数组
+>
+> <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230513202022130.png" alt="image-20230513202022130" style="zoom:60%;" />
+
+```cpp
+class Solution {
+public:
+    void rotate(vector<int>& nums, int k) {
+        int n = nums.size();
+        vector<int> newArr(n);
+        for (int i = 0; i < n; ++i) {
+            newArr[(i + k) % n] = nums[i];
+        }
+        nums.assign(newArr.begin(), newArr.end());
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    void rotate(vector<int>& nums, int k) {
+        int n = nums.size();
+        k = k % n;
+        int count = gcd(k, n);
+        for (int start = 0; start < count; ++start) {
+            int current = start;
+            int prev = nums[start];
+            do {
+                int next = (current + k) % n;
+                swap(nums[next], prev);
+                current = next;
+            } while (start != current);
+        }
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    void reverse(vector<int>& nums, int start, int end) {
+        while (start < end) {
+            swap(nums[start], nums[end]);
+            start += 1;
+            end -= 1;
+        }
+    }
+
+    void rotate(vector<int>& nums, int k) {
+        k %= nums.size();
+        reverse(nums, 0, nums.size() - 1);
+        reverse(nums, 0, k - 1);
+        reverse(nums, k, nums.size() - 1);
+    }
+};
+```
+
+
+
