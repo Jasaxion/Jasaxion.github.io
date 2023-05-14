@@ -1165,5 +1165,293 @@ public:
 };
 ```
 
+#### [238. 除自身以外数组的乘积](https://leetcode.cn/problems/product-of-array-except-self/)
 
+> 「不能使用除法｜时间复杂度在O(n)」
+> 方法：常规很容易想到全部累乘，然后处于当前位置的数，但不能使用除法操作，故此我们可以采用累乘对应位置的左侧的累乘和右侧的累乘，对应位置的值就是$L[i-1]*R[i+1]*$；
+>
+> 「将空间复杂度控制在O(1)以内」
+> 方法：在上面的方法中，关于L[N]和R[N]数组，显然每次计算只用到了当前位置的一次，故此只需要单独存取上一次用到的L和R的值就行了。
+
+```cpp
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> ans(n,1);
+        vector<int> L(n,1);
+        vector<int> R(n,1);
+        L[0]=nums[0],R[n-1] = nums[n-1]; //特判第一个位置和最后一个位置
+        for(int i = 1; i < n - 1; i ++){
+            L[i] = L[i - 1] * nums[i];
+            R[n - i - 1] = R[n - i] * nums[n - 1 - i];
+        }
+        ans[0] = 1*R[1];//特判第一个位置和最后一个位置
+        ans[n-1] = L[n-2] * 1;
+        for(int i = 1; i < n - 1; i ++){
+            ans[i] = L[i-1] * R[i+1];
+        }
+        return ans;
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> ans(n,1);
+        int L = 1, R = 1; //动态更新L,R的值，节省空间的消耗
+        for(int i = 0; i < n; i ++){
+            ans[i] = ans[i] * L;
+            L = L * nums[i];
+
+            ans[n - 1 - i] = ans[n - 1 - i] * R;
+            R = R * nums[n - 1 - i];
+        }
+        return ans;
+    }
+};
+//更容易理解的版本
+//两次遍历：第一次遍历求左边的累乘，第二次倒序遍历求右边的累乘
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        int length = nums.size();
+        vector<int> answer(length);
+
+        // answer[i] 表示索引 i 左侧所有元素的乘积
+        // 因为索引为 '0' 的元素左侧没有元素， 所以 answer[0] = 1
+        answer[0] = 1;
+        for (int i = 1; i < length; i++) {
+            answer[i] = nums[i - 1] * answer[i - 1];
+        }
+
+        // R 为右侧所有元素的乘积
+        // 刚开始右边没有元素，所以 R = 1
+        int R = 1;
+        for (int i = length - 1; i >= 0; i--) {
+            // 对于索引 i，左边的乘积为 answer[i]，右边的乘积为 R
+            answer[i] = answer[i] * R;
+            // R 需要包含右边所有的乘积，所以计算下一个结果时需要将当前值乘到 R 上
+            R *= nums[i];
+        }
+        return answer;
+    }
+};
+```
+
+#### [41. 缺失的第一个正数](https://leetcode.cn/problems/first-missing-positive/)
+
+> 哈希哈希——神奇的哈希表的空间优化「打标记」
+>
+> <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230514110126982.png" alt="image-20230514110126982" style="zoom:50%;" />
+
+```cpp
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums) {
+        int n = nums.size();
+        for(auto& num : nums){
+            if(num <= 0) num = n + 1; //把所有的负数进行处理
+        }
+        for(auto num : nums){ //类似于哈希映射，
+            int t = abs(num);
+            if(t <= n) nums[t - 1] = -abs(nums[t - 1]); //-1的原因是下标从0开始
+        }
+        for(int i = 0; i < n; i ++){
+            if(nums[i] > 0) return i + 1;
+        }
+        return n + 1;
+    }
+};
+```
+
+### 六、矩阵
+
+#### [73. 矩阵置零](https://leetcode.cn/problems/set-matrix-zeroes/)
+
+> 大概方法都是在原来数组上打上需要清零0的行和列的标记，我的方法是使用集合存下需要清零的行列
+>
+> 优化方法：使用矩阵的第一行和第一列来本身进行标记，这样就不需要额外的空间了，但要注意用这种方法时需要注意是否原来的第一行与第一列含有0
+
+```cpp
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        set<int> qi,qj;
+        int n = matrix.size();
+        int m = matrix[0].size();
+        for(int i = 0; i < n; i ++){
+            for(int j = 0; j < m; j ++){
+                if(!matrix[i][j]){
+                    qi.insert(i);
+                    qj.insert(j);
+                }
+            }
+        }
+        for(set<int>::iterator it = qi.begin(); it != qi.end(); it ++){
+            int curi = (*it);
+            for(int j = 0; j < m; j ++){
+                matrix[curi][j] = 0;
+            }
+        }
+        for(set<int>::iterator it = qj.begin(); it != qj.end(); it ++){
+            int curj = (*it);
+            for(int i = 0; i < n; i ++){
+                matrix[i][curj] = 0;
+            }
+        }
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        int m = matrix.size();
+        int n = matrix[0].size();
+        int flag_col0 = false, flag_row0 = false;
+        for (int i = 0; i < m; i++) {
+            if (!matrix[i][0]) {
+                flag_col0 = true;
+            }
+        }
+        for (int j = 0; j < n; j++) {
+            if (!matrix[0][j]) {
+                flag_row0 = true;
+            }
+        }
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (!matrix[i][j]) {
+                    matrix[i][0] = matrix[0][j] = 0;
+                }
+            }
+        }
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (!matrix[i][0] || !matrix[0][j]) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        if (flag_col0) {
+            for (int i = 0; i < m; i++) {
+                matrix[i][0] = 0;
+            }
+        }
+        if (flag_row0) {
+            for (int j = 0; j < n; j++) {
+                matrix[0][j] = 0;
+            }
+        }
+    }
+};
+作者：LeetCode-Solution
+链接：https://leetcode.cn/problems/set-matrix-zeroes/solution/ju-zhen-zhi-ling-by-leetcode-solution-9ll7/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+#### [54. 螺旋矩阵](https://leetcode.cn/problems/spiral-matrix/)
+
+> 我吐了，简单模拟一下过程就行了，不要硬生生把他想那么难！！！！
+> 「有时候暴力>一切」
+
+```cpp
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        vector<int> ans;
+        if(matrix.empty()) return ans;
+        int top = 0;
+        int left = 0;
+        int down = matrix.size() - 1;
+        int right = matrix[0].size() - 1;
+        while(1){
+            for(int i = left; i <= right; i ++) ans.emplace_back(matrix[top][i]);
+            if(++top > down) break;
+            for(int i = top; i <= down; i ++) ans.emplace_back(matrix[i][right]);
+            if(--right < left) break;
+            for(int i = right; i >= left; i --) ans.emplace_back(matrix[down][i]);
+            if(--down < top) break;
+            for(int i = down; i >= top; i --) ans.emplace_back(matrix[i][left]);
+            if(++left > right) break;
+        }
+        return ans;
+    }
+};
+```
+
+#### [48. 旋转图像](https://leetcode.cn/problems/rotate-image/)
+
+> 正确理解其数学对应关系，这题就挺容易的，主要提升在于没有使用额外的矩阵存储，而是使用临时变量存放下一个的位置以及值进行更新，优化了空间复杂度
+
+```cpp
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        int n = matrix.size();
+        int k = n / 2;
+        for(int i = 0; i < k; i ++){
+            for(int j = i; j < n - i - 1; j ++){
+                int nexi = j;
+                int nexj = n - i - 1;
+                int t = matrix[i][j];
+                for(int p = 0; p < 4; p ++){
+                    int temp = matrix[nexi][nexj];
+                    matrix[nexi][nexj] = t;
+                    t = temp;
+                    int ti = nexi;
+                    nexi = nexj;
+                    nexj = n - ti - 1;
+                }
+            }
+        }
+    }
+};
+```
+
+#### [240. 搜索二维矩阵 II](https://leetcode.cn/problems/search-a-2d-matrix-ii/)
+
+> 方法一：对每一行进行二分搜索；
+> 方法二：Z字形搜索「详细分析见代码注释」
+
+```cpp
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        for (const auto& row: matrix) { //遍历每一行
+            auto it = lower_bound(row.begin(), row.end(), target); //在该行内进行STL的二分搜索
+            if (it != row.end() && *it == target) { //如果在该行找到target则返回true
+                return true;
+            }
+        }
+};
+```
+
+```cpp
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int m = matrix.size(), n = matrix[0].size();
+        int x = 0, y = n - 1; //初始化从矩阵的右上角进行搜
+        while (x < m && y >= 0) { //没有超过搜索矩阵的范围
+            if (matrix[x][y] == target) { //如果此时找到，则直接返回true
+                return true;
+            }
+            if (matrix[x][y] > target) { //如果现在搜索的位置比目标值大的话，由于严格递增序列，故此>=y列的所有元素都不满足要求，故此此时y--
+                --y;
+            }
+            else { //否则如果比目标值小的话，那么比x行小的所有元素都不满足要求，故此x++
+                ++x;
+            }
+        }
+        return false;
+    }
+};
+```
 
