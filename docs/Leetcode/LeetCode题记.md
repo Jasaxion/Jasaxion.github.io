@@ -1455,3 +1455,27 @@ public:
 };
 ```
 
+
+
+
+
+### 十七、技巧
+
+#### [136. 只出现一次的数字](https://leetcode.cn/problems/single-number/)
+
+> 常规方法：
+>
+> 1. 哈希表：O(n), O(n)
+> 2. 排序：O(nlogn), O(1);
+> 3. 异或：O(n), O(1)!!!!!!异或之妙！！
+
+```cpp
+int ans = nums[0];
+if (nums.length > 1) {
+   for (int i = 1; i < nums.length; i++) {
+      ans = ans ^ nums[i];
+   }
+ }
+ return ans;
+```
+
