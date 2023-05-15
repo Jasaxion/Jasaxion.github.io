@@ -1455,6 +1455,273 @@ public:
 };
 ```
 
+### 七、链表
+
+#### [160. 相交链表](https://leetcode.cn/problems/intersection-of-two-linked-lists/)
+
+> 方法一：哈希表存放已经访问过的元素，`unordered_set<ListNode *> visited;`
+>
+> 方法二：遍历，这里需要掌握遍历技巧，pa指针从A开始遍历，pb指针从B开始遍历，如果pa指针遍历到头了(nullptr)就跳转到pb指针的开始位置，如果pb指针遍历到头了就跳转到pa指针的开始位置。当pa==pb时退出循环；
+>
+> 可以证明：该方法能得到A/B链表的公共交点｜或者找不到公共交点返回nullptr
+
+```cpp
+//方法二
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        if(headA == nullptr || headB == nullptr) return nullptr;
+        ListNode* pa = headA, *pb = headB;
+        while(pa != pb){
+            if(pa == nullptr) pa = headB;
+            else pa = pa->next;
+            if(pb == nullptr) pb = headA;
+            else pb = pb->next;
+        }
+        return pa;
+    }
+};
+```
+
+#### [206. 反转链表](https://leetcode.cn/problems/reverse-linked-list/)
+
+> 方法一：迭代法
+>
+> 方法二：递归法
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode *p,*s,*r;
+        p = head;
+        r = nullptr;
+        while(p != nullptr){
+            s = p;
+            p = p->next;
+            s ->next = r;
+            r = s;
+        }
+        return r;
+    }
+};
+```
+
+```cpp
+//递归法
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if (!head || !head->next) {
+            return head;
+        }
+        ListNode* newHead = reverseList(head->next);
+        head->next->next = head;
+        head->next = nullptr;
+        return newHead;
+    }
+};
+```
+
+#### [234. 回文链表](https://leetcode.cn/problems/palindrome-linked-list/)
+
+> 方法一：很容易想到，把链表的数据转换到数组里面，然后用数组进行遍历搜索
+> 方法二：这个方法特别巧妙，正确利用到了**递归栈**的思想
+>
+> 设置前驱指针，然后利用在递归中出栈的方式遍历到最后一个元素，从而使得第一个元素与最后一个元素进行比较。
+
+```cpp
+class Solution {
+    ListNode* frontPointer;
+public:
+    bool recursivelyCheck(ListNode* currentNode) {
+        if (currentNode != nullptr) {
+            if (!recursivelyCheck(currentNode->next)) {
+                return false;
+            }
+            if (currentNode->val != frontPointer->val) {
+                return false;
+            }
+            frontPointer = frontPointer->next;
+        }
+        return true;
+    }
+
+    bool isPalindrome(ListNode* head) {
+        frontPointer = head;
+        return recursivelyCheck(head);
+    }
+};
+```
+
+#### [141. 环形链表](https://leetcode.cn/problems/linked-list-cycle/)
+
+> 方法一：哈希表存下来，每个点的遍历情况，如果后续再遍历到那么就存在环
+>
+> 方法二：快慢指针，将问题转化为一个追及问题，因为快慢指针永远在无限循环下去，那么慢指针总会追到快指针。
+>
+> 方法三：当然也剋修改链表的值，「范围之外的」，然后遍历到该值也是存在环
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+// class Solution {
+// public:
+//     bool hasCycle(ListNode *head) {
+//         //int pos = 0;
+//         unordered_map<ListNode*, int> mp;
+//         ListNode *p = head;
+//         while(p != nullptr){
+//             if(mp.count(p)) return true;
+//             mp[p] = 1;
+//             p = p -> next;
+//         }
+//         return false;
+//     }
+// };
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        unordered_map<ListNode*, int> mp;
+        ListNode *p = head, *q = head;
+        while(p != nullptr){
+            p = p -> next;
+            if(p != nullptr) p = p -> next;
+            if(p == q) return true;
+            q = q -> next;
+        }
+        return false;
+    }
+};
+```
+
+#### [142. 环形链表 II](https://leetcode.cn/problems/linked-list-cycle-ii/)
+
+> 方法一：哈希表「容易想到」
+>
+> 方法二：「快慢指针以及数学证明」
+>
+> <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230515195353415.png" alt="image-20230515195353415" style="zoom:33%;" />
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        // unordered_map<ListNode*, int> mp;
+        ListNode *p = head, *q = head;
+        while(p != nullptr){
+            q = q -> next; //慢指针走一步
+            p = p -> next; //
+            if(p == nullptr) return nullptr;
+            if(p != nullptr) p = p -> next;//快指针走两步
+            if(p == q){ //a = c + (n-1)(b+c) 一定在入口处相遇
+                ListNode*cur = head;
+                while(cur != p){
+                    cur = cur -> next;
+                    p = p -> next;
+                }
+                return cur;
+            }
+        }
+        return nullptr;
+    }
+};
+```
+
+#### [21. 合并两个有序链表](https://leetcode.cn/problems/merge-two-sorted-lists/)
+
+> 方法一：递归思路，递归合并合并 (L1, L2) ，当l1 -> val <= l2 -> val时，也就是L1 -> next = 合并(L1 -> next , L2)
+>
+> 方法二：迭代思路，创建一个头指针
+
+```cpp
+//递归思路
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        //递归思路
+        if(list1 == nullptr) return list2;
+        if(list2 == nullptr) return list1;
+        if(list1 -> val <= list2 -> val){
+            list1 -> next = mergeTwoLists(list1 -> next, list2); return list1;
+        }
+        else{
+            list2 -> next = mergeTwoLists(list1, list2 -> next); return list2;
+        }
+    }
+};
+```
+
+#### [24. 两两交换链表中的节点](https://leetcode.cn/problems/swap-nodes-in-pairs/)
+
+> 擅于使用递归法/同时也是栈的使用技巧
+>
+> 写递归的话，需要搞清楚递归的终止条件，以及递归函数内做什么。下面以1->2->....来说明：
+> 终止条件：当前节点为null，或者下一个节点为 null
+> 函数内：将 2 指向 1，1 指向下一层的递归函数，最后返回节点 2
+> 下面中t就表示函数内的临时节点 tmp，图中节点 1，节点 3 指向的一个片空白，这表示引用关系还没真正确定，要等下一层递归函数返回后，才能真正确定最终指向。
+
+```cpp
+//数据结构的思维真的很重要！！！！
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        if(head == nullptr || head -> next == nullptr) return head;
+      	//当节点为null或下一个节点为null时，返回当前节点
+        ListNode *p = head -> next; //取下一个节点
+        head -> next = swapPairs(p -> next); //下一个节点指向的是后续节点的头节点
+        p -> next = head; //交换节点位置
+        return p;
+    }
+};
+```
+
+
+
+
+
 
 
 
