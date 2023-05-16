@@ -1718,9 +1718,189 @@ public:
 };
 ```
 
+#### [138. 复制带随机指针的链表](https://leetcode.cn/problems/copy-list-with-random-pointer/)
+
+> 难点：**随机指针的「深拷贝」**，原因是可能在拷贝的时候随机指针所指向的节点还没有被创建：
+>
+> **方法一：回溯+哈希表思路：**利用回溯的方式，让每个节点的拷贝操作相互独立。对于当前节点，我们首先要进行拷贝，然后我们进行「当前节点的后继节点」和「当前节点的随机指针指向的节点」拷贝，拷贝完成后将创建的新节点的指针返回，即可完成当前节点的两指针的赋值。
+>
+> **方法二：迭代思路：**
+>
+> <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230516145742873.png" alt="image-20230516145742873" style="zoom:33%;" />
+
+```cpp
+//回溯+哈希表的思路
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+    
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+        random = NULL;
+    }
+};
+*/
+
+class Solution {
+public:
+    map<Node*, Node*> mp;
+    Node* copyRandomList(Node* head) {
+        if(head == nullptr) return nullptr;
+        if(!mp.count(head)){
+            Node *newhead = new Node(head -> val);
+            mp[head] = newhead;
+            newhead -> next = copyRandomList(head -> next);
+            newhead -> random = copyRandomList(head -> random);
+        }
+        return mp[head];
+    }
+};
+```
 
 
 
+
+
+### 八、二叉树
+
+#### [104. 二叉树的最大深度](https://leetcode.cn/problems/maximum-depth-of-binary-tree/)
+
+> 同时也是考验树的DFS和BFS
+
+```cpp
+//BFS
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        int depth = 0;
+        if(root == nullptr) return depth;
+        queue<TreeNode*> q;
+        q.push(root);
+        while(q.size()){
+            auto t = q.front();
+            int c = q.size();
+            while(c){
+                if(t -> left != nullptr) q.push(t -> left);
+                if(t -> right != nullptr) q.push(t -> right);
+                q.pop();
+                if(q.size()) t = q.front();
+                c --;
+            }
+            depth ++;
+        }
+        return depth;
+    }
+};
+```
+
+```cpp
+//DFS
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if(root == nullptr) return 0;
+        return max(maxDepth(root -> left), maxDepth(root -> right)) + 1;
+    }
+};
+```
+
+#### [101. 对称二叉树](https://leetcode.cn/problems/symmetric-tree/)
+
+> 递归思想在二叉树中真的很重要！
+>
+> 递归的迭代转化可以采用**队列**，初始化时我们把根节点入队两次。每次提取两个结点并比较它们的值（队列中每两个连续的结点应该是相等的，而且它们的子树互为镜像），然后将两个结点的左右子结点按相反的顺序插入队列中。当队列为空时，或者我们检测到树不对称（即从队列中取出两个不相等的连续结点）时，该算法结束。
+>
+
+```cpp
+//递归思路
+class Solution {
+public:
+    bool comput(TreeNode *l, TreeNode *r){
+        if(!l && !r) return true;
+        if(!l || !r) return false;
+        return (l -> val == r -> val) && comput(l -> left, r -> right) && comput(l -> right, r -> left);
+    }
+    bool isSymmetric(TreeNode* root) {
+        bool flag = comput(root, root);
+        return flag;
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    bool check(TreeNode *u, TreeNode *v) {
+        queue <TreeNode*> q;
+        q.push(u); q.push(v);
+        while (!q.empty()) {
+            u = q.front(); q.pop();
+            v = q.front(); q.pop();
+            if (!u && !v) continue;
+            if ((!u || !v) || (u->val != v->val)) return false;
+
+            q.push(u->left); 
+            q.push(v->right);
+
+            q.push(u->right); 
+            q.push(v->left);
+        }
+        return true;
+    }
+
+    bool isSymmetric(TreeNode* root) {
+        return check(root, root);
+    }
+};
+```
+
+#### [226. 翻转二叉树](https://leetcode.cn/problems/invert-binary-tree/)
+
+> 从根节点开始，递归地对树进行遍历，并从叶子节点先开始翻转。如果当前遍历到的节点 root的左右两棵子树都已经翻转，那么我们只需要交换两棵子树的位置，即可完成以 root 为根节点的整棵子树的翻转。
+>
+
+```cpp
+class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        if(root == nullptr) return nullptr;
+        TreeNode *l = invertTree(root -> left);
+        TreeNode *r = invertTree(root -> right);
+        root -> left = r;
+        root -> right = l;
+        return root;
+    }
+};
+```
+
+#### [543. 二叉树的直径](https://leetcode.cn/problems/diameter-of-binary-tree/)
+
+> **递归思想；**首先我们知道一条路径的长度为该路径经过的节点数减1，所以求直径（即求路径长度的最大值）等效于求路径经过节点数的最大值减1。而任意一条路径均可以被看作由某个节点为起点，从其左儿子和右儿子向下遍历的路径拼接得到。
+>
+> 递归中，以该节点为根的子树的深度为$max(L,R)+1$，取最大值为$ans=max(ans,L+R+1)$ 「这里的ans是最长路(直径)经过的节点的个数」
+
+```cpp
+class Solution {
+public:
+    int ans = 0;
+    int getdepth(TreeNode * root){
+        if(root == nullptr) return 0;
+        int L = getdepth(root -> left); //左边的最长路
+        int R = getdepth(root -> right); //右边的最长路
+        ans = max(ans, L + R + 1); //ans取左右两边最长路+自身
+        return max(L, R) + 1; //返回当前节点的最长路=最长左侧/右侧 + 1
+    }
+    int diameterOfBinaryTree(TreeNode* root) {
+        getdepth(root);
+        return ans - 1;
+    }
+};
+```
 
 
 
