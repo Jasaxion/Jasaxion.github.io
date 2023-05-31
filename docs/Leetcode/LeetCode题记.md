@@ -1,5 +1,7 @@
 
 
+[TOC]
+
 ### 2022年3月27日
 
 > https://leetcode-cn.com/problems/k-th-smallest-in-lexicographical-order/
@@ -1902,7 +1904,136 @@ public:
 };
 ```
 
+### 九、图论
 
+
+
+
+
+### 十、回溯
+
+#### [39. 组合总和「经典回溯+剪枝」](https://leetcode.cn/problems/combination-sum/)
+
+> 在做回溯题的时候，要善于去构建回溯树：
+>
+> 1. 明确思路
+>
+>    思路分析：根据示例 1：输入: candidates = [2, 3, 6, 7]，target = 7。
+>
+>    - 候选数组里有 2，如果找到了组合总和为 7 - 2 = 5 的所有组合，再在之前加上 2 ，就是 7 的所有组合；
+>    - 同理考虑 3，如果找到了组合总和为 7 - 3 = 4 的所有组合，再在之前加上 3 ，就是 7 的所有组合，依次这样找下去。
+>
+> 2. 基于以上的想法，可以画出如下的树形图。建议大家自己在纸上画出这棵树，这一类问题都需要先画出树形图，然后编码实现。
+> 3. 优化算法，可以采用一些剪枝策略
+>
+> <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/1598091943-hZjibJ-file_1598091940241.png" alt="img" style="zoom:30%;" />
+
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> ans;
+    void dfs(vector<int> candidates, vector<int> tmp, int res, int idx){
+        if(idx == candidates.size()) return; //如果candidates的数全部选完，则返回
+        if(res < 0) return; //如果当前结果<0，则返回
+        if(res == 0){
+            ans.emplace_back(tmp); //如果当前结果=0,则移入
+            return;
+        }
+        // //这样做无法控制先后顺序，所以会产生重复
+        // for(int i = 0; i < candidates.size(); i ++){
+        //     tmp.emplace_back(candidates[i]);
+        //     dfs(candidates,tmp,res-candidates[i],0);
+        //     tmp.pop_back();
+        // }
+        //严格控制顺序以及数量
+        //不选当前这个数
+        dfs(candidates, tmp, res, idx + 1); //idx+1选择下一个数
+        //选当前这个数
+        if(res - candidates[idx] < 0) return; //剪枝，如果res - 当前这个数已经<0，再减后面的数都会<0，故此直接返回
+        tmp.emplace_back(candidates[idx]);
+        dfs(candidates, tmp, res - candidates[idx], idx); //注意：因为当前数可以无限选，故此这里idx不需要+1；
+        tmp.pop_back(); //回溯
+
+    }
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<int> tmp;
+        dfs(candidates, tmp, target, 0);
+        return ans;
+    }
+};
+```
+
+#### [17. 电话号码的字母组合](https://leetcode.cn/problems/letter-combinations-of-a-phone-number/)
+
+> 用哈希表存下数字对于的英文字符，如何对其进行回溯，技巧string类型可以使用push_back和pop_back()操作，可以直接进行回溯和恢复现场处理
+
+```cpp
+class Solution {
+public:
+    vector<string> letterCombinations(string digits) {
+        vector<string> combinations;
+        if (digits.empty()) {
+            return combinations;
+        }
+        unordered_map<char, string> phoneMap{
+            {'2', "abc"},
+            {'3', "def"},
+            {'4', "ghi"},
+            {'5', "jkl"},
+            {'6', "mno"},
+            {'7', "pqrs"},
+            {'8', "tuv"},
+            {'9', "wxyz"}
+        };
+        string combination;
+        backtrack(combinations, phoneMap, digits, 0, combination);
+        return combinations;
+    }
+
+    void backtrack(vector<string>& combinations, const unordered_map<char, string>& phoneMap, const string& digits, int index, string& combination) {
+        if (index == digits.length()) {
+            combinations.push_back(combination);
+        } else {
+            char digit = digits[index];
+            const string& letters = phoneMap.at(digit);
+            for (const char& letter: letters) {
+                combination.push_back(letter);
+                backtrack(combinations, phoneMap, digits, index + 1, combination);
+                combination.pop_back();
+            }
+        }
+    }
+};
+```
+
+### 十一、二分查找
+
+
+
+
+
+### 十二、栈
+
+
+
+
+
+### 十三、堆
+
+
+
+
+
+### 十四、贪心
+
+
+
+### 十五、动态规划
+
+
+
+### 十六、多维动态规划
 
 
 
