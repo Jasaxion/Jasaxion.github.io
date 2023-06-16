@@ -2021,6 +2021,71 @@ public:
 
 ### 十三、堆
 
+#### priority_queue传入结构体的用法：[347. 前 K 个高频元素](https://leetcode.cn/problems/top-k-frequent-elements/) ⭐️
+
+> 利用优先队列来实现堆的时候，很多时候需要传入结构体信息；
+>
+> 友元函数是可以直接访问类的私有成员的非成员函数。它是定义在类外的普通函数，它不属于任何类，但需要在类的定义中加以声明，声明时只需在友元的名称前加上关键字friend。
+>
+> ```cpp
+> //只有<重载操作符函数时，如果将<改为>为什么不行，出现error C2784的错误
+> 	friend bool operator <(Node node1,Node node2)
+> 	{
+> 		//<为从大到小排列，>为从小到大排列
+> 		return node1.key<node2.key;
+> 	}
+> ```
+
+```cpp
+class Solution {
+public:
+    struct Number{
+        int num;
+        int times;
+        Number(int x, int y){
+            num = x;
+            times = y;
+        }
+        friend bool operator< (const Number &a, const Number &b){ //重载运算符，注意这里不能重载大于符号>
+            if(a.times == b.times) return a.num < b.num;
+            return a.times < b.times;
+        }
+    };
+    #include <queue>
+    priority_queue<Number> q;
+    const int N = 100010;
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        vector<int> ans;
+        sort(nums.begin(), nums.end());
+        if(nums.size() == 0) return ans;
+        if(nums.size() == 1){
+            ans.emplace_back(nums[0]);
+            return ans;
+        }
+        int cnt = 1;
+        int citem = nums[0];
+        for(int i = 1; i < nums.size(); i ++){
+            if(citem == nums[i] && i != nums.size() - 1) cnt ++;
+            else if(citem != nums[i]){
+                q.push(Number(citem, cnt));
+                cnt = 1;
+                citem = nums[i];
+                if(i == nums.size() - 1) q.push(Number(citem, cnt));
+            }
+            else{
+                q.push(Number(citem, cnt));
+            }
+        }
+        while(k --){
+            auto t = q.top();
+            ans.emplace_back(t.num);
+            q.pop();
+        }
+        return ans;
+    }
+};
+```
+
 
 
 
