@@ -28,25 +28,9 @@
 
 ### 分支：
 
-#### [算法Algorithm思想](Algorithm/Algorithm算法思想.md)
-
-#### [Acwing 题记](Acwing/acwing题记.md)
-
-#### [Codeforce 题记](Codeforce/Codeforce题记.md)
-
-#### [LeetCode 题记](Leetcode/LeetCode题记.md)
-
-#### [Luogu 题记](Luogu/Luogu题记.md)
-
-#### [CCF-CSP 题记](CCF-CSP/CCF-CSP真题.md)
-
-#### [模板](模板/模板.md)
-
-#### [ACM赛制杂题与思考](ACM/Acm赛制比赛杂题.md)
-
-#### [2023寒假题记](2023winter/2023Winter.md)
+#### [归档](归档/归档.md)
 
 #### [计算机机试复试题记](WDcs/wdcs.md)
 
-#### [如何成为一名具有竞争力的程序员](howtobecompetitive/Howtobecompetitive.md)
+#### [成为具有竞争力的程序员](howtobecompetitive/Howtobecompetitive.md)
 
