@@ -30,6 +30,12 @@
 
 #### [归档](归档/归档.md)
 
-#### [计算机机试复试题记](WDcs/wdcs.md)
+#### [计算机保研机试复试与CSP指南](WDcs/wdcs.md)
 
 #### [成为具有竞争力的程序员](howtobecompetitive/Howtobecompetitive.md)
+
+#### [科研学习之路](A-Research-Study/ResearchNoteContent.md)
+
+#### [博客日志](A-blogNotebook/blogNoteContent.md)
+
+#### [工程学系之路](A-Work-Study/WorkNoteContent.md)
