@@ -10,8 +10,8 @@
 
 **算法复杂度分析**
 
-<img src="./wdcs.assets/datarange.png" style="zoom:80%;" />
-
+<!-- <img src="./wdcs.assets/datarange.png" style="zoom:80%;" /> -->
+![datarange](./wdcs.assets/datarange.png)
 ### 前缀和
 
 #### 模板回顾
