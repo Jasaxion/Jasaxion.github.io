@@ -10,7 +10,7 @@
 
 **算法复杂度分析**
 
-<img src="./wdcs.assets/%E7%94%B1%E6%95%B0%E6%8D%AE%E8%8C%83%E5%9B%B4%E5%8F%8D%E6%8E%A8%E7%AE%97%E6%B3%95%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6.png" alt="由数据范围反推算法的时间复杂度" style="zoom:80%;" />
+<img src="./wdcs.assets/datarange.png" style="zoom:80%;" />
 
 ### 前缀和
 
