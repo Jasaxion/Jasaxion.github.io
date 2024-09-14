@@ -175,7 +175,7 @@ int main()
 >
 > 要确保找准题干中的关键字，要耐得住寂寞，坐得下板凳。
 >
-> <img src="acwing题记.assets/image-20210630153938471.png" alt="image-20210630153938471" style="zoom:65%;" />
+> <img src="./acwing题记.assets/image-20210630153938471.png" alt="image-20210630153938471" style="zoom:65%;" />
 
 ```cpp
 #include <iostream>
@@ -1570,7 +1570,7 @@ int main()
 > 这里如果需要动态维护一个前面所有数的一个有序序列/排名 也可以借用树状数组来实现。
 >
 > > 大概思维过程，难点就在于树状数组中的处理部分
-> > <img src="acwing%E9%A2%98%E8%AE%B0.assets/image-20220331000828858.png" alt="image-20220331000828858" style="zoom:50%;" />
+> > <img src="./acwing%E9%A2%98%E8%AE%B0.assets/image-20220331000828858.png" alt="image-20220331000828858" style="zoom:50%;" />
 
 > 需要知识点：平衡树/Splay，树状数组+离散化可以替代
 
@@ -1970,7 +1970,7 @@ int main()
 
 > https://www.acwing.com/problem/content/4398/
 
-> <img src="acwing%E9%A2%98%E8%AE%B0.assets/image-20220404220132792.png" alt="image-20220404220132792" style="zoom:40%;" />
+> <img src="./acwing%E9%A2%98%E8%AE%B0.assets/image-20220404220132792.png" alt="image-20220404220132792" style="zoom:40%;" />
 
 ```cpp
 #include <iostream>
@@ -2343,7 +2343,7 @@ int main()
 
 > 思路：DP动态规划思想解法。闫氏DP分析法
 >
-> <img src="acwing%E9%A2%98%E8%AE%B0.assets/image-20220722010256741.png" alt="image-20220722010256741" style="zoom:67%;" />
+> <img src="./acwing%E9%A2%98%E8%AE%B0.assets/image-20220722010256741.png" alt="image-20220722010256741" style="zoom:67%;" />
 
 ```cpp
 #include <iostream>
@@ -2422,7 +2422,7 @@ void solve(){
 > 前提假设：输入元素都是按递增的规律加入到集合当中的。
 > 并且最小的元素和最大的元素必定是需要加入到结果当中的。
 >
-> > ![image-20220731114531557](acwing%E9%A2%98%E8%AE%B0.assets/image-20220731114531557.png)
+> > ![image-20220731114531557](./acwing%E9%A2%98%E8%AE%B0.assets/image-20220731114531557.png)
 
 ```cpp
 #include <iostream>
