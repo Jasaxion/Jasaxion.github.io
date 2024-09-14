@@ -9,7 +9,7 @@
 > 字典序中第K小的数字，要擅于编写搜索代码。以及搜索递归等思维方式
 >
 > 思考过程：
-> <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/EBE85B5611246F29CC6807CD4FC283AB.png" alt="img" style="zoom:50%;" />
+> <img src="./LeetCode.assets/EBE85B5611246F29CC6807CD4FC283AB.png" style="zoom:50%;" />
 
 ```
 根据思考过程，显然我们需要解决几个问题：
@@ -731,15 +731,15 @@ public:
 
 > - 解法一：
 >   - 首先存下左边的最大值以及右边的最大值数组，然后每次取左右两边最小的高度减去当前的高度即为所能手机的最多的水。「求每一列的水，我们只需要关注当前列，以及左边最高的墙，右边最高的墙就够了。」
->   - <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230509165753513.png" alt="image-20230509165753513" style="zoom:25%;" />
+>   - <img src="./LeetCode.assets/image-20230509165753513.png" style="zoom:25%;" />
 > - 解法二：
 >   - 按行求，对于每一行，看能有装载多少水，比较暴力的方法。「从下往上，一行一行求」时间复杂度$O(maxheight*n)$
->   - <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230509165453700.png" alt="image-20230509165453700" style="zoom:33%;" />
+>   - <img src="./LeetCode.assets/image-20230509165453700.png" style="zoom:33%;" />
 > - 解法三：解法一中左右两边最高的墙仅仅用到的一次，故此可以采用双指针算法，不必存下所有最高的墙，左指针指向左边最高的墙，右指针指向右边最高的墙
 >   - 
 > - 解法四：「类比括号匹配问题」——使用栈来求解该问题
->   - <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230510093156367.png" alt="image-20230510093156367" style="zoom:33%;" />
->   - <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230510093240473.png" alt="image-20230510093240473" style="zoom:33%;" />
+>   - <img src="./LeetCode.assets/image-20230510093156367.png" style="zoom:33%;" />
+>   - <img src="./LeetCode.assets/image-20230510093240473.png" style="zoom:33%;" />
 >   - 类比括号匹配问题⬆️，使用栈来进行匹配，如果当前元素要大于栈内的元素，那么就取得改部分所有水的面积累加到答案内：要点：水的宽度*水的高度，栈内存储的是枚举的下标「这样便于求宽度」
 
 ```cpp
@@ -919,7 +919,7 @@ public:
 > 	定义哈希表存放，可能的前缀和的情况，定义$前缀和数组pre[i]$
 > $pre[i] - pre[j-1] = k$时则满足情况，移项可得：$pre[j-1] == pre[i] -k $
 >
-> <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230511142844236.png" alt="image-20230511142844236" style="zoom:33%;" />
+> <img src="./LeetCode.assets/image-20230511142844236.png" style="zoom:33%;" />
 >
 > > 为什么要不能用滑动窗口缩减边界的方法进行求解？
 > > 答：因为在本题中存在负数和0，也就是说右指针`i`向后移1位不能保证区间会增大，左指针`j`向后移1位也不能保证区间和会减小。给定`j`，`i`的位置没有二段性
@@ -1001,7 +1001,7 @@ public:
 >    2. 将左端点进行移，然后更新所需要的`cnt`数量
 > 4. 反复操作直到`r == m`
 >
-> <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230511162226866.png" alt="image-20230511162226866" style="zoom:50%;" />
+> <img src="./LeetCode.assets/image-20230511162226866.png" style="zoom:50%;" />
 
 ```cpp
 class Solution {
@@ -1107,11 +1107,11 @@ public:
 >
 > 思路二：一个变量代替额外数组
 >
-> <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230513201959860.png" alt="image-20230513201959860" style="zoom:50%;" />
+> <img src="./LeetCode.assets/image-20230513201959860.png" style="zoom:50%;" />
 >
 > 思路三：翻转数组
 >
-> <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230513202022130.png" alt="image-20230513202022130" style="zoom:60%;" />
+> <img src="./LeetCode.assets/image-20230513202022130.png" style="zoom:60%;" />
 
 ```cpp
 class Solution {
@@ -1248,7 +1248,7 @@ public:
 
 > 哈希哈希——神奇的哈希表的空间优化「打标记」
 >
-> <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230514110126982.png" alt="image-20230514110126982" style="zoom:50%;" />
+> <img src="./LeetCode.assets/image-20230514110126982.png" style="zoom:50%;" />
 
 ```cpp
 class Solution {
@@ -1627,7 +1627,7 @@ public:
 >
 > 方法二：「快慢指针以及数学证明」
 >
-> <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230515195353415.png" alt="image-20230515195353415" style="zoom:33%;" />
+> <img src="./LeetCode.assets/image-20230515195353415.png" style="zoom:33%;" />
 
 ```cpp
 /**
@@ -1728,7 +1728,7 @@ public:
 >
 > **方法二：迭代思路：**
 >
-> <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/image-20230516145742873.png" alt="image-20230516145742873" style="zoom:33%;" />
+> <img src="./LeetCode.assets/image-20230516145742873.png" style="zoom:33%;" />
 
 ```cpp
 //回溯+哈希表的思路
@@ -1926,7 +1926,7 @@ public:
 > 2. 基于以上的想法，可以画出如下的树形图。建议大家自己在纸上画出这棵树，这一类问题都需要先画出树形图，然后编码实现。
 > 3. 优化算法，可以采用一些剪枝策略
 >
-> <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/1598091943-hZjibJ-file_1598091940241.png" alt="img" style="zoom:30%;" />
+> <img src="./LeetCode.assets/1598091943-hZjibJ-file_1598091940241.png" style="zoom:30%;" />
 
 
 ```cpp
