@@ -142,7 +142,7 @@ int main()
 >
 > > > 欧拉筛筛约数
 > > >
-> > > <img src="Codeforce题记.assets/image-20210722161048939.png" alt="image-20210722161048939" style="zoom:80%;" />
+> > > <img src="./Codeforce题记.assets/image-20210722161048939.png" alt="image-20210722161048939" style="zoom:80%;" />
 >
 > > 1. *i* 为素数，f*(*i*)=*i*+1
 > > 2. i不可被 p_j整除, f*(*i*×*pj)=f(i*)+*f*(*i*)×*pj。因为乘上 p_j就使原数的因子数增加了一倍，增加的因子是原数每个因子分别乘上 p**j* 。

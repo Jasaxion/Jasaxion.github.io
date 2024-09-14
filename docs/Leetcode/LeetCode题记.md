@@ -9,7 +9,7 @@
 > 字典序中第K小的数字，要擅于编写搜索代码。以及搜索递归等思维方式
 >
 > 思考过程：
-> <img src="LeetCode%E9%A2%98%E8%AE%B0.assets/EBE85B5611246F29CC6807CD4FC283AB.png" alt="img" style="zoom:50%;" />
+> <img src="./LeetCode%E9%A2%98%E8%AE%B0.assets/EBE85B5611246F29CC6807CD4FC283AB.png" alt="img" style="zoom:50%;" />
 
 ```
 根据思考过程，显然我们需要解决几个问题：
