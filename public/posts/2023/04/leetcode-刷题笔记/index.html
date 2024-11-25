@@ -37,7 +37,7 @@
 
     
     
-    <meta name="twitter:image" content="http://pve.digikamc.cn:8010/i/2024/11/25/m5y3c5-0.png">
+    <meta name="twitter:image" content="https://pve.digikamc.cn:8343/i/2024/11/25/m5y3c5-0.png">
     
     
 
@@ -167,7 +167,7 @@
 <p>字典序中第K小的数字，要擅于编写搜索代码。以及搜索递归等思维方式</p>
 <p>思考过程：</p>
 <!-- > <img src="./LeetCode.assets/EBE85B5611246F29CC6807CD4FC283AB.png" style="zoom:50%;" /> -->
-<p><img src="http://pve.digikamc.cn:8010/i/2024/11/25/m5y3c5-0.png" alt="image-20241125134022895"></p>
+<p><img src="https://pve.digikamc.cn:8343/i/2024/11/25/m5y3c5-0.png" alt="image-20241125134022895"></p>
 </blockquote>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -1488,13 +1488,13 @@
 <li>解法一：
 <ul>
 <li>首先存下左边的最大值以及右边的最大值数组，然后每次取左右两边最小的高度减去当前的高度即为所能手机的最多的水。「求每一列的水，我们只需要关注当前列，以及左边最高的墙，右边最高的墙就够了。」</li>
-<li><img src="http://pve.digikamc.cn:8010/i/2024/11/25/m5ac36-0.png" alt="image-20230509165753513"></li>
+<li><img src="https://pve.digikamc.cn:8343/i/2024/11/25/m5ac36-0.png" alt="image-20230509165753513"></li>
 </ul>
 </li>
 <li>解法二：
 <ul>
 <li>按行求，对于每一行，看能有装载多少水，比较暴力的方法。「从下往上，一行一行求」时间复杂度$O(maxheight*n)$</li>
-<li><img src="http://pve.digikamc.cn:8010/i/2024/11/25/m5a9g3-0.png" alt="image-20230509165453700"></li>
+<li><img src="https://pve.digikamc.cn:8343/i/2024/11/25/m5a9g3-0.png" alt="image-20230509165453700"></li>
 </ul>
 </li>
 <li>
@@ -1502,8 +1502,8 @@
 </li>
 <li>解法四：「类比括号匹配问题」——使用栈来求解该问题
 <ul>
-<li><img src="http://pve.digikamc.cn:8010/i/2024/11/25/m5a9vm-0.png" alt="image-20230510093156367"></li>
-<li><img src="http://pve.digikamc.cn:8010/i/2024/11/25/m5aezf-0.png" alt="image-20230510093240473"></li>
+<li><img src="https://pve.digikamc.cn:8343/i/2024/11/25/m5a9vm-0.png" alt="image-20230510093156367"></li>
+<li><img src="https://pve.digikamc.cn:8343/i/2024/11/25/m5aezf-0.png" alt="image-20230510093240473"></li>
 <li>类比括号匹配问题⬆️，使用栈来进行匹配，如果当前元素要大于栈内的元素，那么就取得改部分所有水的面积累加到答案内：要点：水的宽度*水的高度，栈内存储的是枚举的下标「这样便于求宽度」</li>
 </ul>
 </li>
@@ -1837,7 +1837,7 @@
 定义哈希表存放，可能的前缀和的情况，定义$前缀和数组pre[i]$
 $pre[i] - pre[j-1] = k$时则满足情况，移项可得：$pre[j-1] == pre[i] -k $</p>
 <!-- > <img src="./LeetCode.assets/image-20230511142844236.png" style="zoom:33%;" /> -->
-<p><img src="http://pve.digikamc.cn:8010/i/2024/11/25/m5aat5-0.png" alt="image-20230511142844236"></p>
+<p><img src="https://pve.digikamc.cn:8343/i/2024/11/25/m5aat5-0.png" alt="image-20230511142844236"></p>
 <blockquote>
 <p>为什么要不能用滑动窗口缩减边界的方法进行求解？
 答：因为在本题中存在负数和0，也就是说右指针<code>i</code>向后移1位不能保证区间会增大，左指针<code>j</code>向后移1位也不能保证区间和会减小。给定<code>j</code>，<code>i</code>的位置没有二段性</p>
@@ -1986,7 +1986,7 @@ $pre[i] - pre[j-1] = k$时则满足情况，移项可得：$pre[j-1] == pre[i] -
 <li>反复操作直到<code>r == m</code></li>
 </ol>
 <!-- > <img src="./LeetCode.assets/image-20230511162226866.png" style="zoom:50%;" /> -->
-<p><img src="http://pve.digikamc.cn:8010/i/2024/11/25/m5adc1-0.png" alt="image-20230511162226866"></p>
+<p><img src="https://pve.digikamc.cn:8343/i/2024/11/25/m5adc1-0.png" alt="image-20230511162226866"></p>
 </blockquote>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -2177,10 +2177,10 @@ $$
 <p>思路一：额外数组</p>
 <p>思路二：一个变量代替额外数组</p>
 <!-- > <img src="./LeetCode.assets/image-20230513201959860.png" style="zoom:50%;" /> -->
-<p><img src="http://pve.digikamc.cn:8010/i/2024/11/25/m5a8xj-0.png" alt="image-20230513201959860"></p>
+<p><img src="https://pve.digikamc.cn:8343/i/2024/11/25/m5a8xj-0.png" alt="image-20230513201959860"></p>
 <p>思路三：翻转数组</p>
 <!-- > <img src="./LeetCode.assets/image-20230513202022130.png" style="zoom:60%;" /> -->
-<p><img src="http://pve.digikamc.cn:8010/i/2024/11/25/m5aesu-0.png" alt="image-20230513202022130"></p>
+<p><img src="https://pve.digikamc.cn:8343/i/2024/11/25/m5aesu-0.png" alt="image-20230513202022130"></p>
 </blockquote>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -2439,7 +2439,7 @@ $$
 <blockquote>
 <p>哈希哈希——神奇的哈希表的空间优化「打标记」</p>
 <!-- > <img src="./LeetCode.assets/image-20230514110126982.png" style="zoom:50%;" /> -->
-<p><img src="http://pve.digikamc.cn:8010/i/2024/11/25/m5alb4-0.png" alt="image-20230514110126982"></p>
+<p><img src="https://pve.digikamc.cn:8343/i/2024/11/25/m5alb4-0.png" alt="image-20230514110126982"></p>
 </blockquote>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -3126,7 +3126,7 @@ $$
 <p>方法一：哈希表「容易想到」</p>
 <p>方法二：「快慢指针以及数学证明」</p>
 <!-- > <img src="./LeetCode.assets/image-20230515195353415.png" style="zoom:33%;" /> -->
-<p><img src="http://pve.digikamc.cn:8010/i/2024/11/25/m5a9bh-0.png" alt="image-20230515195353415"></p>
+<p><img src="https://pve.digikamc.cn:8343/i/2024/11/25/m5a9bh-0.png" alt="image-20230515195353415"></p>
 </blockquote>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -3299,7 +3299,7 @@ $$
 <p>**方法一：回溯+哈希表思路：**利用回溯的方式，让每个节点的拷贝操作相互独立。对于当前节点，我们首先要进行拷贝，然后我们进行「当前节点的后继节点」和「当前节点的随机指针指向的节点」拷贝，拷贝完成后将创建的新节点的指针返回，即可完成当前节点的两指针的赋值。</p>
 <p><strong>方法二：迭代思路：</strong></p>
 <!-- > <img src="./LeetCode.assets/image-20230516145742873.png" style="zoom:33%;" /> -->
-<p><img src="http://pve.digikamc.cn:8010/i/2024/11/25/m5a9m1-0.png" alt="image-20230516145742873"></p>
+<p><img src="https://pve.digikamc.cn:8343/i/2024/11/25/m5a9m1-0.png" alt="image-20230516145742873"></p>
 </blockquote>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -3634,7 +3634,7 @@ $$
 </li>
 </ol>
 <!-- > <img src="./LeetCode.assets/1598091943-hZjibJ-file_1598091940241.png" style="zoom:30%;" /> -->
-<p><img src="http://pve.digikamc.cn:8010/i/2024/11/25/m5a928-0.png" alt="1598091943-hZjibJ-file_1598091940241"></p>
+<p><img src="https://pve.digikamc.cn:8343/i/2024/11/25/m5a928-0.png" alt="1598091943-hZjibJ-file_1598091940241"></p>
 </blockquote>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">

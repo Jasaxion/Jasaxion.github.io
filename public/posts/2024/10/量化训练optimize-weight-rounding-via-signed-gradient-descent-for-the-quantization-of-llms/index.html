@@ -45,7 +45,7 @@ Large Language Models &amp;hellip;">
 
     
     
-    <meta name="twitter:image" content="http://pve.digikamc.cn:8010/i/2024/11/25/n8u5qm-0.png">
+    <meta name="twitter:image" content="https://pve.digikamc.cn:8343/i/2024/11/25/n8u5qm-0.png">
     
     
 
@@ -136,7 +136,7 @@ Large Language Models &amp;hellip;">
 <p>In this study, we introduce <strong>SignRound</strong>, a method that leverages signed gradient descent (SignSGD) to optimize rounding values and weight clipping in just 200 steps. SignRound integrates the advantages of <strong>Quantization-Aware Training (QAT)</strong> and <strong>Post-Training Quantization (PTQ),</strong> delivering exceptional results across 2 to 4 bits while minimizing tuning costs and avoiding additional inference overhead.  指出本研究的内容：采用有符号的梯度下降的方式优化舍入值和权重裁剪，集成了QAT 和 PTQ 的优势。</p>
 <p>For example, SignRound achieved absolute average accuracy improvements ranging from 6.91% to 33.22% at 2 bits, as measured by the average zero-shot accuracy across 11 tasks. It also demonstrates strong generalization in recent models, achieving near-lossless 4-bit quantization in most scenarios. 点出本研究的效果：在2bits 量化的条件下，性能从6.91% 到33.22%，并且在4bit 量化下，几乎达到了无损性能。</p>
 <h3 id="介绍">介绍</h3>
-<p><img src="http://pve.digikamc.cn:8010/i/2024/11/25/n8u5qm-0.png" alt="image-20241024120741569"></p>
+<p><img src="https://pve.digikamc.cn:8343/i/2024/11/25/n8u5qm-0.png" alt="image-20241024120741569"></p>
 <ol>
 <li>
 <p><strong>LLM部署挑战</strong>：</p>
@@ -198,7 +198,7 @@ Large Language Models &amp;hellip;">
 </ol>
 <h3 id="实验部分">实验部分</h3>
 <p>论文包含了大量且详细的实验，这是应该学习的，用丰富的实验来论证其有效性，而不是夸大其词。</p>
-<p><img src="http://pve.digikamc.cn:8010/i/2024/11/25/n8u34c-0.png" alt="image-20241024121123559"></p>
+<p><img src="https://pve.digikamc.cn:8343/i/2024/11/25/n8u34c-0.png" alt="image-20241024121123559"></p>
 <p>详细的实验就不过多介绍了，可以详细去看原论文。</p>
 <h3 id="总结">总结</h3>
 <p>在本文中，我们介绍了SignRound，这是一种高效而简洁的方法，用于在大型语言模型的量化中优化权重四舍五入。SignRound使用符号梯度下降，在200个步骤中调整四舍五入值和重量剪切，在大约2.5小时内完成LLAMA-V2-70B的量化。我们的广泛实验表明，在大多数场景中，SignRound在各种模型和权重位方面的表现优于其他量化方法。此外，SignRound在最近的模型中展示了有希望的生成能力，并通过特定于模型的超参数调整实现了增强的性能。</p>
