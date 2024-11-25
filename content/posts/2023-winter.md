@@ -573,7 +573,7 @@ int main()
 >
 > > 装箱问题：https://www.luogu.com.cn/problem/P1049
 >
-> ![image-20241125135229327](http://pve.digikamc.cn:8010/i/2024/11/25/md4ird-0.png)
+> ![image-20241125135229327](https://pve.digikamc.cn:8343/i/2024/11/25/md4ird-0.png)
 
 ```cpp
 //方法一：传统背包DP思路
@@ -677,7 +677,7 @@ int main ()
 
 > **优化思路：**
 >
-> <img src="http://pve.digikamc.cn:8010/i/2024/11/25/md9bwa-0.png" alt="image-20241125135251675" style="zoom:50%;" />
+> <img src="https://pve.digikamc.cn:8343/i/2024/11/25/md9bwa-0.png" alt="image-20241125135251675" style="zoom:50%;" />
 
 ```cpp
 //O2优化，100分
@@ -790,7 +790,7 @@ int main()
 >
 > > **左孩子右兄弟转化法：**——数组模拟临接表
 >
-> <img src="http://pve.digikamc.cn:8010/i/2024/11/25/mdmdyx-0.png" alt="image-20241125135312637" style="zoom:40%;" />
+> <img src="https://pve.digikamc.cn:8343/i/2024/11/25/mdmdyx-0.png" alt="image-20241125135312637" style="zoom:40%;" />
 
 ```cpp
 #include <bits/stdc++.h>
@@ -834,7 +834,7 @@ int main()
 
 > **思路：通过数学方法摸清性质**
 >
-> <img src="http://pve.digikamc.cn:8010/i/2024/11/25/mdquid-0.png" alt="image-20241125135333835" style="zoom:50%;" />
+> <img src="https://pve.digikamc.cn:8343/i/2024/11/25/mdquid-0.png" alt="image-20241125135333835" style="zoom:50%;" />
 >
 > ```
 > 如果 N = p1^c1 * p2^c2 * ... *pk^ck

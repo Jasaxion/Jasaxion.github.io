@@ -18,7 +18,7 @@ description = "之前在 Leetcode 的题目归档，包含了比较细致的 Lee
 >
 > 思考过程：
 > <!-- > <img src="./LeetCode.assets/EBE85B5611246F29CC6807CD4FC283AB.png" style="zoom:50%;" /> -->
-> ![image-20241125134022895](http://pve.digikamc.cn:8010/i/2024/11/25/m5y3c5-0.png)
+> ![image-20241125134022895](https://pve.digikamc.cn:8343/i/2024/11/25/m5y3c5-0.png)
 
 ```
 根据思考过程，显然我们需要解决几个问题：
@@ -740,15 +740,15 @@ public:
 
 > - 解法一：
 >   - 首先存下左边的最大值以及右边的最大值数组，然后每次取左右两边最小的高度减去当前的高度即为所能手机的最多的水。「求每一列的水，我们只需要关注当前列，以及左边最高的墙，右边最高的墙就够了。」
->   - ![image-20230509165753513](http://pve.digikamc.cn:8010/i/2024/11/25/m5ac36-0.png)
+>   - ![image-20230509165753513](https://pve.digikamc.cn:8343/i/2024/11/25/m5ac36-0.png)
 > - 解法二：
 >   - 按行求，对于每一行，看能有装载多少水，比较暴力的方法。「从下往上，一行一行求」时间复杂度$O(maxheight*n)$
->   - ![image-20230509165453700](http://pve.digikamc.cn:8010/i/2024/11/25/m5a9g3-0.png)
+>   - ![image-20230509165453700](https://pve.digikamc.cn:8343/i/2024/11/25/m5a9g3-0.png)
 > - 解法三：解法一中左右两边最高的墙仅仅用到的一次，故此可以采用双指针算法，不必存下所有最高的墙，左指针指向左边最高的墙，右指针指向右边最高的墙
 >   - 
 > - 解法四：「类比括号匹配问题」——使用栈来求解该问题
->   - ![image-20230510093156367](http://pve.digikamc.cn:8010/i/2024/11/25/m5a9vm-0.png)
->   - ![image-20230510093240473](http://pve.digikamc.cn:8010/i/2024/11/25/m5aezf-0.png)
+>   - ![image-20230510093156367](https://pve.digikamc.cn:8343/i/2024/11/25/m5a9vm-0.png)
+>   - ![image-20230510093240473](https://pve.digikamc.cn:8343/i/2024/11/25/m5aezf-0.png)
 >   - 类比括号匹配问题⬆️，使用栈来进行匹配，如果当前元素要大于栈内的元素，那么就取得改部分所有水的面积累加到答案内：要点：水的宽度*水的高度，栈内存储的是枚举的下标「这样便于求宽度」
 
 ```cpp
@@ -929,7 +929,7 @@ public:
 > $pre[i] - pre[j-1] = k$时则满足情况，移项可得：$pre[j-1] == pre[i] -k $
 >
 > <!-- > <img src="./LeetCode.assets/image-20230511142844236.png" style="zoom:33%;" /> -->
-> ![image-20230511142844236](http://pve.digikamc.cn:8010/i/2024/11/25/m5aat5-0.png)
+> ![image-20230511142844236](https://pve.digikamc.cn:8343/i/2024/11/25/m5aat5-0.png)
 >
 > > 为什么要不能用滑动窗口缩减边界的方法进行求解？
 > > 答：因为在本题中存在负数和0，也就是说右指针`i`向后移1位不能保证区间会增大，左指针`j`向后移1位也不能保证区间和会减小。给定`j`，`i`的位置没有二段性
@@ -1012,7 +1012,7 @@ public:
 > 4. 反复操作直到`r == m`
 >
 > <!-- > <img src="./LeetCode.assets/image-20230511162226866.png" style="zoom:50%;" /> -->
-> ![image-20230511162226866](http://pve.digikamc.cn:8010/i/2024/11/25/m5adc1-0.png)
+> ![image-20230511162226866](https://pve.digikamc.cn:8343/i/2024/11/25/m5adc1-0.png)
 
 ```cpp
 class Solution {
@@ -1119,12 +1119,12 @@ public:
 > 思路二：一个变量代替额外数组
 >
 > <!-- > <img src="./LeetCode.assets/image-20230513201959860.png" style="zoom:50%;" /> -->
-> ![image-20230513201959860](http://pve.digikamc.cn:8010/i/2024/11/25/m5a8xj-0.png)
+> ![image-20230513201959860](https://pve.digikamc.cn:8343/i/2024/11/25/m5a8xj-0.png)
 >
 > 思路三：翻转数组
 >
 > <!-- > <img src="./LeetCode.assets/image-20230513202022130.png" style="zoom:60%;" /> -->
-> ![image-20230513202022130](http://pve.digikamc.cn:8010/i/2024/11/25/m5aesu-0.png)
+> ![image-20230513202022130](https://pve.digikamc.cn:8343/i/2024/11/25/m5aesu-0.png)
 
 ```cpp
 class Solution {
@@ -1262,7 +1262,7 @@ public:
 > 哈希哈希——神奇的哈希表的空间优化「打标记」
 >
 > <!-- > <img src="./LeetCode.assets/image-20230514110126982.png" style="zoom:50%;" /> -->
-> ![image-20230514110126982](http://pve.digikamc.cn:8010/i/2024/11/25/m5alb4-0.png)
+> ![image-20230514110126982](https://pve.digikamc.cn:8343/i/2024/11/25/m5alb4-0.png)
 
 ```cpp
 class Solution {
@@ -1642,7 +1642,7 @@ public:
 > 方法二：「快慢指针以及数学证明」
 >
 > <!-- > <img src="./LeetCode.assets/image-20230515195353415.png" style="zoom:33%;" /> -->
-> ![image-20230515195353415](http://pve.digikamc.cn:8010/i/2024/11/25/m5a9bh-0.png)
+> ![image-20230515195353415](https://pve.digikamc.cn:8343/i/2024/11/25/m5a9bh-0.png)
 
 ```cpp
 /**
@@ -1744,7 +1744,7 @@ public:
 > **方法二：迭代思路：**
 >
 > <!-- > <img src="./LeetCode.assets/image-20230516145742873.png" style="zoom:33%;" /> -->
-> ![image-20230516145742873](http://pve.digikamc.cn:8010/i/2024/11/25/m5a9m1-0.png)
+> ![image-20230516145742873](https://pve.digikamc.cn:8343/i/2024/11/25/m5a9m1-0.png)
 
 ```cpp
 //回溯+哈希表的思路
@@ -1942,7 +1942,7 @@ public:
 > 3. 优化算法，可以采用一些剪枝策略
 >
 > <!-- > <img src="./LeetCode.assets/1598091943-hZjibJ-file_1598091940241.png" style="zoom:30%;" /> -->
-> ![1598091943-hZjibJ-file_1598091940241](http://pve.digikamc.cn:8010/i/2024/11/25/m5a928-0.png)
+> ![1598091943-hZjibJ-file_1598091940241](https://pve.digikamc.cn:8343/i/2024/11/25/m5a928-0.png)
 
 
 ```cpp

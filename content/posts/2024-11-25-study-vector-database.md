@@ -147,7 +147,7 @@ ANN搜索是向量数据库的核心组件，同时也是一项庞大的研究�
 
 向量数据库如Milvus和Zilliz（完全托管Milvus）是专门设计用于存储、处理、索引和搜索向量嵌入。大多数向量数据库支持主流索引，如层次可导航小世界（HNSW）、局部敏感哈希（LSH）和产品量化（PQ）。换句话说，向量数据库主要在向量嵌入上操作，并与将此数据转换为向量嵌入的机器学习模型紧密协作。
 
-![img](http://pve.digikamc.cn:8010/i/2024/11/25/ndjyh1-0.png)
+![img](https://pve.digikamc.cn:8343/i/2024/11/25/ndjyh1-0.png)
 
 > 1. 机器学习模型（通常是嵌入模型）将各种非结构化数据转换为向量嵌入。
 > 2. 这些向量嵌入存储在Zilliz Cloud中。
@@ -226,7 +226,7 @@ ANN搜索是向量数据库的核心组件，同时也是一项庞大的研究�
 
 层次可导航小世界是一种基于图的索引和检索算法，这与乘积量化的工作方式不同：不是通过减少数据库的有效大小来提高其可搜索性，HNSW 通过原始数据创建一个多层图。上层只包含“长连接”，而下层只包含数据库中向量的“短连接 ”，单个图的连接是按照跳表的方式创建的，有了这种架构，搜索变得相当直接——我们首先贪心地遍历最顶层的图以找到我们地查询向量最接近地向量，然后我们对第二层图也进行同样地操作，使用第一层图的结果作为起点，这个过程一直 持续到我们在最底层的图完成搜索，其结果成为查询向量的最近邻。
 
-<img src="http://pve.digikamc.cn:8010/i/2024/11/25/ne0tsk-0.png" alt="HNSW, visualized. Image source: https://arxiv.org/abs/1603.09320" style="zoom:60%;" />
+<img src="https://pve.digikamc.cn:8343/i/2024/11/25/ne0tsk-0.png" alt="HNSW, visualized. Image source: https://arxiv.org/abs/1603.09320" style="zoom:60%;" />
 
 ##### 最近邻搜索 ANN
 
@@ -244,7 +244,7 @@ L1距离通常也被称为曼哈顿距离，这一名称恰如其分地反映了
 
 二进制向量，顾名思义，不具备基于浮点向量算术运算的度量标准。二进制向量的相似度度量依赖于集合数学、位操作或两者的结合（没关系，我也讨厌离散数学）。以下是两种常用的二进制向量相似度度量的公式：
 
-<img src="http://pve.digikamc.cn:8010/i/2024/11/25/ne3zqc-0.png" alt="image-20241104123805869" style="zoom:50%;" />
+<img src="https://pve.digikamc.cn:8343/i/2024/11/25/ne3zqc-0.png" alt="image-20241104123805869" style="zoom:50%;" />
 
 第一个方程称为Tanimoto/Jaccard距离，本质上衡量的是两个二进制向量之间的重叠程度。第二个方程是汉明距离，计算的是向量a和b中元素不同的数量。在大多数应用中，人们更倾向于使用浮点嵌入上的余弦相似度，因此你很可能可以安全地忽略这些相似度度量。
 
@@ -283,7 +283,7 @@ Flat Index大体上是最基础的索引策略，但可能也是最容易被忽�
 
 倒排文件索引通过将整个数据集中的向量空间划分为多个分区，从而缩小了整体搜索范围。每个分区都关联一个质心，数据集中的每个向量则被分配到与其最近质心对应的分区中。
 
-> <img src="http://pve.digikamc.cn:8010/i/2024/11/25/ne5tfc-0.png" alt="A two-dimensional Voronoi diagram. Image by Balu Ertl, CC BY-SA 4.0." style="zoom:20%;" />
+> <img src="https://pve.digikamc.cn:8343/i/2024/11/25/ne5tfc-0.png" alt="A two-dimensional Voronoi diagram. Image by Balu Ertl, CC BY-SA 4.0." style="zoom:20%;" />
 
 ### 标量量化Scalar quantization
 
@@ -342,7 +342,7 @@ class ScalarQuantizer:
 
 PQ背后的主要思想是将高维向量算法性地分割成低维子空间，子空间的维度与原始高维向量中的多个维度相对应。这个过程通常使用一种特殊的算法，称为Lloyd算法，这是一种量化器，其效果等同于k-means聚类。与标量量化类似，每个原始向量在量化后都产生一个整数向量，每个整数对应一个特定的质心。
 
-![product_quantization.png](http://pve.digikamc.cn:8010/i/2024/11/25/ndjy9r-0.png)
+![product_quantization.png](https://pve.digikamc.cn:8343/i/2024/11/25/ndjy9r-0.png)
 
 1. 给定一个包含N个向量的数据集，我们首先将每个向量分割成M个子向量（也称为子空间）。这些子向量的长度不一定相同，但在实际应用中它们几乎总是相同的。
 2. 接着，我们对数据集中的所有子向量使用k-means算法（或其他聚类算法）。这将为我们提供每个子空间的一组K个质心，每个质心都会被分配一个唯一的ID。
@@ -406,7 +406,7 @@ class ProductQuantizer:
 
 概率跳表是一种多层次的链表结构，上层维护着较长的连接，随着逐层向下移动，其连接会越来越短，而最底层是一个包含了所有元素的“原始”链表：
 
-![skip list structure](http://pve.digikamc.cn:8010/i/2024/11/25/ndjybf-0.png)
+![skip list structure](https://pve.digikamc.cn:8343/i/2024/11/25/ndjybf-0.png)
 
 
 
@@ -450,7 +450,7 @@ HNSW通过借鉴跳表的概念扩展了NSW。与跳表类似，HNSW维护了多
 >
 > HNSW通过多层次的NSW图结构和自顶向下的搜索策略，实现了高效的近邻搜索。插入过程通过逐层查找最近邻居并创建链接，确保了图结构的动态更新。层间概率分布机制保证了图结构的整体质量，尽管在某些情况下可能出现图结构不佳的情况，但概率极低。
 
-<img src="http://pve.digikamc.cn:8010/i/2024/11/25/ndwa1t-0.png" alt="image-20241125141405303" style="zoom:25%;" />
+<img src="https://pve.digikamc.cn:8343/i/2024/11/25/ndwa1t-0.png" alt="image-20241125141405303" style="zoom:25%;" />
 
 #### HNSW 算法的实现
 

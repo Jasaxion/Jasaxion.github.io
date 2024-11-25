@@ -62,21 +62,21 @@ description = "如何做好科研，读《写在Ph.D第0年》的所感所受"
 
 #### 科研的步骤需要包含哪些过程？
 
-![image-20241022174533896](http://pve.digikamc.cn:8010/i/2024/11/25/mh5r5k-0.png)
+![image-20241022174533896](https://pve.digikamc.cn:8343/i/2024/11/25/mh5r5k-0.png)
 
 #### 如何审查自己的论文？
 
-![image-20241022174604792](http://pve.digikamc.cn:8010/i/2024/11/25/mh5oq6-0.png)
+![image-20241022174604792](https://pve.digikamc.cn:8343/i/2024/11/25/mh5oq6-0.png)
 
 #### 论文写作时间管理
 
-![image-20241022174702059](http://pve.digikamc.cn:8010/i/2024/11/25/mh5obk-0.png)
+![image-20241022174702059](https://pve.digikamc.cn:8343/i/2024/11/25/mh5obk-0.png)
 
-![img](http://pve.digikamc.cn:8010/i/2024/11/25/mh5oav-0.jpg)
+![img](https://pve.digikamc.cn:8343/i/2024/11/25/mh5oav-0.jpg)
 
 #### 非常具体的 AI 科研目标和经验
 
-![img](http://pve.digikamc.cn:8010/i/2024/11/25/mh5o50-0.jpg)
+![img](https://pve.digikamc.cn:8343/i/2024/11/25/mh5o50-0.jpg)
 
 #### 社交
 
@@ -91,13 +91,13 @@ description = "如何做好科研，读《写在Ph.D第0年》的所感所受"
 
 #### 实用
 
-![img](http://pve.digikamc.cn:8010/i/2024/11/25/mh5qwi-0.webp)
+![img](https://pve.digikamc.cn:8343/i/2024/11/25/mh5qwi-0.webp)
 
-![img](http://pve.digikamc.cn:8010/i/2024/11/25/mh5m3l-0.webp)
+![img](https://pve.digikamc.cn:8343/i/2024/11/25/mh5m3l-0.webp)
 
-![img](http://pve.digikamc.cn:8010/i/2024/11/25/mh5o5s-0.webp)
+![img](https://pve.digikamc.cn:8343/i/2024/11/25/mh5o5s-0.webp)
 
-![img](http://pve.digikamc.cn:8010/i/2024/11/25/mh5no5-0.webp)
+![img](https://pve.digikamc.cn:8343/i/2024/11/25/mh5no5-0.webp)
 
 > https://docs.google.com/document/d/1HmcOoyzmgE-5BwpqN_AocEtvepulBGcD/edit?usp=sharing&ouid=107199401105831245625&rtpof=true&sd=true
 

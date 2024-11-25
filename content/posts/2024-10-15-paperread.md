@@ -30,7 +30,7 @@ For example, SignRound achieved absolute average accuracy improvements ranging f
 
 ### 介绍
 
-![image-20241024120741569](http://pve.digikamc.cn:8010/i/2024/11/25/n8u5qm-0.png)
+![image-20241024120741569](https://pve.digikamc.cn:8343/i/2024/11/25/n8u5qm-0.png)
 
 1. **LLM部署挑战**：
 
@@ -79,7 +79,7 @@ For example, SignRound achieved absolute average accuracy improvements ranging f
 
 论文包含了大量且详细的实验，这是应该学习的，用丰富的实验来论证其有效性，而不是夸大其词。
 
-![image-20241024121123559](http://pve.digikamc.cn:8010/i/2024/11/25/n8u34c-0.png)
+![image-20241024121123559](https://pve.digikamc.cn:8343/i/2024/11/25/n8u34c-0.png)
 
 详细的实验就不过多介绍了，可以详细去看原论文。
 

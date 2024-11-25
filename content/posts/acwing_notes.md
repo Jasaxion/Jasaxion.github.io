@@ -187,7 +187,7 @@ int main()
 > 要确保找准题干中的关键字，要耐得住寂寞，坐得下板凳。
 >
 > <!-- > <img src="./acwing.assets/image-20210630153938471.png" style="zoom:65%;" /> -->
-> ![image-20210630153938471](http://pve.digikamc.cn:8010/i/2024/11/25/m94ugt-0.png)
+> ![image-20210630153938471](https://pve.digikamc.cn:8343/i/2024/11/25/m94ugt-0.png)
 
 ```cpp
 #include <iostream>
@@ -523,7 +523,7 @@ int main()
 > 以数组中每个1为一个对象进行处理，每将一个1变成0所需要的操作是3次，也就是一共的操作次数的1的个数*3
 >
 > <!-- > <img src="./acwing.assets/641F5EAF017F538F1603E8C7DB911A49.png" style="zoom:30%;" /> -->
-> ![641F5EAF017F538F1603E8C7DB911A49](http://pve.digikamc.cn:8010/i/2024/11/25/m94su2-0.png)
+> ![641F5EAF017F538F1603E8C7DB911A49](https://pve.digikamc.cn:8343/i/2024/11/25/m94su2-0.png)
 
 ```cpp
 #include <iostream>
@@ -1584,7 +1584,7 @@ int main()
 >
 > > 大概思维过程，难点就在于树状数组中的处理部分
 > > <!-- > > <img src="./acwing.assets/image-20220331000828858.png" style="zoom:50%;" /> -->
-> > ![image-20220331000828858](http://pve.digikamc.cn:8010/i/2024/11/25/m94rct-0.png)
+> > ![image-20220331000828858](https://pve.digikamc.cn:8343/i/2024/11/25/m94rct-0.png)
 
 > 需要知识点：平衡树/Splay，树状数组+离散化可以替代
 
@@ -1986,7 +1986,7 @@ int main()
 
 <!-- > <img src="./acwing.assets/image-20220404220132792.png" style="zoom:40%;" /> -->
 
-> ![image-20220404220132792](http://pve.digikamc.cn:8010/i/2024/11/25/m94vd3-0.png)
+> ![image-20220404220132792](https://pve.digikamc.cn:8343/i/2024/11/25/m94vd3-0.png)
 
 ```cpp
 #include <iostream>
@@ -2360,7 +2360,7 @@ int main()
 > 思路：DP动态规划思想解法。闫氏DP分析法
 >
 > <!-- > <img src="./acwing.assets/image-20220722010256741.png" style="zoom:67%;" /> -->
-> ![image-20220722010256741](http://pve.digikamc.cn:8010/i/2024/11/25/m94tm5-0.png)
+> ![image-20220722010256741](https://pve.digikamc.cn:8343/i/2024/11/25/m94tm5-0.png)
 
 ```cpp
 #include <iostream>
@@ -2938,7 +2938,7 @@ int main()
 > gcd的一些规律题，如果发现一些规律题不妨往常见算法里面靠
 >
 > <!-- > <img src="./acwing.assets/screenshoot20221113.png" style="zoom:50%;" /> -->
-> ![screenshoot20221113](http://pve.digikamc.cn:8010/i/2024/11/25/m94tua-0.png)
+> ![screenshoot20221113](https://pve.digikamc.cn:8343/i/2024/11/25/m94tua-0.png)
 
 ```cpp
 #include<bits/stdc++.h>
@@ -3109,7 +3109,7 @@ int main()
 > 非常基础的DP问题。。。。
 >
 > <!-- > <img src="./acwing.assets/screenshoot20221204.png" style="zoom:30%;" /> -->
-> ![screenshoot20221204](http://pve.digikamc.cn:8010/i/2024/11/25/m9dn2i-0.png)
+> ![screenshoot20221204](https://pve.digikamc.cn:8343/i/2024/11/25/m9dn2i-0.png)
 
 ```cpp
 #include<bits/stdc++.h>
