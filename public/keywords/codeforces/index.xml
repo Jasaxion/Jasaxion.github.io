@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Codeforces on Jasaxion一只大雄</title>
+    <link>http://localhost:1313/keywords/codeforces/</link>
+    <description>Recent content in Codeforces on Jasaxion一只大雄</description>
+    <generator>Hugo</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 25 Nov 2022 13:43:58 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/keywords/codeforces/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Codeforces 刷题归档</title>
+      <link>http://localhost:1313/posts/2022/11/codeforces-%E5%88%B7%E9%A2%98%E5%BD%92%E6%A1%A3/</link>
+      <pubDate>Fri, 25 Nov 2022 13:43:58 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2022/11/codeforces-%E5%88%B7%E9%A2%98%E5%BD%92%E6%A1%A3/</guid>
+      <description>&lt;h4 id=&#34;cf371c-hamburgers&#34;&gt;CF371C Hamburgers&lt;/h4&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://codeforces.com/problemset/problem/371/C&#34;&gt;https://codeforces.com/problemset/problem/371/C&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Polycarpus loves hamburgers very much. He especially adores the hamburgers he makes with his own hands. Polycarpus thinks that there are only three decent ingredients to make hamburgers from: a bread, sausage and cheese. He writes down the recipe of his favorite &amp;ldquo;Le Hamburger de Polycarpus&amp;rdquo; as a string of letters &amp;lsquo;B&amp;rsquo; (bread), &amp;lsquo;S&amp;rsquo; (sausage) и &amp;lsquo;C&amp;rsquo; (cheese). The ingredients in the recipe go from bottom to top, for example, recipe &amp;ldquo;ВSCBS&amp;rdquo; represents the hamburger where the ingredients go from bottom to top as bread, sausage, cheese, bread and sausage again.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

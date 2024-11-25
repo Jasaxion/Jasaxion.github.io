@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Leetcode on Jasaxion一只大雄</title>
+    <link>http://localhost:1313/keywords/leetcode/</link>
+    <description>Recent content in Leetcode on Jasaxion一只大雄</description>
+    <generator>Hugo</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 17 Apr 2023 13:36:45 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/keywords/leetcode/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LeetCode 刷题笔记</title>
+      <link>http://localhost:1313/posts/2023/04/leetcode-%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Mon, 17 Apr 2023 13:36:45 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2023/04/leetcode-%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/</guid>
+      <description>&lt;h3 id=&#34;2022年3月27日&#34;&gt;2022年3月27日&lt;/h3&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode-cn.com/problems/k-th-smallest-in-lexicographical-order/&#34;&gt;https://leetcode-cn.com/problems/k-th-smallest-in-lexicographical-order/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;字典序中第K小的数字，要擅于编写搜索代码。以及搜索递归等思维方式&lt;/p&gt;&#xA;&lt;p&gt;思考过程：&lt;/p&gt;&#xA;&lt;!-- &gt; &lt;img src=&#34;./LeetCode.assets/EBE85B5611246F29CC6807CD4FC283AB.png&#34; style=&#34;zoom:50%;&#34; /&gt; --&gt;&#xA;&lt;p&gt;&lt;img src=&#34;http://pve.digikamc.cn:8010/i/2024/11/25/m5y3c5-0.png&#34; alt=&#34;image-20241125134022895&#34;&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;div style=&#34;background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&#xA;&lt;table style=&#34;border-spacing:0;padding:0;margin:0;border:0;&#34;&gt;&lt;tr&gt;&lt;td style=&#34;vertical-align:top;padding:0;margin:0;border:0;&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&#xA;&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&#xA;&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;3&#xA;&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;4&#xA;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&#xA;&lt;td style=&#34;vertical-align:top;padding:0;margin:0;border:0;;width:100%&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;根据思考过程，显然我们需要解决几个问题：&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;1.如何确定一个前缀下所有子节点的个数？&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;2.如果第k个数在当前的前缀下，如何继续往下面的子节点进行寻找？&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;3.如果第k个数不在当前的前缀下，如何扩大前缀，增大寻找的范围？&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&#xA;&lt;/div&gt;&#xA;&lt;/div&gt;&lt;blockquote&gt;&#xA;&lt;p&gt;1.确定一个前缀下所有子节点的个数&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

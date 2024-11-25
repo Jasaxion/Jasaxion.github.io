@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Algorithm on Jasaxion一只大雄</title>
+    <link>http://localhost:1313/keywords/algorithm/</link>
+    <description>Recent content in Algorithm on Jasaxion一只大雄</description>
+    <generator>Hugo</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 17 Apr 2023 13:36:45 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/keywords/algorithm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LeetCode 刷题笔记</title>
+      <link>http://localhost:1313/posts/2023/04/leetcode-%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Mon, 17 Apr 2023 13:36:45 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2023/04/leetcode-%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/</guid>
+      <description>&lt;h3 id=&#34;2022年3月27日&#34;&gt;2022年3月27日&lt;/h3&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://leetcode-cn.com/problems/k-th-smallest-in-lexicographical-order/&#34;&gt;https://leetcode-cn.com/problems/k-th-smallest-in-lexicographical-order/&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;字典序中第K小的数字，要擅于编写搜索代码。以及搜索递归等思维方式&lt;/p&gt;&#xA;&lt;p&gt;思考过程：&lt;/p&gt;&#xA;&lt;!-- &gt; &lt;img src=&#34;./LeetCode.assets/EBE85B5611246F29CC6807CD4FC283AB.png&#34; style=&#34;zoom:50%;&#34; /&gt; --&gt;&#xA;&lt;p&gt;&lt;img src=&#34;http://pve.digikamc.cn:8010/i/2024/11/25/m5y3c5-0.png&#34; alt=&#34;image-20241125134022895&#34;&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;div style=&#34;background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&#xA;&lt;table style=&#34;border-spacing:0;padding:0;margin:0;border:0;&#34;&gt;&lt;tr&gt;&lt;td style=&#34;vertical-align:top;padding:0;margin:0;border:0;&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&#xA;&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&#xA;&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;3&#xA;&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;4&#xA;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&#xA;&lt;td style=&#34;vertical-align:top;padding:0;margin:0;border:0;;width:100%&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;根据思考过程，显然我们需要解决几个问题：&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;1.如何确定一个前缀下所有子节点的个数？&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;2.如果第k个数在当前的前缀下，如何继续往下面的子节点进行寻找？&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;3.如果第k个数不在当前的前缀下，如何扩大前缀，增大寻找的范围？&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&#xA;&lt;/div&gt;&#xA;&lt;/div&gt;&lt;blockquote&gt;&#xA;&lt;p&gt;1.确定一个前缀下所有子节点的个数&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>2023 寒假算题刷题记录</title>
+      <link>http://localhost:1313/posts/2023/01/2023-%E5%AF%92%E5%81%87%E7%AE%97%E9%A2%98%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</link>
+      <pubDate>Wed, 25 Jan 2023 13:47:56 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2023/01/2023-%E5%AF%92%E5%81%87%E7%AE%97%E9%A2%98%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</guid>
+      <description>&lt;h2 id=&#34;acwing周赛&#34;&gt;Acwing周赛&lt;/h2&gt;&#xA;&lt;h3 id=&#34;1月14日&#34;&gt;1月14日&lt;/h3&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;题目链接：https://www.acwing.com/problem/content/description/4264/&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;本题思路&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;p&gt;假设我们现在单独枚举G的条件：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Codeforces 刷题归档</title>
+      <link>http://localhost:1313/posts/2022/11/codeforces-%E5%88%B7%E9%A2%98%E5%BD%92%E6%A1%A3/</link>
+      <pubDate>Fri, 25 Nov 2022 13:43:58 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2022/11/codeforces-%E5%88%B7%E9%A2%98%E5%BD%92%E6%A1%A3/</guid>
+      <description>&lt;h4 id=&#34;cf371c-hamburgers&#34;&gt;CF371C Hamburgers&lt;/h4&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://codeforces.com/problemset/problem/371/C&#34;&gt;https://codeforces.com/problemset/problem/371/C&lt;/a&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Polycarpus loves hamburgers very much. He especially adores the hamburgers he makes with his own hands. Polycarpus thinks that there are only three decent ingredients to make hamburgers from: a bread, sausage and cheese. He writes down the recipe of his favorite &amp;ldquo;Le Hamburger de Polycarpus&amp;rdquo; as a string of letters &amp;lsquo;B&amp;rsquo; (bread), &amp;lsquo;S&amp;rsquo; (sausage) и &amp;lsquo;C&amp;rsquo; (cheese). The ingredients in the recipe go from bottom to top, for example, recipe &amp;ldquo;ВSCBS&amp;rdquo; represents the hamburger where the ingredients go from bottom to top as bread, sausage, cheese, bread and sausage again.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Acwing 算法课程刷题记录</title>
+      <link>http://localhost:1313/posts/2021/06/acwing-%E7%AE%97%E6%B3%95%E8%AF%BE%E7%A8%8B%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</link>
+      <pubDate>Fri, 25 Jun 2021 13:45:44 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2021/06/acwing-%E7%AE%97%E6%B3%95%E8%AF%BE%E7%A8%8B%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</guid>
+      <description>&lt;h4 id=&#34;3729-改变数组元素-2021年6月25日&#34;&gt;3729.改变数组元素 2021年6月25日&lt;/h4&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;给定一个空数组 V 和一个整数数组 a1,a2,…,an。&lt;/p&gt;&#xA;&lt;p&gt;现在要对数组 V 进行 n 次操作。&lt;/p&gt;&#xA;&lt;p&gt;第 i 次操作的具体流程如下：&lt;/p&gt;&#xA;&lt;p&gt;从数组 V 尾部插入整数 0。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>算法集训-洛谷刷题笔记</title>
+      <link>http://localhost:1313/posts/2021/06/%E7%AE%97%E6%B3%95%E9%9B%86%E8%AE%AD-%E6%B4%9B%E8%B0%B7%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Thu, 10 Jun 2021 11:50:00 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2021/06/%E7%AE%97%E6%B3%95%E9%9B%86%E8%AE%AD-%E6%B4%9B%E8%B0%B7%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/</guid>
+      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;让cin和scanf一样快吧！&lt;/p&gt;&#xA;&lt;p&gt;主函数里面加上 &lt;code&gt;ios::sync_with_stdio(false);&lt;/code&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;第一周：&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;2021年7月12日 贪心&#xA;2021年7月13日 递推、前缀和、差分&#xA;2021年7月14日 二分、三分、尺取&#xA;2021年7月15日 数据结构（优先队列[堆])&#xA;2021年7月16日 搜索&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

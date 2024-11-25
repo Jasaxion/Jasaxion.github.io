@@ -1,0 +1,84 @@
+baseURL = 'https://jasaxion.github.io/'
+languageCode = 'zh-CN'
+title = 'Jasaxion一只大雄'
+theme = 'ivy'
+disqusShortname = "jasaxion"
+hasCJKLanguage = true
+enableEmoji = true
+footnotereturnlinkcontents = "↩"
+
+[params]
+  description = "风打，碎琉璃； 打不碎的，是那阳光漫地。The wind strikes, shattering the glazed glass; Yet unbroken remains the sunlight spilling across the earth."
+  footer = "&copy; [Jasaxion](https://jasaxion.github.io) | since 2021"
+  highlightjsCDN = "//cdn.bootcss.com"
+  highlightjsLang = ["r", "yaml", "tex"]
+  highlightjsTheme = "github"
+  highlightjsVersion = "9.12.0"
+  [params.contact]
+    email = 'jasaxion@gmail.com'
+    phone = '+86 15973758519'
+
+[params.twikoo]
+	enable = true
+
+[taxonomies]
+  category = 'categories'
+  keyword = 'keywords'
+  tag = 'tags'
+
+[blackfriday]
+extensionsmask = [ "noIntraEmphasis" ]
+fractions = false
+
+[markup.highlight]
+codeFences = true
+anchorLineNos = false
+guessSyntax = true
+hl_Lines = ""
+lineAnchors = ""
+lineNoStart =1
+lineNos = true
+lineNumbersInTable = true
+noClasses = true
+style = "manni"
+tabWidth = 4
+
+[markup.goldmark.renderer]
+unsafe = true
+
+[markup.goldmark.parser]
+autoHeadingIDType = "blackfriday"
+
+[markup.tableOfContents]
+startLevel = 1
+
+[permalinks]
+  posts = "/posts/:year/:month/:slug/"
+  journal = "/journal/:year/:month/:slug/"
+  note = "/note/:slug/"
+
+[menu]
+  [[menu.main]]
+  name="技术目录 / Tech"
+  url="/tags/tech/"
+  weight="3"
+  [[menu.main]]
+  name="我的笔记 / Note"
+  url="/tags/notes"
+  weight="4"
+  [[menu.main]]
+  name="科研与阅读 / Read"
+  url="/tags/read/"
+  weight="5"
+  [[menu.main]]
+  name="归档 / Posts"
+  url="/posts/"
+  weight="1"
+  [[menu.main]]
+  name="关于我 / CV"
+  url="/Resume/"
+  weight="2"
+  [[menu.main]]
+  name="碎碎念 / Whisper"
+  url="/whisper/"
+  weight="6"

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Acwing on Jasaxion一只大雄</title>
+    <link>http://localhost:1313/keywords/acwing/</link>
+    <description>Recent content in Acwing on Jasaxion一只大雄</description>
+    <generator>Hugo</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Wed, 25 Jan 2023 13:47:56 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/keywords/acwing/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2023 寒假算题刷题记录</title>
+      <link>http://localhost:1313/posts/2023/01/2023-%E5%AF%92%E5%81%87%E7%AE%97%E9%A2%98%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</link>
+      <pubDate>Wed, 25 Jan 2023 13:47:56 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2023/01/2023-%E5%AF%92%E5%81%87%E7%AE%97%E9%A2%98%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</guid>
+      <description>&lt;h2 id=&#34;acwing周赛&#34;&gt;Acwing周赛&lt;/h2&gt;&#xA;&lt;h3 id=&#34;1月14日&#34;&gt;1月14日&lt;/h3&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;题目链接：https://www.acwing.com/problem/content/description/4264/&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;本题思路&lt;/strong&gt;：&lt;/p&gt;&#xA;&lt;p&gt;假设我们现在单独枚举G的条件：&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Acwing 算法课程刷题记录</title>
+      <link>http://localhost:1313/posts/2021/06/acwing-%E7%AE%97%E6%B3%95%E8%AF%BE%E7%A8%8B%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</link>
+      <pubDate>Fri, 25 Jun 2021 13:45:44 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2021/06/acwing-%E7%AE%97%E6%B3%95%E8%AF%BE%E7%A8%8B%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</guid>
+      <description>&lt;h4 id=&#34;3729-改变数组元素-2021年6月25日&#34;&gt;3729.改变数组元素 2021年6月25日&lt;/h4&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;给定一个空数组 V 和一个整数数组 a1,a2,…,an。&lt;/p&gt;&#xA;&lt;p&gt;现在要对数组 V 进行 n 次操作。&lt;/p&gt;&#xA;&lt;p&gt;第 i 次操作的具体流程如下：&lt;/p&gt;&#xA;&lt;p&gt;从数组 V 尾部插入整数 0。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

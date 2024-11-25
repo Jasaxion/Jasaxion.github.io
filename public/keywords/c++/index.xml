@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>C&#43;&#43; on Jasaxion一只大雄</title>
+    <link>http://localhost:1313/keywords/c&#43;&#43;/</link>
+    <description>Recent content in C&#43;&#43; on Jasaxion一只大雄</description>
+    <generator>Hugo</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 10 Jun 2021 11:50:00 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/keywords/c++/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>算法集训-洛谷刷题笔记</title>
+      <link>http://localhost:1313/posts/2021/06/%E7%AE%97%E6%B3%95%E9%9B%86%E8%AE%AD-%E6%B4%9B%E8%B0%B7%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Thu, 10 Jun 2021 11:50:00 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2021/06/%E7%AE%97%E6%B3%95%E9%9B%86%E8%AE%AD-%E6%B4%9B%E8%B0%B7%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/</guid>
+      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;让cin和scanf一样快吧！&lt;/p&gt;&#xA;&lt;p&gt;主函数里面加上 &lt;code&gt;ios::sync_with_stdio(false);&lt;/code&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;第一周：&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;2021年7月12日 贪心&#xA;2021年7月13日 递推、前缀和、差分&#xA;2021年7月14日 二分、三分、尺取&#xA;2021年7月15日 数据结构（优先队列[堆])&#xA;2021年7月16日 搜索&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
