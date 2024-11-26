@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="icon" type="image/png" href="favicons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="favicons/favicon.svg" />
+    <link rel="shortcut icon" href="favicons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png" />
+    <link rel="manifest" href="favicons/site.webmanifest" />
+    
+    
+    <title>PVE系统为 NAS-ZimaOS虚拟机 docker 容器网站「EasyImage简单图床」配置 SSL 证书（https 访问） - Jasaxion一只大雄</title>
+    <meta property="og:title" content="PVE系统为 NAS-ZimaOS虚拟机 docker 容器网站「EasyImage简单图床」配置 SSL 证书（https 访问） - Jasaxion一只大雄">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="referrer" content="never" />
+
+    
+    
+    <link rel="stylesheet" href="/css/custom.css"></link>
+    <script type="text/javascript" src="/js/view-image.js"></script>
+    <script>
+    
+    window.ViewImage && ViewImage.init('.main img:not(.avatar,.tk-avatar-img)')
+    </script>
+    <script src="/js/custom-markdown-parser.js"></script>
+    <script  src="https://jsd.cdn.zzko.cn/npm/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+    <script>window.addEventListener('load', () => {  quicklink.listen();});</script>
+    
+    
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="PVE 系统中，为 ZimaOS虚拟机 docker 容器网站「EasyImage简单图床」配置 SSL 证书（成功实现https 访问）">
+      <meta property="og:description" content="PVE 系统中，为 ZimaOS虚拟机 docker 容器网站「EasyImage简单图床」配置 SSL 证书（成功实现https 访问）">
+      
+    
+
+    
+    
+    <meta name="twitter:image" content="https://pve.digikamc.cn:8343/i/2024/11/26/ljb88i-0.png">
+    
+    
+
+    
+    <meta property="keywords" content ="SSL, NAS, 经验分享">
+    
+
+    
+    
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+  </head>
+
+  
+  <body class="posts">
+    <header class="masthead">
+      <h1><a href="/">Jasaxion一只大雄</a></h1>
+
+<p class="tagline">风打，碎琉璃； 打不碎的，是那阳光漫地。The wind strikes, shattering the glazed glass; Yet unbroken remains the sunlight spilling across the earth.</p>
+
+      <nav class="menu">
+  <input id="menu-check" type="checkbox" hidden/>
+  <label id="menu-label" for="menu-check" class="unselectable" hidden>
+    <span class="icon close-icon">✕</span>
+    <span class="icon open-icon">☰</span>
+    <span class="text">Menu</span>
+  </label>
+  <ul>
+  
+  
+  <li><a href="/posts/">归档 / Posts</a></li>
+  
+  <li><a href="/resume/">关于我 / CV</a></li>
+  
+  <li><a href="/tags/tech/">技术目录 / Tech</a></li>
+  
+  <li><a href="/tags/notes">我的笔记 / Note</a></li>
+  
+  <li><a href="/tags/read/">科研与阅读 / Read</a></li>
+  
+  <li><a href="/whisper/">碎碎念 / Whisper</a></li>
+  
+  
+  </ul>
+</nav>
+
+      
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>PVE系统为 NAS-ZimaOS虚拟机 docker 容器网站「EasyImage简单图床」配置 SSL 证书（https 访问）</h1>
+
+
+
+<h3>
+
+
+
+
+
+
+2024-11-26
+</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+
+
+<h2 id="事情起因">事情起因</h2>
+<p>升级了个人主页，解决了烦人的 Markdown 图片路径问题，但 https 的网站无法访问 http 的图片，造成了麻烦，为图床实现 ssl，拓展个人图床的应用能力。</p>
+<p>见前文：<a href="https://jasaxion.github.io/posts/2024/11/%E4%B8%AA%E4%BA%BAnas%E9%85%8D%E7%BD%AE%E7%A7%81%E4%BA%BA%E5%9B%BE%E5%BA%8Azimaos/casaos/docker-%E9%85%8D%E7%BD%AE-easyimage-%E7%AE%80%E5%8D%95%E5%9B%BE%E5%BA%8A-upic-typora/">个人NAS配置私人图床！ZimaOS/CasaOS/Docker 配置 EasyImage 简单图床+uPic+Typora</a></p>
+<p>我的情况「应该属于非常非常小众的需求了」</p>
+<ol>
+<li>NAS 运行 PVE 系统</li>
+<li>PVE 上创建一个虚拟机，构建 ZimaOS</li>
+<li>ZimaOS 上安装 docker 版网站</li>
+<li>外网可以直接 http 访问该 docker 网站，但无法 https访问，现在在 PVE 系统上配置 SSL 证书使其能够正确访问</li>
+</ol>
+<h2 id="证书申请">证书申请</h2>
+<p><a href="https://letsencrypt.org/zh-cn/">Let&rsquo;s Encrypt</a> 是一个由非营利性组织 互联网安全研究小组（<a href="https://www.abetterinternet.org/">ISRG</a>）提供的免费、自动化和开放的证书颁发机构（CA）。</p>
+<p>简单的说，借助 Let&rsquo;s Encrypt 颁发的证书可以为我们的网站免费启用 HTTPS(SSL/TLS) 。</p>
+<p>Let&rsquo;s Encrypt免费证书的签发/续签都是脚本自动化的，官方提供了几种证书的申请方式方法，<a href="https://letsencrypt.org/zh-cn/docs/client-options/">点击此处 </a>快速浏览。</p>
+<p>官方推荐使用 <a href="https://certbot.eff.org/">Certbot </a>客户端来签发证书，这种方式可参考文档自行尝试，不做评价。</p>
+<h3 id="安装-certbot-客户端">安装 certbot 客户端</h3>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>apt install certbot
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>如果无法安装也可以使用 github源码使用：https://github.com/letsencrypt/letsencrypt</p>
+</blockquote>
+<p>验证是否安装成功</p>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>certbot
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="申请证书">申请证书</h3>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>certbot certonly  -d *.you.cn --manual --preferred-challenges dns --server https://acme-v02.api.letsencrypt.org/directory
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>请将<code>you.cn</code>换成你自己的域名</p>
+<table>
+  <thead>
+      <tr>
+          <th>参数</th>
+          <th>说明</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>certonly</td>
+          <td>表示安装模式，Certbot 有安装模式和验证模式两种类型的插件。</td>
+      </tr>
+      <tr>
+          <td>&ndash;manual</td>
+          <td>表示手动安装插件，Certbot 有很多插件，不同的插件都可以申请证书，用户可以根据需要自行选择</td>
+      </tr>
+      <tr>
+          <td>-d</td>
+          <td>为那些主机申请证书，如果是通配符，输入 *.you.cn（可以替换为你自己的一级域名）</td>
+      </tr>
+      <tr>
+          <td>&ndash;preferred-challenges dns</td>
+          <td>使用 DNS 方式校验域名所有权</td>
+      </tr>
+      <tr>
+          <td>&ndash;server</td>
+          <td>Let&rsquo;s Encrypt ACME v2 版本使用的服务器不同于 v1 版本，需要显示指定。</td>
+      </tr>
+  </tbody>
+</table>
+<p>接下来会有几个交互需要完成</p>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+</span></span><span style="display:flex;"><span>Please read the Terms of Service at
+</span></span><span style="display:flex;"><span>https://letsencrypt.org/documents/LE-SA-v1.2-November-15-2017.pdf. You must
+</span></span><span style="display:flex;"><span>agree in order to register with the ACME server at
+</span></span><span style="display:flex;"><span>https://acme-v02.api.letsencrypt.org/directory
+</span></span><span style="display:flex;"><span>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+</span></span><span style="display:flex;"><span>(A)gree/(C)ancel: A
+</span></span><span style="display:flex;"><span>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+</span></span><span style="display:flex;"><span>Would you be willing to share your email address with the Electronic Frontier
+</span></span><span style="display:flex;"><span>Foundation, a founding partner of the Let&#39;s Encrypt project and the non-profit
+</span></span><span style="display:flex;"><span>organization that develops Certbot? We&#39;d like to send you email about our work
+</span></span><span style="display:flex;"><span>encrypting the web, EFF news, campaigns, and ways to support digital freedom.
+</span></span><span style="display:flex;"><span>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+</span></span><span style="display:flex;"><span>(Y)es/(N)o: N
+</span></span><span style="display:flex;"><span>Obtaining a new certificate
+</span></span><span style="display:flex;"><span>Performing the following challenges:
+</span></span><span style="display:flex;"><span>dns-01 challenge for kuaichuangkeji.com
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+</span></span><span style="display:flex;"><span>NOTE: The IP of this machine will be publicly logged as having requested this
+</span></span><span style="display:flex;"><span>certificate. If you&#39;re running certbot in manual mode on a machine that is not
+</span></span><span style="display:flex;"><span>your server, please ensure you&#39;re okay with that.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Are you OK with your IP being logged?
+</span></span><span style="display:flex;"><span>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+</span></span><span style="display:flex;"><span>(Y)es/(N)o: Y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>是否同意条款：Y/A</li>
+<li>是否分享自己的邮箱：N</li>
+<li>是否记录 IP：Y</li>
+</ol>
+<p>过程中需要登记一次邮箱来确定证书的状态，可以放你的常用邮箱。</p>
+<h3 id="配置域名证书">配置域名证书</h3>
+<p><strong>⚠️注意，验证域名是否为自己的，需要增加一条解析记录</strong></p>
+<p><strong>也就是到了下面的进度，一定不要着急点 Enter</strong></p>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+</span></span><span style="display:flex;"><span>Please deploy a DNS TXT record under the name
+</span></span><span style="display:flex;"><span>_acme-challenge.you.cn with the following value:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;解析值&gt;asdjkbakjsdbkajsdnlakjbndjkabdnklasnbdakslkdsaln
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Before continuing, verify the record is deployed.
+</span></span><span style="display:flex;"><span>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+</span></span><span style="display:flex;"><span>Press Enter to Continue
+</span></span><span style="display:flex;"><span>Waiting for verification...
+</span></span><span style="display:flex;"><span>Cleaning up challenges
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>到这里后，我们保存<code>&lt;解析值&gt;</code> 和 <code>_acme-challenge</code></p>
+<p>现在我们前往云解析服务，我用的是腾讯云 DNSpod</p>
+<img src="https://pve.digikamc.cn:8343/i/2024/11/26/ljb88i-0.png" alt="image-20241126130220334" style="zoom:50%;" />
+<p>主机记录: _acme-challenge</p>
+<p>记录类型为：TXT</p>
+<p>记录值为：提示中的 &lt;解析值&gt;</p>
+<p>然后点击保存解析后，等1 分钟左右，回到certbot 客户端，现在可以按下回车↩︎Enter 了～</p>
+<p>没问题的话，显示结果如下：</p>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>IMPORTANT NOTES:
+</span></span><span style="display:flex;"><span> - Congratulations! Your certificate and chain have been saved at:
+</span></span><span style="display:flex;"><span>   /etc/letsencrypt/live/you.cn/fullchain.pem
+</span></span><span style="display:flex;"><span>   Your key file has been saved at:
+</span></span><span style="display:flex;"><span>   /etc/letsencrypt/live/you.cn/privkey.pem
+</span></span><span style="display:flex;"><span>   Your cert will expire on 2019-02-27. To obtain a new or tweaked
+</span></span><span style="display:flex;"><span>   version of this certificate in the future, simply run certbot-auto
+</span></span><span style="display:flex;"><span>   again. To non-interactively renew *all* of your certificates, run
+</span></span><span style="display:flex;"><span>   &#34;certbot-auto renew&#34;
+</span></span><span style="display:flex;"><span> - If you like Certbot, please consider supporting our work by:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   Donating to ISRG / Let&#39;s Encrypt:   https://letsencrypt.org/donate
+</span></span><span style="display:flex;"><span>   Donating to EFF:                    https://eff.org/donate-le
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>两个重要路径：</p>
+<p>证书文件保存在：/etc/letsencrypt/live/you.cn/fullchain.pem</p>
+<p>密钥保存在：/etc/letsencrypt/live/you.cn/privkey.pem</p>
+<h3 id="自动更新证书">自动更新证书</h3>
+<blockquote>
+<p>注意，证书不是永久的，一段时间就会过期，这样很麻烦</p>
+<p>可以输入 certbot renew 来刷新证书，老是操作也很麻烦，自动化操作方法</p>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gdscript3" data-lang="gdscript3"><span style="display:flex;"><span><span style="color:#f60">1.</span><span style="color:#a00;background-color:#faa">编辑定时任务</span>
+</span></span><span style="display:flex;"><span>crontab <span style="color:#555">-</span>e
+</span></span><span style="display:flex;"><span><span style="color:#f60">2.</span><span style="color:#a00;background-color:#faa">然后在</span> crontab <span style="color:#a00;background-color:#faa">的最后一行加上</span>
+</span></span><span style="display:flex;"><span><span style="color:#f60">0</span> <span style="color:#555">*/</span><span style="color:#f60">12</span> <span style="color:#555">*</span> <span style="color:#555">*</span> <span style="color:#555">*</span> certbot renew <span style="color:#555">--</span>quiet <span style="color:#555">--</span>renew<span style="color:#555">-</span>hook <span style="color:#c30">&#34;/etc/init.d/nginx reload&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f60">3.</span><span style="color:#a00;background-color:#faa">保存即可</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<h3 id="取消证书">取消证书</h3>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>1. 撤回操作
+</span></span><span style="display:flex;"><span>certbot revoke --cert-path /etc/letsencrypt/live/you.cn/cert.pem
+</span></span><span style="display:flex;"><span>2. 删除操作
+</span></span><span style="display:flex;"><span>certbot delete --cert-name you.cn
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="nginx反向代理">Nginx反向代理</h2>
+<p>好了٩(•̤̀ᵕ•̤́๑)ᵒᵏᵎᵎᵎᵎ，现在我们已经有了 SSL 证书了，然后发现网站还是无法 https 访问，那当然啦。那么现在我们使用 Nginx 反向代理来为 docker 容器中的网站装配 SSL 证书。</p>
+<blockquote>
+<p>题外话，一般运营商会封禁 443 80 8080 25 8443 等端口，故此如果在个人主机上配置的话，记得避开这些主流端口，否则可能会出现无法访问的问题，而且比较难查，如果是专业云主机或者商业云服务器之类的不受影响。</p>
+</blockquote>
+<p>首先，虚拟机 ZimaOS 的局域网 IP 地址为 192.168.9.104，PVE的局域网 IP 地址为 192.168.9.108。</p>
+<p>docker 网站映射 8010 端口到其网站的 80 端口，采用桥接网络的方式。</p>
+<p>现在我们测试 PVE 系统是否能本地访问到 ZimaOS 上这个 docker 容器的网站</p>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span> curl -v http://192.168.9.104:8010
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="https://pve.digikamc.cn:8343/i/2024/11/26/lr6bdg-0.png" alt="image-20241126131542467"></p>
+<p>成功连接上了，说明 PVE 本地到该 docker 容器网站的链路是通的。</p>
+<h3 id="在-pve-上安装-nginx">在 PVE 上安装 nginx</h3>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>apt update
+</span></span><span style="display:flex;"><span>apt install nginx -y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="配置-nginx-代理">配置 nginx 代理</h3>
+<p>创建一个网站配置：</p>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>nano /etc/nginx/sites-available/you_cn
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>写入配置「同样 you.cn 改成你自己的 域名」：</p>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>server {
+</span></span><span style="display:flex;"><span>    listen 443 ssl; #注意如果运营商封禁了443端口，可以多多尝试其他的端口，尽可能不要用常用的端口，否则即便成功了，也无法成功访问
+</span></span><span style="display:flex;"><span>    server_name you.cn;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    # SSL配置
+</span></span><span style="display:flex;"><span>    ssl_certificate /etc/letsencrypt/live/you.cn/fullchain.pem;
+</span></span><span style="display:flex;"><span>    ssl_certificate_key /etc/letsencrypt/live/you.cn/privkey.pem;
+</span></span><span style="display:flex;"><span>    ssl_protocols TLSv1.2 TLSv1.3;
+</span></span><span style="display:flex;"><span>    ssl_ciphers HIGH:!aNULL:!MD5;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    # 反向代理到虚拟机的服务
+</span></span><span style="display:flex;"><span>    location / {
+</span></span><span style="display:flex;"><span>        proxy_pass http://192.168.9.104:8010;
+</span></span><span style="display:flex;"><span>        proxy_set_header Host $host;
+</span></span><span style="display:flex;"><span>        proxy_set_header X-Real-IP $remote_addr;
+</span></span><span style="display:flex;"><span>        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+</span></span><span style="display:flex;"><span>        proxy_set_header X-Forwarded-Proto $scheme;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>启用配置并重启Nginx：</p>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gdscript3" data-lang="gdscript3"><span style="display:flex;"><span>sudo ln <span style="color:#555">-</span>s <span style="color:#555">/</span>etc<span style="color:#555">/</span>nginx<span style="color:#555">/</span>sites<span style="color:#555">-</span>available<span style="color:#555">/</span>virtual_machine_proxy <span style="color:#555">/</span>etc<span style="color:#555">/</span>nginx<span style="color:#555">/</span>sites<span style="color:#555">-</span>enabled<span style="color:#555">/</span>
+</span></span><span style="display:flex;"><span>sudo nginx <span style="color:#555">-</span>t
+</span></span><span style="display:flex;"><span>sudo systemctl reload nginx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="完成-测试访问">完成，测试访问</h3>
+<p>接下来就可以通过 <a href="https://you.cn/">https://you.cn/</a>进行访问了</p>
+<p>如果443端口被封禁了，可以修改<code>listen 443 ssl</code>部分，然后通过https://you.cn:你的自定义端口/ 访问，这样 SSL协议就成功部署到了该网站，再也不会有不安全弹窗了。</p>
+
+
+
+  <footer>
+    <script src="https://immmmm.com/waterfall.min.js"></script>
+    <script src="https://immmmm.com/imgStatus.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+      var photosAll = document.getElementsByTagName('gallery') || '';
+      if(photosAll){
+        for(var i=0;i < photosAll.length;i++){
+          photosAll[i].innerHTML = '<div class="gallery-photos">'+photosAll[i].innerHTML+'</div>'
+          var photosIMG = photosAll[i].getElementsByTagName('img')
+          for(var j=0;j < photosIMG.length;j++){
+            wrap(photosIMG[j], document.createElement('div'));
+          }
+        }
+      }
+      function wrap(el, wrapper) {
+        wrapper.className = "gallery-photo";
+        el.parentNode.insertBefore(wrapper, el);
+        wrapper.appendChild(el);
+      }
+      let galleryPhotos = document.querySelectorAll('.gallery-photos') || ''
+      if(galleryPhotos){
+        imgStatus.watch('.gallery-photo img', function(imgs) {
+          if(imgs.isDone()){
+            for(var i=0;i < galleryPhotos.length;i++){
+              waterfall(galleryPhotos[i]);
+              let pagePhoto = galleryPhotos[i].querySelectorAll('.gallery-photo');
+              for(var j=0;j < pagePhoto.length;j++){pagePhoto[j].className += " visible"};
+            }
+          }
+        });
+        window.addEventListener('resize', function () {
+          for(var i=0;i < galleryPhotos.length;i++){
+            waterfall(galleryPhotos[i]);
+          }
+        });
+      }
+    });
+    </script>
+  
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/posts/2024/11/%E4%B8%AA%E4%BA%BAnas%E9%85%8D%E7%BD%AE%E7%A7%81%E4%BA%BA%E5%9B%BE%E5%BA%8Azimaos/casaos/docker-%E9%85%8D%E7%BD%AE-easyimage-%E7%AE%80%E5%8D%95%E5%9B%BE%E5%BA%8A-upic-typora/">个人NAS配置私人图床！ZimaOS/CasaOS/Docker 配置 EasyImage 简单图床&#43;uPic&#43;Typora</a></span>
+  <span class="nav-next"></span>
+</nav>
+
+  <hr>
+  
+    <div class="pagination__title" style="margin-bottom: 30px;">
+  <span class="pagination__title-h">留下你的足迹👣</span>
+</div>
+  <div id="tcomment"></div>
+  <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.5/dist/twikoo.all.min.js"></script>
+  <script>
+    twikoo.init({
+    envId: 'https://mytwico.netlify.app/', 
+    el: '#tcomment', 
+    
+    
+    
+  })
+  </script>
+  
+  
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/tex.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  <hr>
+  <div class="copyright">© <a href="https://jasaxion.github.io">Jasaxion</a> | since 2021</div>
+  
+  </footer>
+  </article>
+  
+  </body>
+</html>
+
