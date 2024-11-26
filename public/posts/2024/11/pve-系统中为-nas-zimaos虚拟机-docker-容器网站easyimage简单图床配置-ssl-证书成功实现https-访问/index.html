@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>PVE 系统中，为 NAS， ZimaOS虚拟机 docker 容器网站「EasyImage简单图床」配置 SSL 证书（成功实现https 访问） - Jasaxion一只大雄</title>
+    <meta property="og:title" content="PVE 系统中，为 NAS， ZimaOS虚拟机 docker 容器网站「EasyImage简单图床」配置 SSL 证书（成功实现https 访问） - Jasaxion一只大雄">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="referrer" content="never" />
+
+    
+    
+    <link rel="stylesheet" href="/css/custom.css"></link>
+    <script type="text/javascript" src="/js/view-image.js"></script>
+    <script>
+    
+    window.ViewImage && ViewImage.init('.main img:not(.avatar,.tk-avatar-img)')
+    </script>
+    <script src="/js/custom-markdown-parser.js"></script>
+    <script  src="https://jsd.cdn.zzko.cn/npm/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+    <script>window.addEventListener('load', () => {  quicklink.listen();});</script>
+    
+    
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="PVE 系统中，为 ZimaOS虚拟机 docker 容器网站「EasyImage简单图床」配置 SSL 证书（成功实现https 访问）">
+      <meta property="og:description" content="PVE 系统中，为 ZimaOS虚拟机 docker 容器网站「EasyImage简单图床」配置 SSL 证书（成功实现https 访问）">
+      
+    
+
+    
+    
+
+    
+    <meta property="keywords" content ="SSL, NAS, 经验分享">
+    
+
+    
+    
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+  </head>
+
+  
+  <body class="posts">
+    <header class="masthead">
+      <h1><a href="/">Jasaxion一只大雄</a></h1>
+
+<p class="tagline">风打，碎琉璃； 打不碎的，是那阳光漫地。The wind strikes, shattering the glazed glass; Yet unbroken remains the sunlight spilling across the earth.</p>
+
+      <nav class="menu">
+  <input id="menu-check" type="checkbox" hidden/>
+  <label id="menu-label" for="menu-check" class="unselectable" hidden>
+    <span class="icon close-icon">✕</span>
+    <span class="icon open-icon">☰</span>
+    <span class="text">Menu</span>
+  </label>
+  <ul>
+  
+  
+  <li><a href="/posts/">归档 / Posts</a></li>
+  
+  <li><a href="/resume/">关于我 / CV</a></li>
+  
+  <li><a href="/tags/tech/">技术目录 / Tech</a></li>
+  
+  <li><a href="/tags/notes">我的笔记 / Note</a></li>
+  
+  <li><a href="/tags/read/">科研与阅读 / Read</a></li>
+  
+  <li><a href="/whisper/">碎碎念 / Whisper</a></li>
+  
+  
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>PVE 系统中，为 NAS， ZimaOS虚拟机 docker 容器网站「EasyImage简单图床」配置 SSL 证书（成功实现https 访问）</h1>
+
+
+
+<h3>
+
+
+
+
+
+
+2024-11-26
+</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+
+
+<h2 id="事情起因">事情起因</h2>
+<p>升级了个人主页，解决了烦人的 Markdown 图片路径问题，但 https 的网站无法访问 http 的图片，造成了麻烦，为图床实现 ssl，拓展个人图床的应用能力。</p>
+<p>见前文：个人NAS配置私人图床！ZimaOS/CasaOS/Docker 配置 EasyImage 简单图床+uPic+Typora</p>
+<h2 id="证书申请">证书申请</h2>
+<h2 id="域名配置">域名配置</h2>
+<h2 id="nginx反向代理">Nginx反向代理</h2>
+
+
+
+  <footer>
+    <script src="https://immmmm.com/waterfall.min.js"></script>
+    <script src="https://immmmm.com/imgStatus.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+      var photosAll = document.getElementsByTagName('gallery') || '';
+      if(photosAll){
+        for(var i=0;i < photosAll.length;i++){
+          photosAll[i].innerHTML = '<div class="gallery-photos">'+photosAll[i].innerHTML+'</div>'
+          var photosIMG = photosAll[i].getElementsByTagName('img')
+          for(var j=0;j < photosIMG.length;j++){
+            wrap(photosIMG[j], document.createElement('div'));
+          }
+        }
+      }
+      function wrap(el, wrapper) {
+        wrapper.className = "gallery-photo";
+        el.parentNode.insertBefore(wrapper, el);
+        wrapper.appendChild(el);
+      }
+      let galleryPhotos = document.querySelectorAll('.gallery-photos') || ''
+      if(galleryPhotos){
+        imgStatus.watch('.gallery-photo img', function(imgs) {
+          if(imgs.isDone()){
+            for(var i=0;i < galleryPhotos.length;i++){
+              waterfall(galleryPhotos[i]);
+              let pagePhoto = galleryPhotos[i].querySelectorAll('.gallery-photo');
+              for(var j=0;j < pagePhoto.length;j++){pagePhoto[j].className += " visible"};
+            }
+          }
+        });
+        window.addEventListener('resize', function () {
+          for(var i=0;i < galleryPhotos.length;i++){
+            waterfall(galleryPhotos[i]);
+          }
+        });
+      }
+    });
+    </script>
+  
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/posts/2024/11/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0vector-database-101/">向量数据库学习（Vector Database 101）</a></span>
+  <span class="nav-next"></span>
+</nav>
+
+  <hr>
+  
+    <div class="pagination__title" style="margin-bottom: 30px;">
+  <span class="pagination__title-h">留下你的足迹👣</span>
+</div>
+  <div id="tcomment"></div>
+  <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.5/dist/twikoo.all.min.js"></script>
+  <script>
+    twikoo.init({
+    envId: 'https://mytwico.netlify.app/', 
+    el: '#tcomment', 
+    
+    
+    
+  })
+  </script>
+  
+  
+
+  
+  <hr>
+  <div class="copyright">© <a href="https://jasaxion.github.io">Jasaxion</a> | since 2021</div>
+  
+  </footer>
+  </article>
+  
+  </body>
+</html>
+

@@ -4,6 +4,7 @@ draft = false
 title = '计算机算法机试指南'
 tags = 'notes'
 show_toc = true
+math = true
 twikoo = true
 keywords = ['算法', '心得', '程序设计', '机试', '上机']
 description = "我的算法学习之路的完全心得笔记，走过的弯路与总结的模板。"

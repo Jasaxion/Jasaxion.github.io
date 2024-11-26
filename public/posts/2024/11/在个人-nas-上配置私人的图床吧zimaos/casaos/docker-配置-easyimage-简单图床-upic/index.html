@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>在个人 nas 上配置私人的图床吧！ZimaOS/CasaOS/Docker 配置 EasyImage 简单图床&#43;uPic - Jasaxion一只大雄</title>
+    <meta property="og:title" content="在个人 nas 上配置私人的图床吧！ZimaOS/CasaOS/Docker 配置 EasyImage 简单图床&#43;uPic - Jasaxion一只大雄">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="referrer" content="never" />
+
+    
+    
+    <link rel="stylesheet" href="/css/custom.css"></link>
+    <script type="text/javascript" src="/js/view-image.js"></script>
+    <script>
+    
+    window.ViewImage && ViewImage.init('.main img:not(.avatar,.tk-avatar-img)')
+    </script>
+    <script src="/js/custom-markdown-parser.js"></script>
+    <script  src="https://jsd.cdn.zzko.cn/npm/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+    <script>window.addEventListener('load', () => {  quicklink.listen();});</script>
+    
+    
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="在个人 nas 上配置私人的图床吧！ZimaOS/CasaOS/Docker 配置 EasyImage 简单图床&#43;uPic">
+      <meta property="og:description" content="在个人 nas 上配置私人的图床吧！ZimaOS/CasaOS/Docker 配置 EasyImage 简单图床&#43;uPic">
+      
+    
+
+    
+    
+    <meta name="twitter:image" content="https://pve.digikamc.cn:8343/i/2024/11/26/gqa02h-0.png">
+    
+    
+
+    
+    <meta property="keywords" content ="NAS, 经验分享">
+    
+
+    
+    
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+  </head>
+
+  
+  <body class="posts">
+    <header class="masthead">
+      <h1><a href="/">Jasaxion一只大雄</a></h1>
+
+<p class="tagline">风打，碎琉璃； 打不碎的，是那阳光漫地。The wind strikes, shattering the glazed glass; Yet unbroken remains the sunlight spilling across the earth.</p>
+
+      <nav class="menu">
+  <input id="menu-check" type="checkbox" hidden/>
+  <label id="menu-label" for="menu-check" class="unselectable" hidden>
+    <span class="icon close-icon">✕</span>
+    <span class="icon open-icon">☰</span>
+    <span class="text">Menu</span>
+  </label>
+  <ul>
+  
+  
+  <li><a href="/posts/">归档 / Posts</a></li>
+  
+  <li><a href="/resume/">关于我 / CV</a></li>
+  
+  <li><a href="/tags/tech/">技术目录 / Tech</a></li>
+  
+  <li><a href="/tags/notes">我的笔记 / Note</a></li>
+  
+  <li><a href="/tags/read/">科研与阅读 / Read</a></li>
+  
+  <li><a href="/whisper/">碎碎念 / Whisper</a></li>
+  
+  
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>在个人 nas 上配置私人的图床吧！ZimaOS/CasaOS/Docker 配置 EasyImage 简单图床&#43;uPic</h1>
+
+
+
+<h3>
+
+
+
+
+
+
+2024-11-25
+</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+
+
+<h2 id="事情起因">事情起因</h2>
+<p>​	最近总算完成了 github.io 个人主页由原来简陋的 docify 部署的简单界面，完善成了现在 hugo 的界面，本来之前就一直很烦这个 markdown 图片问题，总是会发生路径错误等问题。每次都需要重置一下每篇文章里面的图片链接，虽然现在网络上铺天盖地有一些图床+markdown+upic/ipic/picgo 等工具的教程，但无一例外要么是阿里云的存储资源，要么就是 sms 等一些公开图床。用个人阿里云的存储资源确实比较方便，也比较安全，但 sms 等一些公开图床还需要担心他什么时候会挂，然后图片全部上传到公开位置也不太安全。</p>
+<p>​	于是乎，我想起了我放在老家的 Nas，是否可以在 nas 上搭建图床呢？</p>
+<h2 id="前提条件">前提条件</h2>
+<p>​	如果需要公网随时访问，你的 NAS 需要具备公网访问的能力。你需要先确认你的 NAS 是否具备公网 IP，以及是否能够 ping 通。</p>
+<h2 id="基本配置">基本配置</h2>
+<p>​	保研潇洒的这一年折腾了一堆东西，捡垃圾组的 nas 也是其中一个，哈哈哈。我的 nas 系统安装的是 PVE 系统用于管理多个虚拟机，其中一个虚拟机中安装有 ZimaOS，一个非常好用的一站式 NAS 系统。</p>
+<p>​	ZimaOS 提供了一系列的 APP docker 应用，可以非常快捷且方便地进行安装。</p>
+<blockquote>
+<p>ZimaOS: <a href="https://github.com/IceWhaleTech/ZimaOS">https://github.com/IceWhaleTech/ZimaOS</a></p>
+</blockquote>
+<p>​	2024年 6 月以后，docker 下载源国内已经很难访问了，如果要正确使用到 ZimaOS 的 docker app，首先需要配置 ZimaOS 的国内源，ZimaOS 的商店有一个应用就非常方便dkTurbo</p>
+<img src="https://pve.digikamc.cn:8343/i/2024/11/26/gqa02h-0.png" alt="image-20241126101158707" style="zoom:33%;" />
+<blockquote>
+<p>注：如果是初次安装 ZimaOS 可能在应用商店 App Store找不到这个应用，需要先增加一个商店源：</p>
+<p>商店源文档地址「以防以后更换」：https://github.com/Cp0204/CasaOS-AppStore-Play/blob/main/README.md</p>
+<p>我们需要在 ZimaOS 中打开应用商店 App Store 引入这个商店源</p>
+<img src="https://pve.digikamc.cn:8343/i/2024/11/26/grxl34-0.png" alt="image-20241126101436351" style="zoom:33%;" />
+<p>然后直接安装并打开 dkTurbo 即可，运行 dkTurbo 等待 dkTurbo 的图标变成灰色即可。</p>
+<p>当然过程中可能遇到更改未生效的问题，你可以尝试重启 ZimaOS 系统再尝试运行 dkTurbo，也可以打开 dkTurbo 的终端日志查看运行日志。</p>
+</blockquote>
+<h2 id="安装-easyimage">安装 EasyImage</h2>
+<p>​	在替换好商店源后搜索 EasyImage 安装简单图床，docker 安装非常方便。</p>
+<h2 id="配置-easyimage">配置 EasyImage</h2>
+<p>​	如果你希望配置简单图床 EasyImage 保存的图片路径，可以在 ZimaOS 中打开 EasyImage 的设置，配置卷，将/app/web/i 映射到你希望保存的位置，这里我将其导航到了另外一块大容量的机械硬盘中。</p>
+<img src="https://pve.digikamc.cn:8343/i/2024/11/26/gwhezn-0.png" alt="image-20241126102200590" style="zoom:50%;" />
+<p>进入 EasyImage，首先登录管理员账号，登录完成后，点击设置-API 设置</p>
+<img src="https://pve.digikamc.cn:8343/i/2024/11/26/hedyql-0.png" alt="image-20241126102531845" style="zoom:40%;" />
+<p>这里需要<strong>记录一下 API 调用地址，和 Token，你可以重新生成新的 Token。</strong></p>
+<p>与此同时，<strong>在图床安全中打开 API 上传</strong></p>
+<p><img src="https://pve.digikamc.cn:8343/i/2024/11/26/gz3z92-0.png" alt="image-20241126102642311"></p>
+<p>这样 EasyImage 图床的工作就完成了，现在我们配置本地图片上传工具。</p>
+<h2 id="配置-upic">配置 uPic</h2>
+<p>​	我的笔记本是 Macbook air，希望在本地 typora 自动调用图片上传，思来想去最后是在 App store 下载了 uPic 工具来完成这一操作，综合来看uPic 工具提供的功能更为全面，也更方便。</p>
+<ol>
+<li>打开 uPic 的偏好设置，添加自定义图床</li>
+</ol>
+<img src="https://pve.digikamc.cn:8343/i/2024/11/26/h0zkyj-0.png" alt="image-20241126102956959" style="zoom:50%;" />
+<ol start="2">
+<li>配置自定义图床</li>
+</ol>
+<img src="https://pve.digikamc.cn:8343/i/2024/11/26/h1wapa-0.png" alt="image-20241126103110661" style="zoom:50%;" />
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>- API 地址填写在 EasyImage 中获取的地址
+</span></span><span style="display:flex;"><span>- 请求方式选择‘POST’
+</span></span><span style="display:flex;"><span>- 不启用 Base64
+</span></span><span style="display:flex;"><span>- 文件字段名 选择 image
+</span></span><span style="display:flex;"><span>- URL 路径选择 [&#34;url&#34;]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>点击其他字段</p>
+<img src="https://pve.digikamc.cn:8343/i/2024/11/26/h8nqu9-0.png" alt="image-20241126104245063" style="zoom:40%;" />
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>header数据添加
+</span></span><span style="display:flex;"><span>	content-type：multipart/form-data
+</span></span><span style="display:flex;"><span>body 数据添加
+</span></span><span style="display:flex;"><span>	token：之前在 easyImage获取的 token
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>最后点击验证，如果验证成功，点击保存即可完成配置</p>
+<h2 id="在-typora-中配置">在 Typora 中配置</h2>
+<p>Typora 设置-图像，选择图片上传，并将上传服务选择 uPic，最后点击验证，没问题后保存即可。</p>
+<img src="https://pve.digikamc.cn:8343/i/2024/11/26/h9mqp7-0.png" alt="image-20241126104409452" style="zoom:40%;" />
+
+
+
+  <footer>
+    <script src="https://immmmm.com/waterfall.min.js"></script>
+    <script src="https://immmmm.com/imgStatus.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+      var photosAll = document.getElementsByTagName('gallery') || '';
+      if(photosAll){
+        for(var i=0;i < photosAll.length;i++){
+          photosAll[i].innerHTML = '<div class="gallery-photos">'+photosAll[i].innerHTML+'</div>'
+          var photosIMG = photosAll[i].getElementsByTagName('img')
+          for(var j=0;j < photosIMG.length;j++){
+            wrap(photosIMG[j], document.createElement('div'));
+          }
+        }
+      }
+      function wrap(el, wrapper) {
+        wrapper.className = "gallery-photo";
+        el.parentNode.insertBefore(wrapper, el);
+        wrapper.appendChild(el);
+      }
+      let galleryPhotos = document.querySelectorAll('.gallery-photos') || ''
+      if(galleryPhotos){
+        imgStatus.watch('.gallery-photo img', function(imgs) {
+          if(imgs.isDone()){
+            for(var i=0;i < galleryPhotos.length;i++){
+              waterfall(galleryPhotos[i]);
+              let pagePhoto = galleryPhotos[i].querySelectorAll('.gallery-photo');
+              for(var j=0;j < pagePhoto.length;j++){pagePhoto[j].className += " visible"};
+            }
+          }
+        });
+        window.addEventListener('resize', function () {
+          for(var i=0;i < galleryPhotos.length;i++){
+            waterfall(galleryPhotos[i]);
+          }
+        });
+      }
+    });
+    </script>
+  
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/posts/2024/11/2024-11-24-first-blog/">2024 11 24 First Blog</a></span>
+  <span class="nav-next"><a href="/posts/2024/11/%E5%8A%A8%E6%89%8B%E5%AD%A6-transformers/">动手学 Transformers</a> &rarr;</span>
+</nav>
+
+  <hr>
+  
+    <div class="pagination__title" style="margin-bottom: 30px;">
+  <span class="pagination__title-h">留下你的足迹👣</span>
+</div>
+  <div id="tcomment"></div>
+  <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.5/dist/twikoo.all.min.js"></script>
+  <script>
+    twikoo.init({
+    envId: 'https://mytwico.netlify.app/', 
+    el: '#tcomment', 
+    
+    
+    
+  })
+  </script>
+  
+  
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/tex.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  <hr>
+  <div class="copyright">© <a href="https://jasaxion.github.io">Jasaxion</a> | since 2021</div>
+  
+  </footer>
+  </article>
+  
+  </body>
+</html>
+

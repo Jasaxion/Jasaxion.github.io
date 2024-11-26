@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SSL on Jasaxion一只大雄</title>
+    <link>http://localhost:1313/keywords/ssl/</link>
+    <description>Recent content in SSL on Jasaxion一只大雄</description>
+    <generator>Hugo</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Tue, 26 Nov 2024 09:50:31 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/keywords/ssl/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PVE 系统中，为 NAS， ZimaOS虚拟机 docker 容器网站「EasyImage简单图床」配置 SSL 证书（成功实现https 访问）</title>
+      <link>http://localhost:1313/posts/2024/11/pve-%E7%B3%BB%E7%BB%9F%E4%B8%AD%E4%B8%BA-nas-zimaos%E8%99%9A%E6%8B%9F%E6%9C%BA-docker-%E5%AE%B9%E5%99%A8%E7%BD%91%E7%AB%99easyimage%E7%AE%80%E5%8D%95%E5%9B%BE%E5%BA%8A%E9%85%8D%E7%BD%AE-ssl-%E8%AF%81%E4%B9%A6%E6%88%90%E5%8A%9F%E5%AE%9E%E7%8E%B0https-%E8%AE%BF%E9%97%AE/</link>
+      <pubDate>Tue, 26 Nov 2024 09:50:31 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2024/11/pve-%E7%B3%BB%E7%BB%9F%E4%B8%AD%E4%B8%BA-nas-zimaos%E8%99%9A%E6%8B%9F%E6%9C%BA-docker-%E5%AE%B9%E5%99%A8%E7%BD%91%E7%AB%99easyimage%E7%AE%80%E5%8D%95%E5%9B%BE%E5%BA%8A%E9%85%8D%E7%BD%AE-ssl-%E8%AF%81%E4%B9%A6%E6%88%90%E5%8A%9F%E5%AE%9E%E7%8E%B0https-%E8%AE%BF%E9%97%AE/</guid>
+      <description>&lt;h2 id=&#34;事情起因&#34;&gt;事情起因&lt;/h2&gt;&#xA;&lt;p&gt;升级了个人主页，解决了烦人的 Markdown 图片路径问题，但 https 的网站无法访问 http 的图片，造成了麻烦，为图床实现 ssl，拓展个人图床的应用能力。&lt;/p&gt;&#xA;&lt;p&gt;见前文：&lt;/p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&#x9;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;&#x9;&#xA;&#xA;&#xA;&lt;div class=&#34;post-preview&#34;&gt;&#xA;  &lt;div class=&#34;post-preview--meta&#34; style=&#34;width:100%;&#34;&gt;&#xA;    &lt;div class=&#34;post-preview--middle&#34;&gt;&#xA;      &lt;h4 class=&#34;post-preview--title&#34;&gt;&#xA;        &lt;a target=&#34;_blank&#34; href=&#34;http://localhost:1313/posts/2024/11/%E5%9C%A8%E4%B8%AA%E4%BA%BA-nas-%E4%B8%8A%E9%85%8D%E7%BD%AE%E7%A7%81%E4%BA%BA%E7%9A%84%E5%9B%BE%E5%BA%8A%E5%90%A7zimaos/casaos/docker-%E9%85%8D%E7%BD%AE-easyimage-%E7%AE%80%E5%8D%95%E5%9B%BE%E5%BA%8A-upic/&#34;&gt;在个人 nas 上配置私人的图床吧！ZimaOS/CasaOS/Docker 配置 EasyImage 简单图床&amp;#43;uPic&lt;/a&gt;&#xA;      &lt;/h4&gt;&#xA;      &lt;time class=&#34;post-preview--date&#34;&gt;2024-11-25&lt;/time&gt;&#xA;      &#xA;      &lt;section style=&#34;max-height:96px;overflow:hidden;&#34; class=&#34;post-preview--excerpt&#34;&gt;&#xA;        事情起因 ​&#x9;最近总算完成了 github.io 个人主页由原来简陋的 docify 部署的简单界面，完善成了现在 hugo 的界面，本来之前就一直很烦这个 markdown 图片问题，总是会发生路径错误等问题。每次都需要重置一下每篇文章里面的图片链接，虽然现在网络上铺天盖地有一些图床+markdown+upic/ipic/picgo 等工具的教程，但无一例外要么是阿里云的存储资源，要么就是 sms 等一些公开图床。用个人阿里云的存储资源确实比较方便，也比较安全，但 sms 等一些公开图床还需要担心他什么时候会挂，然后图片全部上传到公开位置也不太安全。&#xA;&#xA;      &lt;/section&gt;&#xA;    &lt;/div&gt;&#xA;  &lt;/div&gt;&#xA;  &#xA;    &lt;img rel=&#34;link&#34; loading=&#34;lazy&#34; class=&#34;post-preview--image avatar&#34; src=&#34;https://pve.digikamc.cn:8343/i/2024/11/26/gz3z92-0.png&#34;&gt;&#xA;  &#xA;&lt;/div&gt;&#xA;&#xA;&lt;h2 id=&#34;证书申请&#34;&gt;证书申请&lt;/h2&gt;&#xA;&lt;h2 id=&#34;域名配置&#34;&gt;域名配置&lt;/h2&gt;&#xA;&lt;h2 id=&#34;nginx反向代理&#34;&gt;Nginx反向代理&lt;/h2&gt;</description>
+    </item>
+  </channel>
+</rss>

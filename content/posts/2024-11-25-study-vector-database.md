@@ -5,6 +5,7 @@ title = '向量数据库学习（Vector Database 101）'
 tags = 'notes'
 show_toc = true
 twikoo = true
+math = true
 keywords = ['Vector Database', '向量数据库', '检索增强']
 description = "本篇博客详细学习了向量数据库的课程 Vector Database 101"
 

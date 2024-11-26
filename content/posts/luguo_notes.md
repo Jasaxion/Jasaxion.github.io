@@ -5,6 +5,7 @@ title = '算法集训-洛谷刷题笔记'
 tags = 'notes'
 show_toc = true
 twikoo = true
+math = true
 keywords = ['ACM', '算法', 'Algorithm', 'C++']
 description = "在 ACM 集训时期刷的一些算法题，虽然很冗长，但也是我的一段宝贵的经历"
 

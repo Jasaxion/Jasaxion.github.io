@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tech on Jasaxion一只大雄</title>
+    <link>http://localhost:1313/tags/tech/</link>
+    <description>Recent content in Tech on Jasaxion一只大雄</description>
+    <generator>Hugo</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 25 Nov 2024 10:01:03 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/tech/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>个人NAS配置私人图床！ZimaOS/CasaOS/Docker 配置 EasyImage 简单图床&#43;uPic&#43;Typora</title>
+      <link>http://localhost:1313/posts/2024/11/%E4%B8%AA%E4%BA%BAnas%E9%85%8D%E7%BD%AE%E7%A7%81%E4%BA%BA%E5%9B%BE%E5%BA%8Azimaos/casaos/docker-%E9%85%8D%E7%BD%AE-easyimage-%E7%AE%80%E5%8D%95%E5%9B%BE%E5%BA%8A-upic-typora/</link>
+      <pubDate>Mon, 25 Nov 2024 10:01:03 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2024/11/%E4%B8%AA%E4%BA%BAnas%E9%85%8D%E7%BD%AE%E7%A7%81%E4%BA%BA%E5%9B%BE%E5%BA%8Azimaos/casaos/docker-%E9%85%8D%E7%BD%AE-easyimage-%E7%AE%80%E5%8D%95%E5%9B%BE%E5%BA%8A-upic-typora/</guid>
+      <description>&lt;h2 id=&#34;事情起因&#34;&gt;事情起因&lt;/h2&gt;&#xA;&lt;p&gt;​&#x9;最近总算完成了 github.io 个人主页由原来简陋的 docify 部署的简单界面，完善成了现在 hugo 的界面，本来之前就一直很烦这个 markdown 图片问题，总是会发生路径错误等问题。每次都需要重置一下每篇文章里面的图片链接，虽然现在网络上铺天盖地有一些图床+markdown+upic/ipic/picgo 等工具的教程，但无一例外要么是阿里云的存储资源，要么就是 sms 等一些公开图床。用个人阿里云的存储资源确实比较方便，也比较安全，但 sms 等一些公开图床还需要担心他什么时候会挂，然后图片全部上传到公开位置也不太安全。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

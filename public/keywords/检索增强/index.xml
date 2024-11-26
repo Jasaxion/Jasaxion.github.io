@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>检索增强 on Jasaxion一只大雄</title>
+    <link>http://localhost:1313/keywords/%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA/</link>
+    <description>Recent content in 检索增强 on Jasaxion一只大雄</description>
+    <generator>Hugo</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 25 Nov 2024 14:13:33 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/keywords/%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>向量数据库学习（Vector Database 101）</title>
+      <link>http://localhost:1313/posts/2024/11/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0vector-database-101/</link>
+      <pubDate>Mon, 25 Nov 2024 14:13:33 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2024/11/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0vector-database-101/</guid>
+      <description>&lt;h2 id=&#34;向量数据库学习-vector-database-101&#34;&gt;向量数据库学习（Vector Database 101）&lt;/h2&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;课程链接🔗：https://zilliz.com/learn/vector-index&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h3 id=&#34;非结构化数据介绍&#34;&gt;非结构化数据介绍&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;非结构化数据指的是不符合预定义格式或无法适应结构化数据模型的信息。非结构化数据的例子包括人类生成的内容，如图片、视频、音频录音和文本文件。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
