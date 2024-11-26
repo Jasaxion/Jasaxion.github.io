@@ -97,6 +97,9 @@
     <header class="masthead">
       {{ partial "tagline.html" . }}
       {{ partial "menu.html" . }}
+      {{ if .IsHome }}
+        {{ partial "music.html" . }}
+      {{ end }}
     </header>
 
     <article class="main">
