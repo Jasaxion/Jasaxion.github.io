@@ -5,6 +5,7 @@ title = 'Acwing 算法课程刷题记录'
 tags = 'notes'
 show_toc = true
 twikoo = true
+math = true
 keywords = ['acwing', '算法', 'Algorithm']
 description = "Acwing 算法课程刷题记录"
 +++

@@ -1,0 +1,16 @@
+<!-- 实现 markdown 的 [!Note],[!Warning],[!Tip],[!Important]的语法 -->
+<!-- 使用方法 \{\{< alert note/warning/tip/important >\}\} 内容 \{\{< /alert >\}\} -->
+<div class="alert alert-{{ .Get 0 }}">
+  <p><strong>
+    {{- if eq (.Get 0) "note" -}}
+      📝 NOTE
+    {{- else if eq (.Get 0) "warning" -}}
+      ⚠️ WARNING
+    {{- else if eq (.Get 0) "tip" -}}
+      💡 TIP
+    {{- else if eq (.Get 0) "important" -}}
+      ❗ IMPORTANT
+    {{- end -}}
+  </strong></p>
+  {{ .Inner | markdownify }}
+</div>

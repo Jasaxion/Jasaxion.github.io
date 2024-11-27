@@ -5114,7 +5114,7 @@ a[i + 1] += a[i] - ave 具体是从i&ndash;&gt;i+1 还是i+1&ndash;&gt;i，主�
 <li>front数组，$front_i$ 表示从$1 \rightarrow i$ 严格递增所需的步数</li>
 <li>$behind$数组，$behind_i$表示从 $ i + 1 \rightarrow n$ 严格递增所需的步数</li>
 </ul>
-<p>可知：$ans = min{max(x_i,y_{i+1})} ~~~from<del>i</del>to~~n$</p>
+<p>可知：$ans = min{max(x_i,y_{i+1})} ~~~from~~i~~to~~n$</p>
 </blockquote>
 </blockquote>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
@@ -6000,13 +6000,12 @@ a[i + 1] += a[i] - ave 具体是从i&ndash;&gt;i+1 还是i+1&ndash;&gt;i，主�
 </span></span></code></pre></td></tr></table>
 </div>
 </div><blockquote>
-<p>设$T(k)$是覆盖一个$2^k*2^k$棋盘所需时间
-$$ T(k)=\left{
-\begin{aligned}
-O(1)     k = 1 \
-4T(k-1) + O(1)  k &gt; 1
-\end{aligned}
-\right.$$ 由此可知$T(k) = O(4^k)$ ，由于覆盖一个满足要求的正方形，所需要的L型块件的个数为$(4^k-1)/3$ 故此该算法可以说是在一个渐进意义下的最优算法</p>
+$$ T(k)=\left\{
+> > > \begin{aligned}
+> > > O(1)     k = 1 \\
+> > > 4T(k-1) + O(1)  k > 1
+> > > \end{aligned}
+> > > \right.$$<p> 由此可知$T(k) = O(4^k)$ ，由于覆盖一个满足要求的正方形，所需要的L型块件的个数为$(4^k-1)/3$ 故此该算法可以说是在一个渐进意义下的最优算法</p>
 <blockquote>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -6344,7 +6343,7 @@ CDQ分治典题👌</p>
 <p><em>//看到平均值无脑所有 $a_i←a_i−k$</em>
 例如：案例：（平均值：2） 样例：1,2,3</p>
 <p>减去平均值后： -1, 0, 1; 【也就是CDQ分治中，每个数对答案的贡献】</p>
-<p>故此该题可以转化为，求在这个序列中 $1&lt;=i&lt;=j&lt;=n$ 满足$\sum_{i=i}^{j=j}a_i &gt;= 0$的序列的个数
+<p>故此该题可以转化为，求在这个序列中 $1<=i<=j<=n$ 满足$\sum_{i=i}^{j=j}a_i >= 0$的序列的个数
 转化为前缀和数组 -1，-1，0；
 从而转化成了只需要$x≤y ~~~且 a_x≤a_y$ 即可 （也就是$a_y-a_x≥0$ $x≤y$ 的满足要求的$(x,y)$序列的个数。</p>
 <p>因为求部分区间和也就是前后两个端点的前缀和相减
@@ -6582,9 +6581,9 @@ CDQ分治典题👌</p>
 遇到这种题，一定要动笔去推导计算一下！！得到一个显著的公式，并依据公式去进行计算</p>
 <p>对于余数有</p>
 <p>$t = \lfloor\frac{b}{a}\rfloor$
-$t<em>a + r = b$
-$∴r = b - t</em>a \rarr r=b-\lfloor\frac{b}{a}\rfloor*a$</p>
-<p>$\sum_{i=1}^nk<del>mod</del>i = \sum_{i=1}^nk-\sum_{i=1}^n\lfloor\frac{k}{i}\rfloor<em>i\rarr n</em>k-\sum_{i=1}^ni*\lfloor\frac{k}{i}\rfloor$</p>
+$t*a + r = b$
+$∴r = b - t*a \rarr r=b-\lfloor\frac{b}{a}\rfloor*a$</p>
+<p>$\sum_{i=1}^nk~mod~i = \sum_{i=1}^nk-\sum_{i=1}^n\lfloor\frac{k}{i}\rfloor*i\rarr n*k-\sum_{i=1}^ni*\lfloor\frac{k}{i}\rfloor$</p>
 <p>发现：$\lfloor\frac{k}{i}\rfloor$ 采用整除分块的方法，大约有$\sqrt k$​种取值。</p>
 <p>遇到相同的取值只需要使用等差数列的求和公式进行求解即可！</p>
 </blockquote>
@@ -7017,12 +7016,12 @@ $∴r = b - t</em>a \rarr r=b-\lfloor\frac{b}{a}\rfloor*a$</p>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>1~N任何一个数
-<em><em>都能写成 $N = p_1^{c_1}<em>p_2^{c_2}</em>&hellip;p_k</em>^{c_k}$​</em>*​
+<strong>都能写成 $N = p_1^{c_1}*p_2^{c_2}*...p_k*^{c_k}$​</strong>​
 <code>x为反质数的必要条件是：x分解质因数后可写作2^c1 * 3^c2 * ...... *29 ^ c10，并且c1≥c2≥c3≥......≥c10≥0 。</code></p>
 <p><strong>1~N内任何一个数的约数的个数</strong>
-$m = (c_1+1)<em>(c_2+1)</em>&hellip;<em>(c_k+1)$
+$m = (c_1+1)*(c_2+1)*...*(c_k+1)$
 <strong>1~N内所有约数的和为</strong>
-$sum = (p_1^0+p_1^1+&hellip;+p_k^{c_1})</em>&hellip;*(p_k^0+p_k^1+&hellip;+p_k^{ck})$​​</p>
+$sum = (p_1^0+p_1^1+...+p_k^{c_1})*...*(p_k^0+p_k^1+...+p_k^{ck})$​​</p>
 </blockquote>
 </blockquote>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
@@ -7430,19 +7429,19 @@ $sum = (p_1^0+p_1^1+&hellip;+p_k^{c_1})</em>&hellip;*(p_k^0+p_k^1+&hellip;+p_k^{
 <p>分析一下，连续区间和为$sum(L,R)=\frac{(L+R)*(R-L+1)}{2}=M //等差数列求和$</p>
 <p>可以转化为$(L+R)(R-L+1)=2*M$
 可以将其转化为两个数之积，枚举假设分成了两个数k1,k2 令 k1 &lt; k2</p>
-<p>有 $$\left{<br>
-\begin{array}{}
-R-L+1=k_1   \
-L+R=k_2
-\end{array}
-\right. $$​​ ​​​​<br>
+$$\left\{  
+> \begin{array}{}
+>   R-L+1=k_1   \\ 
+>    L+R=k_2
+> \end{array}
+> \right. $$<p>​​ ​​​​<br>
 解得：</p>
-<p>$$\left{<br>
-\begin{array}{}
-L = \frac{k_2-k_1+1}{2}   \
-R=\frac{k_1+k_2-1}{2}
-\end{array}
-\right. $$​​​​</p>
+$$\left\{  
+> \begin{array}{}
+>   L = \frac{k_2-k_1+1}{2}   \\ 
+>   R=\frac{k_1+k_2-1}{2}
+> \end{array}
+> \right. $$<p>​​​​</p>
 <p>显然只有当 k1，k2中一个为奇数一个为偶数时，L,R才是整数
 注：并且 L != R 也就是 k1 != 1</p>
 </blockquote>
@@ -10486,7 +10485,7 @@ P1和P2其实就是两个全排列的数组，也就是意味着P1,P2两个数�
 <p>1 ~ n区间 可以 转化为较小的区间 i ~ j 枚举相应的小区间！！区间DP的精髓所在</p>
 <p>每次有新的人加入到队伍里面的话，区间就会越来越大&mdash;-&gt;由此可知，大区间包含小的区间</p>
 <p>状态表示：可以发现队伍中加入新的人只有两种情况 [i][j] 表示i~j这段区间</p>
-<p>$f[i][j][0] \ \ \ 表示第i人从左边进来的方案数目 \ f[i][j][1] \ \ \ 表示第j人从右边进来的方案数目$</p>
+<p>$f[i][j][0] \ \ \ 表示第i人从左边进来的方案数目 \\ f[i][j][1] \ \ \ 表示第j人从右边进来的方案数目$</p>
 <p>如果i号从左边进来，那么前面一个人肯定比它高，则它的位置可能是i+1号或j 号  两种
 如果j号从右边进来，那么前面一个人肯定比它矮，则它的位置可能是j-1 号或i 号  两种</p>
 <blockquote>
@@ -10593,7 +10592,7 @@ P1和P2其实就是两个全排列的数组，也就是意味着P1,P2两个数�
 <p>状态转移方程：</p>
 <ol>
 <li>当前区间如果不考虑折叠的话，则枚举分界点进行转移
-$f[i][j]=min(f[i][d]+f[d+1]<a href="i%3C=d%3C=j">j</a>)$</li>
+$f[i][j]=min(f[i][d]+f[d+1][j](i<=d<=j))$</li>
 <li>当前区间考虑折叠，则枚举循环节的长度，注意判断是否可以折叠
 $f[i][j] = min(f[i][k]+2+循环次数的长度)(其中s[i][k]是s[i][j]的循环节，2表示一对括号的长度)$</li>
 </ol>
@@ -10944,7 +10943,7 @@ $f[i][j] = min(f[i][k]+2+循环次数的长度)(其中s[i][k]是s[i][j]的循环
 <p>1.常规DP法：
 善于发现可知，本题目的是求一个具体的数最大
 可以想到动态规划的思想：
-$f[i][0]表示不取i元素的最大值方案 f[i][0]=max{f[i-1][0],f[i-1][1]}$​
+$f[i][0]表示不取i元素的最大值方案 f[i][0]=max\{f[i-1][0],f[i-1][1]\}$​
 $f[i][1]表示取i元素的最大值的方案f[i][1]=max(f[0][j]-sum[j])+sum[i]$​ &lt;&ndash; $f[0][j] +sum[i\rarr j]$ (准确含义)​​
 👆解释，如果取了第i个元素，那个i-k-1 ~ i之间的元素都不能取了，此时$max(f[0][j]-sum[j])满足单调性原则，可以用单调队列进行优化时间复杂度$​​​</p>
 </blockquote>
@@ -10990,7 +10989,7 @@ $f[i][1]表示取i元素的最大值的方案f[i][1]=max(f[0][j]-sum[j])+sum[i]$
 </ol>
 <p>题目是要求取出的数要达到最大，也就是要使得留下的数最小
 可以这样想，现在取出满足要求且和最小的数lim，然后留下的数sum-lim的和就是最大的&ndash;&gt;转化为取出的数要最小，注意此时约束条件也要由原来的不能取连续k个改为两个相邻的被取的数中间最多只能有k个数</p>
-<p>此时的动态转移方程可为 $dp[i]=min{dp[j]}+a[i],i-k-1≤j≤i-1$​​​​
+<p>此时的动态转移方程可为 $dp[i]=min\{dp[j]\}+a[i],i-k-1≤j≤i-1$​​​​
 表示满足条件的前i个数被选且<strong>第i个数也被选</strong>的和的最小值
 约束条件转化为：<strong>两个相邻的被选择的数中间最多只能有k个数。</strong></p>
 </blockquote>

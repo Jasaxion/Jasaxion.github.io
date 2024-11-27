@@ -343,14 +343,13 @@
 </div>
 </div><h4 id="1230-k倍区间">1230. K倍区间</h4>
 <blockquote>
-<p>很巧妙的一道题，这里我们采用前缀和的方式存放余数
 $$
-s[i] = (s[i-1] + a[i])%k\ &ndash;&gt;余数前缀和\
-if \ s[i] == 0 \ &ndash;&gt;表示1～i其区间本身就是一个满足条件的解\
-if \ (s[R] - s[L - 1])%k == 0\ (表示L-R区间满足条件)\
-\ 	也就是说，s[R]%k == s[L-1]%k \ 如果两个区间的余数相同，那么也能构成一个k倍区间\
-answer=sum(s[0]) + C_{cnt(余数相同的个数)}^2
-$$
+> s[i] = (s[i-1] + a[i])\%k\ -->余数前缀和\\
+> if \ s[i] == 0 \ -->表示1～i其区间本身就是一个满足条件的解\\
+> if \ (s[R] - s[L - 1])\%k == 0\ (表示L-R区间满足条件)\\
+> \ 	也就是说，s[R]\%k == s[L-1]\%k \ 如果两个区间的余数相同，那么也能构成一个k倍区间\\
+> answer=sum(s[0]) + C_{cnt(余数相同的个数)}^2
+> $$<p>
 大概思路如上所示，在编写代码的时候有几个很巧妙的地方</p>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -594,15 +593,15 @@ $$
 <blockquote>
 <p>**差分思路：**将区间都需要+C的情况，转化为只需要对两个数进行加减。
 原序列为$a$，差分序列为$b$</p>
-<p>差分数组有几个特殊的值$b_1$和$b_{n+1}$，如果需要原序列相等，那么差分数组应该为${b_1,0,&hellip;,0} 其中b_1为一个常数，只需要让b_2\sim b_n为0即可$</p>
+<p>差分数组有几个特殊的值$b_1$和$b_{n+1}$，如果需要原序列相等，那么差分数组应该为$\{b_1,0,...,0\} 其中b_1为一个常数，只需要让b_2\sim b_n为0即可$</p>
 <p>对于差分数组的$L$和$R$的取值有如下四种操作方式：</p>
 <p>1⃣️$2\le L\le R \le n-1$ 选择一个$b_i$在$2\le n-1$中，一个$+/-1，另一个$ $-/+1$</p>
 <p>2⃣️$L=1,R \le n-1$ 让$b_1 +/-1$，选一个在$2\le n-1$中的数$-/+1$</p>
 <p>3⃣️$L\ge2, R=n$ 让$b_{n+1} +/-1$，选择另外一个数$-/+1$</p>
 <p>4⃣️$L=1,R=n$，表示让这个序列都$+/-1$ –&gt;在本题中没有意义；</p>
 <p>对于差分序列$b_2\sim b_n$ ，假设其所有的正数和为$q$，所有的负数和为$p$</p>
-<p>以贪心的方式选择1⃣️，这样能够更快的选择两个数进行变换【2⃣️3⃣️只能变一个数】，那么首先优先选择1⃣️，此时需要的操作次数为$min{q,p}$ 次，也就是将其中的正数/负数首先变成0，然后再使用2⃣️3⃣️方法对于剩下的数，剩下的数有$||q|-|p||$次，也就是最少还需要$||q|-|p||$次操作2⃣️和3⃣️：
-**结论：**最少需要的次数$ans1 = min{q,p}+||q|-|p|| =max{q,p}$</p>
+<p>以贪心的方式选择1⃣️，这样能够更快的选择两个数进行变换【2⃣️3⃣️只能变一个数】，那么首先优先选择1⃣️，此时需要的操作次数为$min\{q,p\}$ 次，也就是将其中的正数/负数首先变成0，然后再使用2⃣️3⃣️方法对于剩下的数，剩下的数有$||q|-|p||$次，也就是最少还需要$||q|-|p||$次操作2⃣️和3⃣️：
+**结论：**最少需要的次数$ans1 = min\{q,p\}+||q|-|p|| =max\{q,p\}$</p>
 <p>接下来讨论此时的方案数有多少种？对于1⃣️的操作是固定不变的，那么方案差异主要在于2⃣️和3⃣️，对于2⃣️和3⃣️的不同种情况一共有：$ans2=||p|-|q||+1$种 （理由如下：）</p>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -1241,8 +1240,8 @@ $$
 <blockquote>
 <p><a href="https://www.acwing.com/problem/content/115/">https://www.acwing.com/problem/content/115/</a>
 读懂题目甚至比题目本身还难；
-反对称性：$a&gt;b,b&lt;a$
-传递性：$a&lt;b,b&lt;c\rightarrow a&lt;c$</p>
+反对称性：$a>b,b<a$
+传递性：$a<b,b<c\rightarrow a<c$</p>
 </blockquote>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -2231,7 +2230,7 @@ $$
 </span></span></code></pre></td></tr></table>
 </div>
 </div></blockquote>
-<p><strong>约数个数与约数之和</strong>$N = p_1^{c_1} * p_2^{c_2} * &hellip; *p_k^{c_k}$</p>
+<p><strong>约数个数与约数之和</strong>$N = p_1^{c_1} * p_2^{c_2} * ... *p_k^{c_k}$</p>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
@@ -2246,10 +2245,10 @@ $$
 </div>
 </div><p><strong>数论常见的问题：</strong></p>
 <ul>
-<li>对于每一个大于等于2的正整数n，都有$N=p_1^{c_1}<em>p_2^{c_2}</em>&hellip;*p_m^{c_m}$</li>
-<li>正整数N的欧拉函数$phi(N)=N*(1-\frac{1}{p_1})<em>(1-\frac{1}{p_2})</em>&hellip;<em>(1-\frac{1}{p_m})=p_1^{c_1-1}</em>(p_1-1)<em>p_2^{c_2-1}</em>(p_2-1)*&hellip;<em>p_m^{c_m-1}</em>(p_m-1)$</li>
-<li>正整数N的约数个数：$d(N)=(1+c_1)<em>(1+c_2)</em>&hellip;*(1+c_m)$</li>
-<li>正整数N的所有约数和：$s(N)=(1+p_1+p_1^2+&hellip;+p_1^{c_1})<em>(1+p_2+p_2^2+&hellip;+p_2^{c_2})</em>(1+p_m+p_m^2+&hellip;+p_m^{c_m})$</li>
+<li>对于每一个大于等于2的正整数n，都有$N=p_1^{c_1}*p_2^{c_2}*...*p_m^{c_m}$</li>
+<li>正整数N的欧拉函数$phi(N)=N*(1-\frac{1}{p_1})*(1-\frac{1}{p_2})*...*(1-\frac{1}{p_m})=p_1^{c_1-1}*(p_1-1)*p_2^{c_2-1}*(p_2-1)*...*p_m^{c_m-1}*(p_m-1)$</li>
+<li>正整数N的约数个数：$d(N)=(1+c_1)*(1+c_2)*...*(1+c_m)$</li>
+<li>正整数N的所有约数和：$s(N)=(1+p_1+p_1^2+...+p_1^{c_1})*(1+p_2+p_2^2+...+p_2^{c_2})*(1+p_m+p_m^2+...+p_m^{c_m})$</li>
 </ul>
 <h5 id="欧拉筛约数的方法">欧拉筛约数的方法⭐️</h5>
 <blockquote>
@@ -3935,13 +3934,11 @@ $$
 </div></blockquote>
 <h4 id="next数组周期">Next数组周期</h4>
 <blockquote>
-<p>next数组存在周期性，<strong>循环元</strong>
 $$
-对于next数组，从前往后进行遍历;\
-if\ i % (i - ne[i])-&gt;则表示S[1\sim (i-ne[i])]是S[1\sim i]的最小循环元\
-那么存在多少个最小循环元呢，答案是：i/(i-ne[i])
-$$</p>
-</blockquote>
+> 对于next数组，从前往后进行遍历;\\
+> if\ i \% (i - ne[i])->则表示S[1\sim (i-ne[i])]是S[1\sim i]的最小循环元\\
+> 那么存在多少个最小循环元呢，答案是：i/(i-ne[i])
+> $$</blockquote>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -4471,26 +4468,23 @@ $$</p>
 </div>
 </div><h4 id="165-小猫爬山">165. 小猫爬山⭐️</h4>
 <blockquote>
-<p>因为这里N比较小，但M比较大，故此这里不是一个背包问题，是一个DFS搜索问题。
-同时也要想到怎么样才能不重不漏地枚举到每一个元素：
 $$
-对于每一个C_i 都有\
-\begin{eqnarray}
-C_i=
-\begin{cases}
-放到已有的车&amp; 枚举每辆车看是否超重，若没有超过则继续递归 (1)\
-放到新的车&amp; 新加一辆车(2)
-\end{cases}
-\end{eqnarray}
-$$
+> 对于每一个C_i 都有\\
+> 	\begin{eqnarray}
+> 		C_i=
+> 		\begin{cases}
+> 			放到已有的车& 枚举每辆车看是否超重，若没有超过则继续递归 (1)\\
+> 			放到新的车& 新加一辆车(2)
+> 		\end{cases}
+> 	\end{eqnarray}
+> $$<p>
 dfs的参数dfs(u,k) u表示当前枚举的猫的个数，k表示当前车的个数</p>
-<p>$$
-剪枝优化\
-(1)k\ge ans &amp; return\
-(2)dfs是一棵递归树，尽可能考虑决策少的分支 &amp;\
-(3)对于（10）中的（1）可以进行划分，重的猫选择更少，可以优先选择重的猫
-$$</p>
-</blockquote>
+$$
+> 剪枝优化\\
+> (1)k\ge ans & return\\
+> (2)dfs是一棵递归树，尽可能考虑决策少的分支 &\\
+> (3)对于（10）中的（1）可以进行划分，重的猫选择更少，可以优先选择重的猫
+> $$</blockquote>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -6638,7 +6632,7 @@ dfn[x] &lt; low[y]</p>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><blockquote>
-<p>$N = p_1^{c_1} * p_2^{c_2} * &hellip; *p_k^{c_k}$</p>
+<p>$N = p_1^{c_1} * p_2^{c_2} * ... *p_k^{c_k}$</p>
 </blockquote>
 <p>c1,c2,&hellip;.ck 取不同的值的话，就构成了不同的约数。 c1 有 [0<del>c1]种选法&mdash;&gt; 也就是c1+1种选法，每一种选法相乘的话，得到的便是约数的个数
 将求约数的个数转化为c1</del>ck的选法的个数[即乘法原理]</p>
@@ -6907,9 +6901,9 @@ dfn[x] &lt; low[y]</p>
 </blockquote>
 <h5 id="费马小定理">费马小定理</h5>
 <p>假如a是一个整数，p是一个质数，那么$a^p-a$​是p的倍数，可以表示为
-$a^p≡a~(mod <del>p)$​
+$a^p≡a~(mod ~p)$​
 如果a不是p的倍数，那么这个定理也可以写成
-$a^{p-1}≡1</del>(mod~ p)$​</p>
+$a^{p-1}≡1~(mod~ p)$​</p>
 <blockquote>
 <ol>
 <li><strong>为何费马小定理可以用来求乘法逆元？</strong></li>
@@ -6923,7 +6917,7 @@ $a^{p-1}≡1</del>(mod~ p)$​</p>
 <li>
 <p><strong>乘法逆元有什么用呢？</strong></p>
 <blockquote>
-<p>可用于求$\frac{a}{b}<del>mod</del>p$</p>
+<p>可用于求$\frac{a}{b}~mod~p$</p>
 </blockquote>
 <p>做题时如果结果过大一般都会让你模一个数，确保结果不是很大，而这个数一般是1e9+7，而且这个数又是个素数，加减乘与模运算的顺序交换不会影响结果，但是除法不行。有的题目要求结果mod一个大质数，<strong>如果原本的结果中有除法，比如除以a,那就可以乘以a的逆元替代</strong>。（除一个数等于乘它的倒数，虽然这里的逆元不完全是倒数，但可以这么理解，毕竟乘法逆元就是倒数的扩展）。</p>
 </li>
@@ -7042,21 +7036,21 @@ $x ≡ a^{p-2}(mod\ p)$</p>
 <blockquote>
 <p>不妨令：
 $t = \lfloor\frac{p}{i}\rfloor$​​​​
-$k = p%i$​​​​​
-则有$p=i<em>t+k$​​​
-即$i</em>t+k\equiv0~(mod~p)$​​
-移项可得： $i<em>k\equiv-k(mod\ p)$​​
-$设i&rsquo;为i对于模p的逆元，k&rsquo;为k对于模p的逆元，两侧分别乘上i&rsquo;k;$​
-$i</em>t<em>i&rsquo;<em>k&rsquo;\equiv-k</em>i&rsquo;<em>k&rsquo; (mod\ p)$​
-​由于$i</em>i&rsquo;(mod\ p)=1,k</em>k&rsquo;(mod \ p)=1$
-故此$t*k&rsquo;\equiv-i&rsquo;(mod \ p)$</p>
+$k = p\%i$​​​​​
+则有$p=i*t+k$​​​
+即$i*t+k\equiv0~(mod~p)$​​
+移项可得： $i*k\equiv-k(mod\ p)$​​
+$设i'为i对于模p的逆元，k'为k对于模p的逆元，两侧分别乘上i'k;$​
+$i*t*i'*k'\equiv-k*i'*k' (mod\ p)$​
+​由于$i*i'(mod\ p)=1,k*k'(mod \ p)=1$
+故此$t*k'\equiv-i'(mod \ p)$</p>
 <p>若用inv[N]表示逆元，那么上面式子等价于
-$t<em>inv[k] \equiv-inv[i](mod\ p)$
+$t*inv[k] \equiv-inv[i](mod\ p)$
 带入k和t可得：
-$\lfloor\frac{p}{i}\rfloor</em>inv[p%i] \equiv-inv[i] (mod\ p)$</p>
-<p>即：$inv[i]=-\lfloor\frac{p}{i}\rfloor<em>inv[p%i]$
+$\lfloor\frac{p}{i}\rfloor*inv[p\%i] \equiv-inv[i] (mod\ p)$</p>
+<p>即：$inv[i]=-\lfloor\frac{p}{i}\rfloor*inv[p\%i]$
 将负化正：(为了防止出现负数)
-$inv[i] = (p-\lfloor\frac{p}{i}\rfloor</em>inv[p%i]%p)%p$​​</p>
+$inv[i] = (p-\lfloor\frac{p}{i}\rfloor*inv[p\%i]\%p)\%p$​​</p>
 </blockquote>
 <p><code>inv[i] = (p - p / i) * inv[p % i] % p;</code> &lt;&mdash;得证，乘法逆元的递推式</p>
 <p><strong>(a % b + b) % b &lt;&mdash;-负数取模为正数</strong></p>
@@ -7143,18 +7137,18 @@ $inv[i] = (p-\lfloor\frac{p}{i}\rfloor</em>inv[p%i]%p)%p$​​</p>
 <h5 id="运算法则">运算法则</h5>
 <blockquote>
 <p>取模四则运算：</p>
-<p>① $(a+b)%p = (a%p+b%p)%p$
-② $(a-b)%p=(a%p-b%p)%p$
-③ $(a<em>b)%p=(a%p</em>b%p)%p$
-④ $a^b%p = ((a%p)^p)%p$</p>
+<p>① $(a+b)\%p = (a\%p+b\%p)\%p$
+② $(a-b)\%p=(a\%p-b\%p)\%p$
+③ $(a*b)\%p=(a\%p*b\%p)\%p$
+④ $a^b\%p = ((a\%p)^p)%p$</p>
 <p>结合律：</p>
-<p>① $((a+b)%p+c)%p = (a+(b+c)%p)%p$
-② $((a<em>b)%p</em>c)%p = (a*(b*c)%p)%p$</p>
+<p>① $((a+b)\%p+c)\%p = (a+(b+c)\%p)%p$
+② $((a*b)\%p*c)\%p = (a*(b*c)\%p)%p$</p>
 <p>交换律:</p>
-<p>① $(a+b)%p = (b+a)%p$
-② $(a<em>b)%p = (b</em>a)%p$</p>
+<p>① $(a+b)\%p = (b+a)\%p$
+② $(a*b)\%p = (b*a)\%p$</p>
 <p>分配律：</p>
-<p>$((a+b)%p<em>c)%p = ((a</em>c)%p + (b*c)%p)%p$</p>
+<p>$((a+b)\%p*c)\%p = ((a*c)\%p + (b*c)\%p)\%p$</p>
 <p>重要定理：</p>
 <ul>
 <li>
@@ -7173,7 +7167,7 @@ $inv[i] = (p-\lfloor\frac{p}{i}\rfloor</em>inv[p%i]%p)%p$​​</p>
 <blockquote>
 <p>欧拉函数：
 φ(n)表示1~n之间，与n互质的正整数（包括1），记作φ(n)</p>
-<p>$φ(n)=n*(1-1/p1)<em>(1-1/p2)</em>(1-1/p3)*(1-1/p4)……(1-1/pn)$</p>
+<p>$φ(n)=n*(1-1/p1)*(1-1/p2)*(1-1/p3)*(1-1/p4)……(1-1/pn)$</p>
 </blockquote>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -7314,7 +7308,7 @@ $\varphi(n)是欧拉函数$​​</p>
 </div>
 </div><h4 id="快速幂">快速幂</h4>
 <blockquote>
-<p>作用：能快速求出$<del>a^k</del>%<del>p</del>$​</p>
+<p>作用：能快速求出$~a^k~\%~p~$​</p>
 </blockquote>
 <p>10^9次的数可以在logn的时间复杂度下求出来</p>
 <blockquote>
@@ -7448,14 +7442,14 @@ y = y - (a/b)*x</p>
 </div><h5 id="一元多项式-秦九韶算法">一元多项式——秦九韶算法</h5>
 <blockquote>
 <p>对于：</p>
-<p>$f(x) = a_nx^n+a_{n-1}x^{n-1}+&hellip;+a_1x+a_0$</p>
+<p>$f(x) = a_nx^n+a_{n-1}x^{n-1}+...+a_1x+a_0$</p>
 <p>可以改写成如下形式：</p>
 <p>$f(x)$
-$=a_nx^n+a_{n-1}x^{n-1}+&hellip;+a_1x+a_0$
-$=(a_nx^{n-1}+a_{n-1}x^{n-2}+&hellip;+a_2x+a_1)x+a_0$​
+$=a_nx^n+a_{n-1}x^{n-1}+...+a_1x+a_0$
+$=(a_nx^{n-1}+a_{n-1}x^{n-2}+...+a_2x+a_1)x+a_0$​
 $.$
 $.$
-$=(&hellip;((a_nx+a_{n-1})x+a_{n-2})x+&hellip;+a_1)x+a_0$​</p>
+$=(...((a_nx+a_{n-1})x+a_{n-2})x+...+a_1)x+a_0$​</p>
 </blockquote>
 <p>//算法实现：来自百度百科</p>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
@@ -7519,14 +7513,14 @@ $=(&hellip;((a_nx+a_{n-1})x+a_{n-2})x+&hellip;+a_1)x+a_0$​</p>
 <p>组合数的一些性质</p>
 <p>（1）组合数的递推式:$C_a^b=C_{a-1}^b+C_{a-1}^{b-1}$​
 （2）$C_{m+r+1}^r=\sum_{i=0}^rC_{m+i}^i$​​
-（3）$C_m^n<em>C_n^r=C_m^r</em>C_{m-r}^{n-r }$​
+（3）$C_m^n*C_n^r=C_m^r*C_{m-r}^{n-r }$​
 （4）$\sum_{i=0}^mC_m^i=2^m$​
-（5）$C_m^0-C_m^1+C_m^2-&hellip;±C_m^m=0$
-（6）$C_m^0+C_m^2+C_m^4&hellip;=C_m^1+C_m^3+C_m^5+&hellip;=2^{m-1}$​
-（7）$C_{m+n}^r=C_m^0<em>C_n^r+C_m^1</em>C_n^{r-1}+&hellip;+C_m^r<em>C_n^0$​
-（8）$n</em>C_m^n=m<em>C_{m-1}^{n-1}$
-（9）$\sum_{i=1}^nC_n^i</em>i=n<em>2^{n-1}$
-（10）$\sum_{i=1}^nC_n^i</em>i^2=n*(n+1)*2^{n-2}$
+（5）$C_m^0-C_m^1+C_m^2-...±C_m^m=0$
+（6）$C_m^0+C_m^2+C_m^4...=C_m^1+C_m^3+C_m^5+...=2^{m-1}$​
+（7）$C_{m+n}^r=C_m^0*C_n^r+C_m^1*C_n^{r-1}+...+C_m^r*C_n^0$​
+（8）$n*C_m^n=m*C_{m-1}^{n-1}$
+（9）$\sum_{i=1}^nC_n^i*i=n*2^{n-1}$
+（10）$\sum_{i=1}^nC_n^i*i^2=n*(n+1)*2^{n-2}$
 （11）$\sum_{i=0}^n(C_n^i)^2=C_{2n}^n$</p>
 </blockquote>
 <h5 id="递归法求组合数">递归法求组合数</h5>
@@ -7655,7 +7649,7 @@ $= \sum_{i=1}^{k-1}C_i^0+C_{x-k+1}^1$​​</p>
 </div>
 </div><h5 id="卢卡斯定理">卢卡斯定理</h5>
 <blockquote>
-<p>$C_m^n\equiv C_{m<del>mod <del>p}^{n</del>mod <del>p}*C_{\lfloor\frac{m}{p}\rfloor}^{\lfloor\frac{n}{p}\rfloor}</del>(mod</del>p)$​
+<p>$C_m^n\equiv C_{m~mod ~p}^{n~mod ~p}*C_{\lfloor\frac{m}{p}\rfloor}^{\lfloor\frac{n}{p}\rfloor}~(mod~p)$​
 $C_m^n\equiv\prod_{i=0}^kC_{m_i}^{n_i}$​</p>
 <blockquote>
 <p>一般都可以使用预处理逆元的方式预处理求出组合数</p>
@@ -8225,7 +8219,7 @@ $C_m^n\equiv\prod_{i=0}^kC_{m_i}^{n_i}$​</p>
       <tr>
           <td>LIS问题 [最长上升子序列]</td>
           <td>问题描述</td>
-          <td>最长上升子序。给定一个长度为N的数列A，求数值单调递增的子序列的长度最长是多少。A的任意子序列B可以表示为B = {$A_{k1},A_{k2},&hellip;,A_{kp}$}，其中$k_1&lt;k_2&lt;&hellip;&lt;k_p$</td>
+          <td>最长上升子序。给定一个长度为N的数列A，求数值单调递增的子序列的长度最长是多少。A的任意子序列B可以表示为B = {$A_{k1},A_{k2},...,A_{kp}$}，其中$k_1<k_2<...<k_p$</td>
       </tr>
       <tr>
           <td></td>
@@ -8240,7 +8234,7 @@ $C_m^n\equiv\prod_{i=0}^kC_{m_i}^{n_i}$​</p>
       <tr>
           <td></td>
           <td>转移方程</td>
-          <td>$F[i] = max_{0≤j≤i,A[j]&lt;A[i]}{F[j]+1}$</td>
+          <td>$F[i] = max_{0≤j≤i,A[j]<A[i]}\{F[j]+1\}$</td>
       </tr>
       <tr>
           <td></td>
@@ -8250,7 +8244,7 @@ $C_m^n\equiv\prod_{i=0}^kC_{m_i}^{n_i}$​</p>
       <tr>
           <td></td>
           <td>目标</td>
-          <td>$max_{1≤i≤N}{F[i]}$</td>
+          <td>$max_{1≤i≤N}\{F[i]\}$</td>
       </tr>
       <tr>
           <td></td>
@@ -8275,7 +8269,7 @@ $C_m^n\equiv\prod_{i=0}^kC_{m_i}^{n_i}$​</p>
       <tr>
           <td></td>
           <td>转移方程</td>
-          <td>$$ F[i,j]=max \left {  \begin{aligned} F[i-1,j] &amp;&amp; 表示继承之前的 \ F[i,j-1] &amp;&amp;表示继承之前的    \ F[i-1,j-1]+1  &amp;&amp; if A[i] = B[j] 找到一个新的+1 \end{aligned} \right. $$​​</td>
+          <td>$$ F[i,j]=max \left \{  \begin{aligned} F[i-1,j] && 表示继承之前的 \\ F[i,j-1] &&表示继承之前的    \\ F[i-1,j-1]+1  && if A[i] = B[j] 找到一个新的+1 \end{aligned} \right. $$​​</td>
       </tr>
       <tr>
           <td></td>
@@ -8310,7 +8304,7 @@ $C_m^n\equiv\prod_{i=0}^kC_{m_i}^{n_i}$​</p>
       <tr>
           <td></td>
           <td>转移方程</td>
-          <td>$$ F[i,j]=A[i,j] + max\left{ \begin{aligned} F[i-1,j] &amp;  &amp; \ F[i-1,j-1] &amp; &amp; if\  \  \ j &gt; 1  \end{aligned} \right. $$</td>
+          <td>$$ F[i,j]=A[i,j] + max\left\{ \begin{aligned} F[i-1,j] &  & \\ F[i-1,j-1] & & if\  \  \ j > 1  \end{aligned} \right. $$</td>
       </tr>
       <tr>
           <td></td>
@@ -9059,9 +9053,7 @@ $C_m^n\equiv\prod_{i=0}^kC_{m_i}^{n_i}$​</p>
 </blockquote>
 <p>用“已经处理的物品数“作为DP的”阶段“
 以”背包中已经放入的物品的总体积“作为附加维度</p>
-<p>则有：
-F[i，j] 表示从前i个物品中选出了总体积为j的物品放入背包，物品的最大价值和
-$$ F[i,j]=max\left{ \begin{aligned} F[i-1,j] &amp;&amp; 不选第i个物品 \ F[i-1,j-V_i]+W_i &amp;  &amp; 选第i个物品\\end{aligned} \right. $$​​</p>
+$$ F[i,j]=max\left\{ \begin{aligned} F[i-1,j] && 不选第i个物品 \\ F[i-1,j-V_i]+W_i &  & 选第i个物品\\\end{aligned} \right. $$<p>​​</p>
 <p>· 不选第i个物品，也就是意味着选前i-1个物品，空间为j的情况下的最优解
 · 选第i个物品，前i-1个物品的体积最多为j-v[i]</p>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
@@ -9169,8 +9161,7 @@ $$ F[i,j]=max\left{ \begin{aligned} F[i-1,j] &amp;&amp; 不选第i个物品 \ F[
 <blockquote>
 <p>有N种物品和一个容量为V的背包，每种物品都有<u>无限件</u>可用。第i种物品的费用是c[i]，价值是w[i]。求解将哪些物品装入背包可使这些物品的费用总和不超过背包容量，且价值总和最大。</p>
 </blockquote>
-<p>F[i，j] 表示从前i个物品中选出了总体积为j的物品放入背包，物品的最大价值和
-$$ F[i,j]=max\left{ \begin{aligned} F[i-1,j] &amp;&amp; 不选第i种物品 \ F[i,j-V_i]+W_i &amp;  &amp; j&gt;= V_i\ \ 从第i种物品中选一个\\end{aligned} \right. $$​​​​</p>
+$$ F[i,j]=max\left\{ \begin{aligned} F[i-1,j] && 不选第i种物品 \\ F[i,j-V_i]+W_i &  & j>= V_i\ \ 从第i种物品中选一个\\\end{aligned} \right. $$<p>​​​​</p>
 <p>初值：f[0][0] = 0;  其他为-INF;  目标是max{F[N][j]}
 因为每一种物品都有无限个，我们只管去取k个i种物品就好了</p>
 <blockquote>
@@ -9181,7 +9172,7 @@ $$ F[i,j]=max\left{ \begin{aligned} F[i-1,j] &amp;&amp; 不选第i种物品 \ F[
 </blockquote>
 <p>【解法一：常规贪心】</p>
 <blockquote>
-<p>$F[i,v] = max {F[i-1,V-kCi]+kWi | 0\leq kCi \leq v }$</p>
+<p>$F[i,v] = max \{F[i-1,V-kCi]+kWi | 0\leq kCi \leq v \}$</p>
 </blockquote>
 <p>每个物品可以放的上限为$\lfloor v/Ci \rfloor$​ ，为了得到F[i, v] 需要遍历所有的k∈(1&hellip;n)，找出所有k值下F[i,v]的最大值</p>
 <blockquote>
@@ -9411,7 +9402,7 @@ $$ F[i,j]=max\left{ \begin{aligned} F[i-1,j] &amp;&amp; 不选第i种物品 \ F[
 <blockquote>
 <p>设F[l , r] 表示把最初的第l 堆到第r 堆石子合并成一堆，需要消耗的体力。</p>
 <p>状态转移方程可以为：
-$F[l,r] = min_{1≤k≤r}{F[l,k],F[k+1,r]}+\sum_{i=l}^rA_i$​</p>
+$F[l,r] = min_{1≤k≤r}\{F[l,k],F[k+1,r]\}+\sum_{i=l}^rA_i$​</p>
 <p>初始值：$\forall l \in[1,N],F[l,l]=A_l$,其余为正无穷
 目标：$F[1,N]$​</p>
 </blockquote>
@@ -9796,9 +9787,9 @@ $F[l,r] = min_{1≤k≤r}{F[l,k],F[k+1,r]}+\sum_{i=l}^rA_i$​</p>
 <ol>
 <li>当 V’ 为仅包含起点的集合，也就是：d ( s , { s } ) = 0 ;</li>
 <li>其他情况，则对子问题求最优解。需在 V’ 这个城市集合中，尝试每一个城市结点，并求出最优解。
-$d(i,V&rsquo;+{i})=\min_{k\in V&rsquo;}\left{d(k,V&rsquo;)+C_{ki}\right}$​</li>
+$d(i,V'+{i})=\min_{k\in V'}\left\{d(k,V')+C_{ki}\right\}$​</li>
 <li>最后的求解方式为:
-$Answer = \min_{i\in S}\left{ d(i,S)+c_{is} \right}\quad其中S为所有点的集合$</li>
+$Answer = \min_{i\in S}\left\{ d(i,S)+c_{is} \right\}\quad其中S为所有点的集合$</li>
 </ol>
 </blockquote>
 <p><code>状态转移方程就是上文所述，但是还有一个问题，我们如何存储点集这个状态？显然是无法用set作为dp数组的下标的。因此，这里我们使用状态压缩，也就是用一个整数来表示一个点集</code></p>
@@ -10117,8 +10108,8 @@ $Answer = \min_{i\in S}\left{ d(i,S)+c_{is} \right}\quad其中S为所有点的�
 <p>黑色数组表示原来的数组 A[i]
 红色的结构就表示建立的树状数组C[i] —— $C_x表示以x结尾的，长度为2^k的区间和$</p>
 <p>可以用二进制表示</p>
-<p>$x= 2^{i^k}+2^{i^{k-1}}+&hellip;+2^{i}$
-显然有$i^k&gt;i^{i^{k-1}}&gt;&hellip;&gt;i  且k≤logx$</p>
+<p>$x= 2^{i^k}+2^{i^{k-1}}+...+2^{i}$
+显然有$i^k>i^{i^{k-1}}>...>i  且k≤logx$</p>
 </blockquote>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -10145,7 +10136,7 @@ $Answer = \min_{i\in S}\left{ d(i,S)+c_{is} \right}\quad其中S为所有点的�
 </span></span></code></pre></td></tr></table>
 </div>
 </div><blockquote>
-<p>发现其规律：$C[i]=A[i-2^k+1]+A[i-2^k+2]+&hellip;+A[i]$  k为i的二进制中从最低为到高位连续0的长度(也就是最后一个1的位置)&mdash;&gt; lowbit()</p>
+<p>发现其规律：$C[i]=A[i-2^k+1]+A[i-2^k+2]+...+A[i]$  k为i的二进制中从最低为到高位连续0的长度(也就是最后一个1的位置)&mdash;&gt; lowbit()</p>
 <p>$[R-lowbit(R)+1, R]$ &mdash;&gt;区间&mdash;&gt;这就表示我们可以用一个数组来表示一个区间了。</p>
 </blockquote>
 <blockquote>
@@ -10162,9 +10153,9 @@ $Answer = \min_{i\in S}\left{ d(i,S)+c_{is} \right}\quad其中S为所有点的�
 <h4 id="建立树状数组">建立树状数组</h4>
 <blockquote>
 <p>通过父节点去找子节点：
-$C[i] = A[i-2^k+1]+A[i-2^k+2]+&hellip;+A[i]$ 每次将lowbit的1去掉累加</p>
+$C[i] = A[i-2^k+1]+A[i-2^k+2]+...+A[i]$ 每次将lowbit的1去掉累加</p>
 <p>通过子节点去找父节点：
-$A[i]包含于C[i+2^k]、C[(i+2^k)+2^k]&hellip;$ //是一个迭代的过程，修改一次父节点在修改一次父节点，最多也就只需要修改logx次</p>
+$A[i]包含于C[i+2^k]、C[(i+2^k)+2^k]...$ //是一个迭代的过程，修改一次父节点在修改一次父节点，最多也就只需要修改logx次</p>
 </blockquote>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -10395,7 +10386,7 @@ $A[i]包含于C[i+2^k]、C[(i+2^k)+2^k]&hellip;$ //是一个迭代的过程，�
 这个时候，我们需要改变一下建树的方法，而不能和之前一样根据数据建树，应该引入差分建树方法。</p>
 </blockquote>
 <p>规定$A[0] = 0$
-则有 $A[i]=\sum_{j=1}^i;\D[j]=A[j]-A[j-1]$</p>
+则有 $A[i]=\sum_{j=1}^i;\\D[j]=A[j]-A[j-1]$</p>
 <p>&ndash;&gt; 利用差分的思想建树</p>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -10458,7 +10449,7 @@ $A[i]包含于C[i+2^k]、C[(i+2^k)+2^k]&hellip;$ //是一个迭代的过程，�
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="对于区间更新-区间查询的树状数组">对于区间更新，区间查询的树状数组</h4>
-<p>$b数组的前缀和\sum_{i=1}^xb[i]就是经过这些指令后a[x]增加的值。\ 那么序列a的前缀和a[1 -&gt; x]整体增加的值就是 \ \sum_{i=1}^x \sum_{j=1}^i b[j] = \sum_{i=1}^x(x-i+1)<em>b[i]=\sum_{i=1}^xb[i]-\sum_{i=1}^xi</em>b[i]$</p>
+<p>$b数组的前缀和\sum_{i=1}^xb[i]就是经过这些指令后a[x]增加的值。\\ 那么序列a的前缀和a[1 -> x]整体增加的值就是 \\ \sum_{i=1}^x \sum_{j=1}^i b[j] = \sum_{i=1}^x(x-i+1)*b[i]=\sum_{i=1}^xb[i]-\sum_{i=1}^xi*b[i]$</p>
 <p>这种分离包含有多个变量的项，使公式中不同变量之间相互独立的思想非常重要！！</p>
 <p>故此对于区间查询，我可以再新建一个树状数组$维护i*b[i]的前缀和$</p>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">

@@ -46,6 +46,17 @@ tabWidth = 4
 [markup.goldmark.renderer]
 unsafe = true
 
+[markup.goldmark.extensions.passthrough]
+      enable = true
+      delimiters.block = [
+        ["\\[", "\\]"],
+        ["$$", "$$"]
+      ]
+      delimiters.inline = [
+        ["\\(", "\\)"],
+        ["$", "$"]
+      ]
+
 [markup.goldmark.parser]
 autoHeadingIDType = "blackfriday"
 

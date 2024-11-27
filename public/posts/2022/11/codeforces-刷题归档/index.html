@@ -613,7 +613,7 @@
 <h5 id="b-vlad-and-candies">B. Vlad and Candies</h5>
 <blockquote>
 <p><a href="https://codeforces.com/contest/1660/problem/B">https://codeforces.com/contest/1660/problem/B</a></p>
-<p>题意就是：给定一串糖果数字，$a_1,a_2,&hellip;,a_n$
+<p>题意就是：给定一串糖果数字，$a_1,a_2,...,a_n$
 可以从这里面最多里面挑选一个，挑选完后改糖果-1，要满足，每次选的糖果都不一样，
 并且最后要能把所有糖果都吃完，也就是每一项最后都为0</p>
 </blockquote>
@@ -794,7 +794,7 @@
 </blockquote>
 <blockquote>
 <p>咱先好好理解一下题意，大致就是说
-给定一串数字序列，$a_1,a_2,a_3,&hellip;a_n$</p>
+给定一串数字序列，$a_1,a_2,a_3,...a_n$</p>
 <p>你可以在前面和后面进行删除元素操作，你也可以删除全部元素（这样的话令他的结果为1），
 要使得最后所有元素乘积达到最大值。</p>
 </blockquote>
@@ -1142,16 +1142,14 @@
 <h4 id="a-yet-another-promotion">A. Yet Another Promotion</h4>
 <blockquote>
 <p>贪心思路，第一天每次购买m kg，那么将会赠送1kg，这样就有m+1 kg，求第一种情况，尽可能多的赠送，那么最多可以赠送$n/(m+1)$次$m$kg，剩下的看第一天和第二天哪天比较便宜就全部哪天购买；</p>
-<p>贪心求解：
 $$
-ans:答案;a:第一天价格;b:第二天价格;需要购买nkg，每购买mkg送1kg
-\
-1.ans1=a<em>n 全部在第一天购买\
-2.ans2=b</em>n 全部在第二天购买\
-3.ans3=a * n/(m+1) * m + min(a,b) * (n % (m+1)) 尽可能多的送，剩下的花最少的钱\
-ans = min(ans1,ans2,ans3);
-$$</p>
-</blockquote>
+>ans:答案;a:第一天价格;b:第二天价格;需要购买nkg，每购买mkg送1kg
+>\\
+>1.ans1=a*n 全部在第一天购买\\
+>2.ans2=b*n 全部在第二天购买\\
+>3.ans3=a * n/(m+1) * m + min(a,b) * (n \% (m+1)) 尽可能多的送，剩下的花最少的钱\\
+>ans = min(ans1,ans2,ans3);
+>$$</blockquote>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1

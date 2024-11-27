@@ -135,7 +135,7 @@
             <li><a href="#2022年4月6日">2022年4月6日</a></li>
             <li><a href="#2022年11月8日">2022年11月8日</a></li>
             <li><a href="#2023年4月17日">2023年4月17日</a></li>
-            <li><a href="#大整数专题-超大整数a-b-a-b-a-b-a-b-10-400">大整数专题，超大整数A+B、A-B、A*B 「|A|，|B| $&lt;= 10^{400}$」</a></li>
+            <li><a href="#大整数专题-超大整数a-b-a-b-a-b-a-b-10-400">大整数专题，超大整数A+B、A-B、A*B 「|A|，|B| 」</a></li>
           </ul>
         </li>
         <li><a href="#leetcode-hot100-专为机试准备">LeetCode HOT100「专为机试准备」</a>
@@ -749,7 +749,7 @@
 </span></span><span style="display:flex;"><span>};
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="大整数专题-超大整数a-b-a-b-a-b-a-b-10-400">大整数专题，超大整数A+B、A-B、A*B 「|A|，|B| $&lt;= 10^{400}$」</h3>
+</div><h3 id="大整数专题-超大整数a-b-a-b-a-b-a-b-10-400">大整数专题，超大整数A+B、A-B、A*B 「|A|，|B| $<= 10^{400}$」</h3>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  1
@@ -1423,8 +1423,8 @@
 <p>解题：首先将原数组进行排序，如果排序后第一个数就已经大于0的话「不可以≥0，因为[0,0,0]是合法答案」，那么就一定不存在答案，故此特判直接返回。
 此时，对于每个枚举的结果$i$，另左指针$l=i+1$，右指针$r=n-1$进行枚举，</p>
 <ul>
-<li>如果此时$nums[i]+nums[l]+nums[r]&gt;0$则说明结果偏大，右指针应该减小；</li>
-<li>如果此时$nums[i]+nums[l]+nums[r]&lt;0$则说明结果偏小，左指针应该增大；</li>
+<li>如果此时$nums[i]+nums[l]+nums[r]>0$则说明结果偏大，右指针应该减小；</li>
+<li>如果此时$nums[i]+nums[l]+nums[r]<0$则说明结果偏小，左指针应该增大；</li>
 <li>如果相等的话，将答案加入进去，然后对于$L$指针进行去重处理，再对$R$指针进行去重处理，最后对于枚举的$i$指针进行去重处理。</li>
 </ul>
 </blockquote>
@@ -2079,11 +2079,9 @@ $pre[i] - pre[j-1] = k$时则满足情况，移项可得：$pre[j-1] == pre[i] -
 </div><h3 id="五-普通数组">五、普通数组</h3>
 <h4 id="53-最大子数组和-https-leetcode-cn-problems-maximum-subarray"><a href="https://leetcode.cn/problems/maximum-subarray/">53. 最大子数组和</a></h4>
 <blockquote>
-<p>方法一：动态规划：定义属性：dp[i]表示以nums[i]结尾的子序列的最大的和
-状态转移方程：
 $$
-dp[i]=max(nums[i], dp[i-1]+nums[i])
-$$
+> dp[i]=max(nums[i], dp[i-1]+nums[i])
+> $$<p>
 方法二：分治法：</p>
 </blockquote>
 <div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
@@ -2301,7 +2299,7 @@ $$
 </div><h4 id="238-除自身以外数组的乘积-https-leetcode-cn-problems-product-of-array-except-self"><a href="https://leetcode.cn/problems/product-of-array-except-self/">238. 除自身以外数组的乘积</a></h4>
 <blockquote>
 <p>「不能使用除法｜时间复杂度在O(n)」
-方法：常规很容易想到全部累乘，然后处于当前位置的数，但不能使用除法操作，故此我们可以采用累乘对应位置的左侧的累乘和右侧的累乘，对应位置的值就是$L[i-1]<em>R[i+1]</em>$；</p>
+方法：常规很容易想到全部累乘，然后处于当前位置的数，但不能使用除法操作，故此我们可以采用累乘对应位置的左侧的累乘和右侧的累乘，对应位置的值就是$L[i-1]*R[i+1]*$；</p>
 <p>「将空间复杂度控制在O(1)以内」
 方法：在上面的方法中，关于L[N]和R[N]数组，显然每次计算只用到了当前位置的一次，故此只需要单独存取上一次用到的L和R的值就行了。</p>
 </blockquote>

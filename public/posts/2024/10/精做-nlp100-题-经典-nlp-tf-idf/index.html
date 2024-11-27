@@ -172,34 +172,21 @@
 <li>$T_f$：术语在文档总术语中出现的比例</li>
 <li>$IDF$: 逆文档频率「IDF 的核心思想是：如果一个词在文档集合中出现的频率越低，那么它对区分文档的能力就越强。换句话说，如果一个词在大多数文档中都出现，那么它可能是一个常见的词（如“的”、“是”），对区分文档的贡献不大；而如果一个词只在少数文档中出现，那么它可能是一个具有较高信息量的词，对区分文档的贡献较大。」</li>
 </ul>
-<p>简单来说
 $$
-TF-IDF(t,d)=\frac{TF(t,d)}{DF(t)} = TF(t,d)·IDF(t) \
-$$
-$$
+TF-IDF(t,d)=\frac{TF(t,d)}{DF(t)} = TF(t,d)·IDF(t) \\
+$$$$
 t 表示单词，d 表示文档，TF(t,d)表示t在d 中的出现频次
-$$</p>
-<p>$$
+$$$$
 DF(t)表示有多少篇文档包含t，DF 的倒数就是IDF 逆文档排序
-$$</p>
-<p>现在来说做了一些优化：
-$$
+$$$$
 Tf-Idf(t, d, D) = Tf(t, d) * IDF(t, d)
-$$</p>
-<p>$$
+$$$$
 Tf = \frac{\text{Number of occurrences of term } t \text{ in document } d}{\text{Total number of terms in document } d}
-$$</p>
-<p>$$
+$$$$
 \text{IDF} = \log_e \left( \frac{\text{Total number of documents in the corpus}}{\text{Number of documents with term } t \text{ in them}} \right)
-$$</p>
-<p>$$
-Tf-Idf(t, d) = tf(t, d) * log(\frac{N}{df + 1})
-$$</p>
-<p>$$t 表示某个词$$
-$$N 表示文档集合中的文档总数$$
-$$df(t) 表示包含词t的文档数$$
-$$log 函数用于平滑IDF 的值，避免极端值的影响$$</p>
-<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+$$$$
+Tf-Idf(t, d) = tf(t, d) * log(\frac{N}{df + 1}) 
+$$$$t 表示某个词$$$$N 表示文档集合中的文档总数$$$$df(t) 表示包含词t的文档数$$$$log 函数用于平滑IDF 的值，避免极端值的影响$$<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  2
@@ -452,10 +439,12 @@ $$log 函数用于平滑IDF 的值，避免极端值的影响$$</p>
 <li>TF-IDF 标准化的目的是消除文档长度或词汇频率对 TF-IDF 值的影响，使得不同文档或不同词汇之间的 TF-IDF 值更具可比性。「显然并不能取代BM25」</li>
 </ul>
 </blockquote>
-<blockquote>
-<p>[!NOTE]</p>
-<p>Sklearn: <a href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html">https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html</a></p>
-</blockquote>
+
+
+<div class="alert alert-note">
+  <p><strong>📝 NOTE</strong></p>
+  Sklearn: <a href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html">https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html</a>
+</div>
 <h3 id="为何在当今时代你需要了解tf-idf-以及如何在复杂模型中应用它">为何在当今时代你需要了解TF-IDF，以及如何在复杂模型中应用它？</h3>
 <blockquote>
 <p>也逐渐被 BM25 算法所取代，BM25 在关键字查询中效果非常好。</p>
