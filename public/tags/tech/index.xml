@@ -6,8 +6,15 @@
     <description>Recent content in Tech on Jasaxion一只大雄</description>
     <generator>Hugo</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 26 Nov 2024 09:50:31 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 27 Nov 2024 08:36:46 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/tech/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[大模型面试]手推 Bert 模型的参数量</title>
+      <link>http://localhost:1313/posts/2024/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E9%9D%A2%E8%AF%95%E6%89%8B%E6%8E%A8-bert-%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%8F%82%E6%95%B0%E9%87%8F/</link>
+      <pubDate>Wed, 27 Nov 2024 08:36:46 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2024/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E9%9D%A2%E8%AF%95%E6%89%8B%E6%8E%A8-bert-%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%8F%82%E6%95%B0%E9%87%8F/</guid>
+      <description>&lt;blockquote&gt;&#xA;&lt;img src=&#34;https://pve.digikamc.cn:8343/i/2024/11/26/zgq3s3-0.jpeg&#34; alt=&#34;Bert 模型架构图- Genspark&#34; style=&#34;zoom:50%;&#34; /&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Bert 模型主要用的倒是左侧编码器部分&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;BERT-base 模型的主要架构参数：&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Layers (L) = 12 个Transformer层&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Hidden size (H) = 768&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Attention heads (A) = 12&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Vocabulary size (V) ≈ 30,522 (for BERT-base-uncased)&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;这几个关键参数需要牢记&lt;/p&gt;</description>
+    </item>
     <item>
       <title>PVE系统为 NAS-ZimaOS虚拟机 docker 容器网站「EasyImage简单图床」配置 SSL 证书（https 访问）</title>
       <link>http://localhost:1313/posts/2024/11/pve%E7%B3%BB%E7%BB%9F%E4%B8%BA-nas-zimaos%E8%99%9A%E6%8B%9F%E6%9C%BA-docker-%E5%AE%B9%E5%99%A8%E7%BD%91%E7%AB%99easyimage%E7%AE%80%E5%8D%95%E5%9B%BE%E5%BA%8A%E9%85%8D%E7%BD%AE-ssl-%E8%AF%81%E4%B9%A6https-%E8%AE%BF%E9%97%AE/</link>
