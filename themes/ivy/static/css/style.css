@@ -694,6 +694,13 @@ pre code {
 }
 /* 为 Markdown 的 Alert 语法提供支持 */
 
+.site-stats {
+    text-align: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.9em;
+    color: #666;
+}
+
 /* twikoo*/
 .twikoo{overflow: visible !important;}
 .tk-extras,.tk-row.actions .tk-action-icon.__markdown,.tk-preview,.tk-content p a.at,.tk-tag.tk-tag-green{display: none !important;}

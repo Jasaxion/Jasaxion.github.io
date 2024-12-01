@@ -2,16 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2024-11-30T17:43:36+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/</loc>
+    <lastmod>2024-11-30T17:43:36+08:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/posts/2024/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E9%9D%A2%E8%AF%95%E6%89%8B%E6%8E%A8-bert-%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%8F%82%E6%95%B0%E9%87%8F/</loc>
     <lastmod>2024-11-27T08:36:46+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/</loc>
-    <lastmod>2024-11-27T08:36:46+08:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/keywords/</loc>
-    <lastmod>2024-11-27T08:36:46+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/posts/</loc>
     <lastmod>2024-11-27T08:36:46+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/</loc>
