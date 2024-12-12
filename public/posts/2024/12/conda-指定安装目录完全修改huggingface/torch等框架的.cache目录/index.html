@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="icon" type="image/png" href="favicons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="favicons/favicon.svg" />
+    <link rel="shortcut icon" href="favicons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png" />
+    <link rel="manifest" href="favicons/site.webmanifest" />
+    
+    
+    <title>Conda 指定安装目录｜完全修改huggingface/torch等框架的.cache目录 - Jasaxion一只大雄</title>
+    <meta property="og:title" content="Conda 指定安装目录｜完全修改huggingface/torch等框架的.cache目录 - Jasaxion一只大雄">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="referrer" content="never" />
+
+    
+    
+    <link rel="stylesheet" href="/css/custom.css"></link>
+    <script type="text/javascript" src="/js/view-image.js"></script>
+    <script>
+    
+    window.ViewImage && ViewImage.init('.main img:not(.avatar,.tk-avatar-img)')
+    </script>
+    <script src="/js/custom-markdown-parser.js"></script>
+    <script  src="https://jsd.cdn.zzko.cn/npm/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+    <script>window.addEventListener('load', () => {  quicklink.listen();});</script>
+    
+    
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="Conda 指定安装目录｜完全修改huggingface/torch等框架的.cache目录">
+      <meta property="og:description" content="Conda 指定安装目录｜完全修改huggingface/torch等框架的.cache目录">
+      
+    
+
+    
+    
+
+    
+    <meta property="keywords" content ="经验分享, 环境配置">
+    
+
+    
+    
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+  </head>
+
+  
+  <body class="posts">
+    <header class="masthead">
+      <h1><a href="/">Jasaxion一只大雄</a></h1>
+
+<p class="tagline">风打，碎琉璃； 打不碎的，是那阳光漫地。The wind strikes, shattering the glazed glass; Yet unbroken remains the sunlight spilling across the earth.</p>
+
+      <nav class="menu">
+  <input id="menu-check" type="checkbox" hidden/>
+  <label id="menu-label" for="menu-check" class="unselectable" hidden>
+    <span class="icon close-icon">✕</span>
+    <span class="icon open-icon">☰</span>
+    <span class="text">Menu</span>
+  </label>
+  <ul>
+  
+  
+  <li><a href="/posts/">归档 / Posts</a></li>
+  
+  <li><a href="/resume/">关于我 / CV</a></li>
+  
+  <li><a href="/tags/tech/">技术目录 / Tech</a></li>
+  
+  <li><a href="/tags/notes">我的笔记 / Note</a></li>
+  
+  <li><a href="/tags/read/">科研与阅读 / Read</a></li>
+  
+  <li><a href="/whisper/">碎碎念 / Whisper</a></li>
+  
+  
+  </ul>
+</nav>
+
+      
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>Conda 指定安装目录｜完全修改huggingface/torch等框架的.cache目录</h1>
+
+
+
+<h3>
+
+
+
+
+
+
+2024-12-12
+</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+
+
+
+
+<h2 id="为什么要这么做">为什么要这么做？</h2>
+<p>起因是实验室的机器将数据磁盘和用户目录完全分离了，也就是说~/用户目录并不能放很多东西，需要另外到/data/~目录下才能大的文件和环境。</p>
+<p>这样会破坏很多现有的环境相关的包依赖，这篇推文当做一个踩坑记录了。</p>
+<h2 id="自定义conda-安装目录">自定义conda 安装目录</h2>
+<ol>
+<li>首先下载 miniconda</li>
+</ol>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>使用 <code>-b</code> 和 <code>-p</code> 参数进行静默安装，并指定安装路径</li>
+</ol>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>bash Miniconda3-latest-Linux-x86_64.sh -p /data/user/miniconda3
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>⚠️/data/user/miniconda3 记得改成你自己的数据目录</p>
+</blockquote>
+<ol start="3">
+<li>初始化conda</li>
+</ol>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>conda init
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="修改所有可能的-cache目录">修改所有可能的.cache目录</h2>
+<p>现在conda 已经移动到/datda 目录了，但是现在运行代码时，经常会遇到模型和数据集又给下载到~/用户目录了，该怎么办呢？</p>
+<p>现在我们修改～/.bashrc 文件</p>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#09f;font-style:italic">#这一部分是Conda环境的初始化，一般conda init 后会自动生成</span>
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"># &gt;&gt;&gt; conda initialize &gt;&gt;&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"># !! Contents within this block are managed by &#39;conda init&#39; !!</span>
+</span></span><span style="display:flex;"><span><span style="color:#033">__conda_setup</span><span style="color:#555">=</span><span style="color:#c30">&#34;</span><span style="color:#069;font-weight:bold">$(</span><span style="color:#c30">&#39;/data/user/miniconda3/bin/conda&#39;</span> <span style="color:#c30">&#39;shell.bash&#39;</span> <span style="color:#c30">&#39;hook&#39;</span> 2&gt; /dev/null<span style="color:#069;font-weight:bold">)</span><span style="color:#c30">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">if</span> <span style="color:#555">[</span> <span style="color:#033">$?</span> -eq <span style="color:#f60">0</span> <span style="color:#555">]</span>; <span style="color:#069;font-weight:bold">then</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#366">eval</span> <span style="color:#c30">&#34;</span><span style="color:#033">$__conda_setup</span><span style="color:#c30">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">else</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">if</span> <span style="color:#555">[</span> -f <span style="color:#c30">&#34;/data/user/miniconda3/etc/profile.d/conda.sh&#34;</span> <span style="color:#555">]</span>; <span style="color:#069;font-weight:bold">then</span>
+</span></span><span style="display:flex;"><span>        . <span style="color:#c30">&#34;/data/user/miniconda3/etc/profile.d/conda.sh&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">else</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#366">export</span> <span style="color:#033">PATH</span><span style="color:#555">=</span><span style="color:#c30">&#34;/data/user/miniconda3/bin:</span><span style="color:#033">$PATH</span><span style="color:#c30">&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#366">unset</span> __conda_setup
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"># &lt;&lt;&lt; conda initialize &lt;&lt;&lt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic">#下面是相关变量配置</span>
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic">#huggingface镜像源</span>
+</span></span><span style="display:flex;"><span><span style="color:#366">export</span> <span style="color:#033">HF_ENDPOINT</span><span style="color:#555">=</span>https://hf-mirror.com
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic">#XDG cache 目录</span>
+</span></span><span style="display:flex;"><span><span style="color:#366">export</span> <span style="color:#033">XDG_CACHE_HOME</span><span style="color:#555">=</span><span style="color:#c30">&#34;/data/zhansx/.cache&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic">#Huggingface</span>
+</span></span><span style="display:flex;"><span><span style="color:#366">export</span> <span style="color:#033">HF_HOME</span><span style="color:#555">=</span><span style="color:#c30">&#34;/data/zhansx/.cache/huggingface&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#366">export</span> <span style="color:#033">TRANSFORMERS_CACHE</span><span style="color:#555">=</span><span style="color:#c30">&#34;/data/zhansx/.cache/huggingface/transformers&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#366">export</span> <span style="color:#033">HF_DATASETS_CACHE</span><span style="color:#555">=</span><span style="color:#c30">&#34;/data/zhansx/.cache/huggingface/datasets&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"># PyTorch</span>
+</span></span><span style="display:flex;"><span><span style="color:#366">export</span> <span style="color:#033">TORCH_HOME</span><span style="color:#555">=</span><span style="color:#c30">&#34;/data/zhansx/.cache/torch&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"># Conda</span>
+</span></span><span style="display:flex;"><span><span style="color:#366">export</span> <span style="color:#033">CONDA_ENVS_PATH</span><span style="color:#555">=</span><span style="color:#c30">&#34;/data/zhansx/.cache/conda/envs&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#366">export</span> <span style="color:#033">CONDA_PKGS_DIRS</span><span style="color:#555">=</span><span style="color:#c30">&#34;/data/zhansx/.cache/conda/pkgs&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"># pip</span>
+</span></span><span style="display:flex;"><span><span style="color:#366">export</span> <span style="color:#033">PIP_CACHE_DIR</span><span style="color:#555">=</span><span style="color:#c30">&#34;/data/zhansx/.cache/pip&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"># TensorFlow</span>
+</span></span><span style="display:flex;"><span><span style="color:#366">export</span> <span style="color:#033">KERAS_HOME</span><span style="color:#555">=</span><span style="color:#c30">&#34;/data/zhansx/.cache/keras&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#366">export</span> <span style="color:#033">TENSORFLOW_CACHE_DIR</span><span style="color:#555">=</span><span style="color:#c30">&#34;/data/zhansx/.cache/tensorflow&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic">#下面是代理设置，设置后只需要输入proxy_on或proxy_off来开启关闭代理</span>
+</span></span><span style="display:flex;"><span>proxy_on<span style="color:#555">()</span> <span style="color:#555">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#366">export</span> <span style="color:#033">http_proxy</span><span style="color:#555">=</span>http://127.0.0.1:7890
+</span></span><span style="display:flex;"><span>        <span style="color:#366">export</span> <span style="color:#033">https_proxy</span><span style="color:#555">=</span>http://127.0.0.1:7890
+</span></span><span style="display:flex;"><span>        <span style="color:#366">export</span> <span style="color:#033">no_proxy</span><span style="color:#555">=</span>127.0.0.1,localhost
+</span></span><span style="display:flex;"><span>        <span style="color:#366">export</span> <span style="color:#033">HTTP_PROXY</span><span style="color:#555">=</span>http://127.0.0.1:7890
+</span></span><span style="display:flex;"><span>        <span style="color:#366">export</span> <span style="color:#033">HTTPS_PROXY</span><span style="color:#555">=</span>http://127.0.0.1:7890
+</span></span><span style="display:flex;"><span>        <span style="color:#366">export</span> <span style="color:#033">NO_PROXY</span><span style="color:#555">=</span>127.0.0.1,localhost
+</span></span><span style="display:flex;"><span>        <span style="color:#366">echo</span> -e <span style="color:#c30">&#34;\033[32m[√] 已开启代理\033[0m&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#555">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"># 关闭系统代理</span>
+</span></span><span style="display:flex;"><span>proxy_off<span style="color:#555">(){</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#366">unset</span> http_proxy
+</span></span><span style="display:flex;"><span>        <span style="color:#366">unset</span> https_proxy
+</span></span><span style="display:flex;"><span>        <span style="color:#366">unset</span> no_proxy
+</span></span><span style="display:flex;"><span>        <span style="color:#366">unset</span> HTTP_PROXY
+</span></span><span style="display:flex;"><span>        <span style="color:#366">unset</span> HTTPS_PROXY
+</span></span><span style="display:flex;"><span>        <span style="color:#366">unset</span> NO_PROXY
+</span></span><span style="display:flex;"><span>        <span style="color:#366">echo</span> -e <span style="color:#c30">&#34;\033[31m[×] 已关闭代理\033[0m&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#555">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+
+
+  <footer>
+    <script src="https://immmmm.com/waterfall.min.js"></script>
+    <script src="https://immmmm.com/imgStatus.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+      var photosAll = document.getElementsByTagName('gallery') || '';
+      if(photosAll){
+        for(var i=0;i < photosAll.length;i++){
+          photosAll[i].innerHTML = '<div class="gallery-photos">'+photosAll[i].innerHTML+'</div>'
+          var photosIMG = photosAll[i].getElementsByTagName('img')
+          for(var j=0;j < photosIMG.length;j++){
+            wrap(photosIMG[j], document.createElement('div'));
+          }
+        }
+      }
+      function wrap(el, wrapper) {
+        wrapper.className = "gallery-photo";
+        el.parentNode.insertBefore(wrapper, el);
+        wrapper.appendChild(el);
+      }
+      let galleryPhotos = document.querySelectorAll('.gallery-photos') || ''
+      if(galleryPhotos){
+        imgStatus.watch('.gallery-photo img', function(imgs) {
+          if(imgs.isDone()){
+            for(var i=0;i < galleryPhotos.length;i++){
+              waterfall(galleryPhotos[i]);
+              let pagePhoto = galleryPhotos[i].querySelectorAll('.gallery-photo');
+              for(var j=0;j < pagePhoto.length;j++){pagePhoto[j].className += " visible"};
+            }
+          }
+        });
+        window.addEventListener('resize', function () {
+          for(var i=0;i < galleryPhotos.length;i++){
+            waterfall(galleryPhotos[i]);
+          }
+        });
+      }
+    });
+    </script>
+  
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/posts/2024/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E9%9D%A2%E8%AF%95%E6%89%8B%E6%8E%A8-bert-%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%8F%82%E6%95%B0%E9%87%8F/">[大模型面试]手推 Bert 模型的参数量</a></span>
+  <span class="nav-next"></span>
+</nav>
+
+  <hr>
+  
+    <div class="pagination__title" style="margin-bottom: 30px;">
+  <span class="pagination__title-h">留下你的足迹👣</span>
+</div>
+  <div id="tcomment"></div>
+  <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.40/dist/twikoo.all.min.js"></script>
+  <script>
+    twikoo.init({
+    envId: 'https://mytwico.netlify.app/.netlify/functions/twikoo/', 
+    el: '#tcomment', 
+    
+    
+    
+  })
+  </script>
+  
+  
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/tex.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  <hr>
+  <div class="copyright">© <a href="https://jasaxion.github.io">Jasaxion</a> | since 2021</div>
+  
+  </footer>
+  </article>
+  
+  </body>
+</html>
+
