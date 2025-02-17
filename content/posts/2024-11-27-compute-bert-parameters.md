@@ -2,7 +2,7 @@
 date = '2024-11-27T08:36:46+08:00'
 draft = false
 title = '[大模型面试]手推 Bert 模型的参数量'
-tags = 'Tech'
+tags = 'notes'
 show_toc = false
 twikoo = true
 keywords = ['面试', '大模型', '经验']
