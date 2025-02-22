@@ -6,8 +6,15 @@
     <description>Recent content in 经验 on Jasaxion一只大雄</description>
     <generator>Hugo</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 27 Nov 2024 08:36:46 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 17 Feb 2025 15:22:13 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/keywords/%E7%BB%8F%E9%AA%8C/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[LLM 面试] Numpy手写 Top P 和 Top K 算法</title>
+      <link>http://localhost:1313/posts/2025/02/llm-%E9%9D%A2%E8%AF%95-numpy%E6%89%8B%E5%86%99-top-p-%E5%92%8C-top-k-%E7%AE%97%E6%B3%95/</link>
+      <pubDate>Mon, 17 Feb 2025 15:22:13 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025/02/llm-%E9%9D%A2%E8%AF%95-numpy%E6%89%8B%E5%86%99-top-p-%E5%92%8C-top-k-%E7%AE%97%E6%B3%95/</guid>
+      <description>&lt;p&gt;大模型根据给定的输入文本（比如一个开头或一个问题）生成输出文本（比如一个答案或一个结尾）。&lt;strong&gt;为了生成输出文本，模型会逐个预测每个 token，直到达到一个终止条件（如一个标点符号或一个最大长度）。在每一步，模型会给出一个概率分布，表示它对下一个单词的预测概率。&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
     <item>
       <title>[大模型面试]手推 Bert 模型的参数量</title>
       <link>http://localhost:1313/posts/2024/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E9%9D%A2%E8%AF%95%E6%89%8B%E6%8E%A8-bert-%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%8F%82%E6%95%B0%E9%87%8F/</link>
