@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>技术 on Jasaxion一只大雄</title>
+    <link>http://localhost:1313/keywords/%E6%8A%80%E6%9C%AF/</link>
+    <description>Recent content in 技术 on Jasaxion一只大雄</description>
+    <generator>Hugo</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 27 Feb 2025 15:02:32 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/keywords/%E6%8A%80%E6%9C%AF/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LLM指定格式输出与 LLM OCR 技术实用技术</title>
+      <link>http://localhost:1313/posts/2025/02/llm%E6%8C%87%E5%AE%9A%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E4%B8%8E-llm-ocr-%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%94%A8%E6%8A%80%E6%9C%AF/</link>
+      <pubDate>Thu, 27 Feb 2025 15:02:32 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025/02/llm%E6%8C%87%E5%AE%9A%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E4%B8%8E-llm-ocr-%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%94%A8%E6%8A%80%E6%9C%AF/</guid>
+      <description>&lt;h1 id=&#34;llm-文本-pdf-提取技术&#34;&gt;LLM 文本 PDF 提取技术&lt;/h1&gt;&#xA;&lt;h2 id=&#34;github-资源&#34;&gt;GitHub 资源&lt;/h2&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;MinerU&amp;amp;PDF-Extract-Kit：https://github.com/opendatalab/MinerU?tab=readme-ov-file&lt;/li&gt;&#xA;&lt;li&gt;olmOCR：https://github.com/allenai/olmocr&lt;/li&gt;&#xA;&lt;li&gt;LLM-Aided OCR Project：https://github.com/Dicklesworthstone/llm_aided_ocr&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;h1 id=&#34;llm-特定格式输出-json&#34;&gt;LLM 特定格式输出 (Json)&lt;/h1&gt;&#xA;&lt;h2 id=&#34;github-资源-1&#34;&gt;GitHub 资源&lt;/h2&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/dottxt-ai/outlines&#34;&gt;outlines&lt;/a&gt;：https://github.com/dottxt-ai/outlines/tree/main&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/guidance-ai/guidance&#34;&gt;guidance&lt;/a&gt;：https://github.com/guidance-ai/guidance&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/varunshenoy/super-json-mode&#34;&gt;super-json-mode&lt;/a&gt;：https://github.com/varunshenoy/super-json-mode&lt;/li&gt;&#xA;&lt;li&gt;Awesome LLM JSON List：https://github.com/imaurer/awesome-llm-json&lt;/li&gt;&#xA;&lt;li&gt;Enhancing JSON Output with Large Language Models: A Comprehensive Guide：https://medium.com/@dinber19/enhancing-json-output-with-large-language-models-a-comprehensive-guide-f1935aa724fb&lt;/li&gt;&#xA;&lt;/ol&gt;</description>
+    </item>
+  </channel>
+</rss>

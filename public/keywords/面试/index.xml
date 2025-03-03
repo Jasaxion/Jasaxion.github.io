@@ -6,8 +6,22 @@
     <description>Recent content in 面试 on Jasaxion一只大雄</description>
     <generator>Hugo</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 17 Feb 2025 15:22:13 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 26 Feb 2025 20:36:40 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/keywords/%E9%9D%A2%E8%AF%95/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[LLM 面试]手撕 BatchNorm 和 LayerNorm</title>
+      <link>http://localhost:1313/posts/2025/02/llm-%E9%9D%A2%E8%AF%95%E6%89%8B%E6%92%95-batchnorm-%E5%92%8C-layernorm/</link>
+      <pubDate>Wed, 26 Feb 2025 20:36:40 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025/02/llm-%E9%9D%A2%E8%AF%95%E6%89%8B%E6%92%95-batchnorm-%E5%92%8C-layernorm/</guid>
+      <description>&lt;h1 id=&#34;批量归一化-batch-normalization-bn&#34;&gt;批量归一化 (Batch Normalization, BN)&lt;/h1&gt;&#xA;&lt;p&gt;批量归一化是由Sergey Ioffe和Christian Szegedy在2015年提出的技术，目的是解决深度神经网络训练中的内部协变量偏移问题。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>[实习面试]LLM 大模型岗位实习考点[RL 强化学习|多模态] （一）</title>
+      <link>http://localhost:1313/posts/2025/02/%E5%AE%9E%E4%B9%A0%E9%9D%A2%E8%AF%95llm-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%B2%97%E4%BD%8D%E5%AE%9E%E4%B9%A0%E8%80%83%E7%82%B9rl-%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%A4%9A%E6%A8%A1%E6%80%81-%E4%B8%80/</link>
+      <pubDate>Tue, 25 Feb 2025 12:13:43 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025/02/%E5%AE%9E%E4%B9%A0%E9%9D%A2%E8%AF%95llm-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%B2%97%E4%BD%8D%E5%AE%9E%E4%B9%A0%E8%80%83%E7%82%B9rl-%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%A4%9A%E6%A8%A1%E6%80%81-%E4%B8%80/</guid>
+      <description>&lt;h2 id=&#34;强化学习相关&#34;&gt;强化学习相关&lt;/h2&gt;&#xA;&lt;h3 id=&#34;ppo-算法&#34;&gt;PPO 算法&lt;/h3&gt;&#xA;&lt;p&gt;PPO 的思路：Actor + Critic（鼓励增长） + Clip （防止不良增长） + KL 惩罚（防止作弊行为，学习水平的不良增长）（Critic、Advantage、Clip、Reference Model）&lt;/p&gt;</description>
+    </item>
     <item>
       <title>[LLM 面试] Numpy手写 Top P 和 Top K 算法</title>
       <link>http://localhost:1313/posts/2025/02/llm-%E9%9D%A2%E8%AF%95-numpy%E6%89%8B%E5%86%99-top-p-%E5%92%8C-top-k-%E7%AE%97%E6%B3%95/</link>

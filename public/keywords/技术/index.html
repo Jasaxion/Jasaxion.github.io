@@ -11,8 +11,8 @@
     <link rel="manifest" href="favicons/site.webmanifest" />
     
     
-    <title>Tags - Jasaxion一只大雄</title>
-    <meta property="og:title" content="Tags - Jasaxion一只大雄">
+    <title>技术 - Jasaxion一只大雄</title>
+    <meta property="og:title" content="技术 - Jasaxion一只大雄">
     
     <meta name="twitter:card" content="summary">
     <meta name="referrer" content="never" />
@@ -45,7 +45,7 @@
     
 
     
-    <link href="/tags/index.xml" rel="alternate" type="application/rss+xml" title="Jasaxion一只大雄" />
+    <link href="/keywords/%E6%8A%80%E6%9C%AF/index.xml" rel="alternate" type="application/rss+xml" title="Jasaxion一只大雄" />
     
     
 
@@ -56,7 +56,7 @@
   </head>
 
   
-  <body class="tags">
+  <body class="keywords">
     <header class="masthead">
       <h1><a href="/">Jasaxion一只大雄</a></h1>
 
@@ -94,7 +94,7 @@
     <article class="main">
       <header class="title">
       
-<h1>Tags</h1>
+<h1>技术</h1>
 
 
 
@@ -104,70 +104,21 @@
       </header>
 
 
-<ul class="terms">
+
+
+
+
+
+<ul>
   
   <li>
-    <a href="/tags/notes">
-      notes
-    </a>
-    (12)
-  </li>
-  
-  <li>
-    <a href="/tags/read">
-      read
-    </a>
-    (2)
-  </li>
-  
-  <li>
-    <a href="/tags/tech">
-      tech
-    </a>
-    (3)
+    <span class="date">2025/02/27</span>
+    <a href="/posts/2025/02/llm%E6%8C%87%E5%AE%9A%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E4%B8%8E-llm-ocr-%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%94%A8%E6%8A%80%E6%9C%AF/">LLM指定格式输出与 LLM OCR 技术实用技术</a>
   </li>
   
 </ul>
 
   <footer>
-    <script src="https://immmmm.com/waterfall.min.js"></script>
-    <script src="https://immmmm.com/imgStatus.min.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-      var photosAll = document.getElementsByTagName('gallery') || '';
-      if(photosAll){
-        for(var i=0;i < photosAll.length;i++){
-          photosAll[i].innerHTML = '<div class="gallery-photos">'+photosAll[i].innerHTML+'</div>'
-          var photosIMG = photosAll[i].getElementsByTagName('img')
-          for(var j=0;j < photosIMG.length;j++){
-            wrap(photosIMG[j], document.createElement('div'));
-          }
-        }
-      }
-      function wrap(el, wrapper) {
-        wrapper.className = "gallery-photo";
-        el.parentNode.insertBefore(wrapper, el);
-        wrapper.appendChild(el);
-      }
-      let galleryPhotos = document.querySelectorAll('.gallery-photos') || ''
-      if(galleryPhotos){
-        imgStatus.watch('.gallery-photo img', function(imgs) {
-          if(imgs.isDone()){
-            for(var i=0;i < galleryPhotos.length;i++){
-              waterfall(galleryPhotos[i]);
-              let pagePhoto = galleryPhotos[i].querySelectorAll('.gallery-photo');
-              for(var j=0;j < pagePhoto.length;j++){pagePhoto[j].className += " visible"};
-            }
-          }
-        });
-        window.addEventListener('resize', function () {
-          for(var i=0;i < galleryPhotos.length;i++){
-            waterfall(galleryPhotos[i]);
-          }
-        });
-      }
-    });
-    </script>
   
 <nav class="post-nav">
   <span class="nav-prev"></span>
@@ -176,15 +127,41 @@
 
   <hr>
   
-  
 
   
-  <hr>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <div class="site-stats">
+    <span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次 · </span>
+    <span id="busuanzi_container_site_uv">您是本站第 <span id="busuanzi_value_site_uv"></span> 位访问者</span>
+  </div>
   <div class="copyright">© <a href="https://jasaxion.github.io">Jasaxion</a> | since 2021</div>
   
   </footer>
   </article>
   
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const ul = document.querySelector('.main > ul');
+      if (!ul) return;
+    
+      const items = Array.from(ul.children);
+      let currentYear = null;
+    
+      items.forEach(item => {
+        const dateSpan = item.querySelector('.date');
+        if (!dateSpan) return;
+    
+        const year = dateSpan.textContent.split('/')[0];
+        if (year !== currentYear) {
+          const yearGroup = document.createElement('li');
+          yearGroup.className = 'year-group';
+          yearGroup.textContent = year;
+          ul.insertBefore(yearGroup, item);
+          currentYear = year;
+        }
+      });
+    });
+    </script>
   </body>
 </html>
 

@@ -6,8 +6,29 @@
     <description>Recent content in Posts on Jasaxion一只大雄</description>
     <generator>Hugo</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 17 Feb 2025 15:22:13 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 27 Feb 2025 15:02:32 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LLM指定格式输出与 LLM OCR 技术实用技术</title>
+      <link>http://localhost:1313/posts/2025/02/llm%E6%8C%87%E5%AE%9A%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E4%B8%8E-llm-ocr-%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%94%A8%E6%8A%80%E6%9C%AF/</link>
+      <pubDate>Thu, 27 Feb 2025 15:02:32 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025/02/llm%E6%8C%87%E5%AE%9A%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E4%B8%8E-llm-ocr-%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%94%A8%E6%8A%80%E6%9C%AF/</guid>
+      <description>&lt;h1 id=&#34;llm-文本-pdf-提取技术&#34;&gt;LLM 文本 PDF 提取技术&lt;/h1&gt;&#xA;&lt;h2 id=&#34;github-资源&#34;&gt;GitHub 资源&lt;/h2&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;MinerU&amp;amp;PDF-Extract-Kit：https://github.com/opendatalab/MinerU?tab=readme-ov-file&lt;/li&gt;&#xA;&lt;li&gt;olmOCR：https://github.com/allenai/olmocr&lt;/li&gt;&#xA;&lt;li&gt;LLM-Aided OCR Project：https://github.com/Dicklesworthstone/llm_aided_ocr&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;h1 id=&#34;llm-特定格式输出-json&#34;&gt;LLM 特定格式输出 (Json)&lt;/h1&gt;&#xA;&lt;h2 id=&#34;github-资源-1&#34;&gt;GitHub 资源&lt;/h2&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/dottxt-ai/outlines&#34;&gt;outlines&lt;/a&gt;：https://github.com/dottxt-ai/outlines/tree/main&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/guidance-ai/guidance&#34;&gt;guidance&lt;/a&gt;：https://github.com/guidance-ai/guidance&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/varunshenoy/super-json-mode&#34;&gt;super-json-mode&lt;/a&gt;：https://github.com/varunshenoy/super-json-mode&lt;/li&gt;&#xA;&lt;li&gt;Awesome LLM JSON List：https://github.com/imaurer/awesome-llm-json&lt;/li&gt;&#xA;&lt;li&gt;Enhancing JSON Output with Large Language Models: A Comprehensive Guide：https://medium.com/@dinber19/enhancing-json-output-with-large-language-models-a-comprehensive-guide-f1935aa724fb&lt;/li&gt;&#xA;&lt;/ol&gt;</description>
+    </item>
+    <item>
+      <title>[LLM 面试]手撕 BatchNorm 和 LayerNorm</title>
+      <link>http://localhost:1313/posts/2025/02/llm-%E9%9D%A2%E8%AF%95%E6%89%8B%E6%92%95-batchnorm-%E5%92%8C-layernorm/</link>
+      <pubDate>Wed, 26 Feb 2025 20:36:40 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025/02/llm-%E9%9D%A2%E8%AF%95%E6%89%8B%E6%92%95-batchnorm-%E5%92%8C-layernorm/</guid>
+      <description>&lt;h1 id=&#34;批量归一化-batch-normalization-bn&#34;&gt;批量归一化 (Batch Normalization, BN)&lt;/h1&gt;&#xA;&lt;p&gt;批量归一化是由Sergey Ioffe和Christian Szegedy在2015年提出的技术，目的是解决深度神经网络训练中的内部协变量偏移问题。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>[实习面试]LLM 大模型岗位实习考点[RL 强化学习|多模态] （一）</title>
+      <link>http://localhost:1313/posts/2025/02/%E5%AE%9E%E4%B9%A0%E9%9D%A2%E8%AF%95llm-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%B2%97%E4%BD%8D%E5%AE%9E%E4%B9%A0%E8%80%83%E7%82%B9rl-%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%A4%9A%E6%A8%A1%E6%80%81-%E4%B8%80/</link>
+      <pubDate>Tue, 25 Feb 2025 12:13:43 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025/02/%E5%AE%9E%E4%B9%A0%E9%9D%A2%E8%AF%95llm-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%B2%97%E4%BD%8D%E5%AE%9E%E4%B9%A0%E8%80%83%E7%82%B9rl-%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%A4%9A%E6%A8%A1%E6%80%81-%E4%B8%80/</guid>
+      <description>&lt;h2 id=&#34;强化学习相关&#34;&gt;强化学习相关&lt;/h2&gt;&#xA;&lt;h3 id=&#34;ppo-算法&#34;&gt;PPO 算法&lt;/h3&gt;&#xA;&lt;p&gt;PPO 的思路：Actor + Critic（鼓励增长） + Clip （防止不良增长） + KL 惩罚（防止作弊行为，学习水平的不良增长）（Critic、Advantage、Clip、Reference Model）&lt;/p&gt;</description>
+    </item>
     <item>
       <title>[LLM 面试] Numpy手写 Top P 和 Top K 算法</title>
       <link>http://localhost:1313/posts/2025/02/llm-%E9%9D%A2%E8%AF%95-numpy%E6%89%8B%E5%86%99-top-p-%E5%92%8C-top-k-%E7%AE%97%E6%B3%95/</link>

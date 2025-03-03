@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="icon" type="image/png" href="favicons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="favicons/favicon.svg" />
+    <link rel="shortcut icon" href="favicons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png" />
+    <link rel="manifest" href="favicons/site.webmanifest" />
+    
+    
+    <title>[实习面试]LLM 大模型岗位实习考点[RL 强化学习|多模态] （一） - Jasaxion一只大雄</title>
+    <meta property="og:title" content="[实习面试]LLM 大模型岗位实习考点[RL 强化学习|多模态] （一） - Jasaxion一只大雄">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="referrer" content="never" />
+
+    
+    
+    <link rel="stylesheet" href="/css/custom.css"></link>
+    <script type="text/javascript" src="/js/view-image.js"></script>
+    <script>
+    
+    window.ViewImage && ViewImage.init('.main img:not(.avatar,.tk-avatar-img)')
+    </script>
+    <script src="/js/custom-markdown-parser.js"></script>
+    <script  src="https://jsd.cdn.zzko.cn/npm/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+    <script>window.addEventListener('load', () => {  quicklink.listen();});</script>
+    
+    
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="[实习面试]LLM 大模型岗位实习考点[RL 强化学习|多模态]">
+      <meta property="og:description" content="[实习面试]LLM 大模型岗位实习考点[RL 强化学习|多模态]">
+      
+    
+
+    
+    
+    <meta name="twitter:image" content="https://pve.digikamc.cn:8343/i/2025/02/25/xktppi-0.png">
+    
+    
+
+    
+    <meta property="keywords" content ="面试, 经验, ">
+    
+
+    
+    
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+  </head>
+
+  
+  <body class="posts">
+    <header class="masthead">
+      <h1><a href="/">Jasaxion一只大雄</a></h1>
+
+<p class="tagline">风打，碎琉璃； 打不碎的，是那阳光漫地。The wind strikes, shattering the glazed glass; Yet unbroken remains the sunlight spilling across the earth.</p>
+
+      <nav class="menu">
+  <input id="menu-check" type="checkbox" hidden/>
+  <label id="menu-label" for="menu-check" class="unselectable" hidden>
+    <span class="icon close-icon">✕</span>
+    <span class="icon open-icon">☰</span>
+    <span class="text">Menu</span>
+  </label>
+  <ul>
+  
+  
+  <li><a href="/posts/">归档 / Posts</a></li>
+  
+  <li><a href="/resume/">关于我 / CV</a></li>
+  
+  <li><a href="/tags/tech/">技术目录 / Tech</a></li>
+  
+  <li><a href="/tags/notes">我的笔记 / Note</a></li>
+  
+  <li><a href="/tags/read/">科研与阅读 / Read</a></li>
+  
+  <li><a href="/whisper/">碎碎念 / Whisper</a></li>
+  
+  
+  </ul>
+</nav>
+
+      
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>[实习面试]LLM 大模型岗位实习考点[RL 强化学习|多模态] （一）</h1>
+
+
+
+<h3>
+
+
+
+
+
+
+2025-02-25
+</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+
+ <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#强化学习相关">强化学习相关</a>
+          <ul>
+            <li><a href="#ppo-算法">PPO 算法</a></li>
+            <li><a href="#grpo">GRPO</a></li>
+            <li><a href="#多步时序的情况">多步时序的情况</a></li>
+          </ul>
+        </li>
+        <li><a href="#多模态与模型架构相关">多模态与模型架构相关</a>
+          <ul>
+            <li><a href="#clip-相关细节">CLIP 相关细节</a></li>
+            <li><a href="#blip-相关细节">BLIP 相关细节</a></li>
+            <li><a href="#clip-与-blip-的区别">CLIP 与 BLIP 的区别</a></li>
+            <li><a href="#llava-模型的相关细节">LLAVA 模型的相关细节</a></li>
+          </ul>
+        </li>
+        <li><a href="#大模型杂项">大模型杂项</a>
+          <ul>
+            <li><a href="#模型架构">模型架构</a></li>
+            <li><a href="#模型微调">模型微调</a></li>
+            <li><a href="#模型推理">模型推理</a></li>
+          </ul>
+        </li>
+        <li><a href="#transformers-细节">Transformers 细节</a>
+          <ul>
+            <li><a href="#手写-transformers-架构">手写 Transformers 架构</a></li>
+            <li><a href="#自注意力机制相比传统rnn-lstm的优势">自注意力机制相比传统RNN/LSTM的优势</a></li>
+            <li><a href="#解释-masked-self-attention-的目的及实现方式">解释 Masked Self-Attention 的目的及实现方式</a></li>
+          </ul>
+        </li>
+        <li><a href="#llm-大模型相关指标">LLM 大模型相关指标</a>
+          <ul>
+            <li><a href="#准确率类指标">准确率类指标</a></li>
+            <li><a href="#语言生成质量指标">语言生成质量指标</a></li>
+            <li><a href="#推理能力指标">推理能力指标</a></li>
+            <li><a href="#对话评估指标">对话评估指标</a></li>
+            <li><a href="#知识与事实准确性指标">知识与事实准确性指标</a></li>
+            <li><a href="#综合指标">综合指标</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav> 
+
+
+<h2 id="强化学习相关">强化学习相关</h2>
+<h3 id="ppo-算法">PPO 算法</h3>
+<p>PPO 的思路：Actor + Critic（鼓励增长） + Clip （防止不良增长） + KL 惩罚（防止作弊行为，学习水平的不良增长）（Critic、Advantage、Clip、Reference Model）</p>
+<p>**Critic 的意义：**它为每个状态或阶段提供“合理预期”，大幅降低了训练方差；</p>
+<p>**Clip &amp; min 机制：**约束策略更新幅度，避免一次考试“爆发”带来的巨幅震荡；</p>
+<p>**Reference Model：**限制“作弊”或极端行为，让策略不要过度偏离最初合规范围；</p>
+<p>PPO的实现细节，核心思想与损失函数。</p>
+<p><img src="https://pve.digikamc.cn:8343/i/2025/02/25/xktppi-0.png" alt="image-20250225203036939"></p>
+<h3 id="grpo">GRPO</h3>
+<p>在实际应用尤其是大型语言模型（LLM）上，Critic（价值函数）<strong>通常需要跟 Actor 同等大小的网络去估计</strong>，否则很难评估到位，成本很高，而且有些场景（比如只在回答末尾才有一个整体 Reward）并不太适合训练出精细的价值函数。</p>
+<p>GRPO的话，不再需要一个模型来设置是奖励函数，模型取同时输出的若干条数据的平均值作新的 Critic。</p>
+<h3 id="多步时序的情况">多步时序的情况</h3>
+<ol>
+<li>需要用 <strong>TD 残差</strong>（Temporal Difference）来衡量“实际回报”和“之前对价值的估计”之差；</li>
+<li>为了更好地估计 Advantage，既不想只用单步 TD，也不想全靠蒙特卡洛，“<strong>GAE</strong>（Generalized Advantage Estimation）”应运而生；</li>
+<li>它通过对多步 TD 残差进行衰减累加，提供了一个<strong>兼顾偏差与方差</strong>的折衷方案；</li>
+<li><strong>状态价值函数</strong> <strong>与动作价值函数</strong> 的定义也要放到时序多步的语境下去；在每周进行一次学习决策、每周获得一个奖励，形成了更丰富也更复杂的训练过程。</li>
+</ol>
+<img src="https://pve.digikamc.cn:8343/i/2025/02/25/kgtuhj-0.png" alt="image-20250225123758879" style="zoom:40%;" />
+<h2 id="多模态与模型架构相关">多模态与模型架构相关</h2>
+<h3 id="clip-相关细节">CLIP 相关细节</h3>
+<ol>
+<li><strong>预训练目标</strong>：CLIP 使用对比学习作为预训练目标。它将配对的图像和文本作为正样本，非配对的图像和文本作为负样本，通过最大化正样本的相似度和最小化负样本的相似度来学习表示。</li>
+<li><strong>模型架构</strong>：CLIP 由两个主要组件组成：
+<ul>
+<li>图像编码器：通常是一个视觉变换器（ViT）或 ResNet，将图像编码为向量表示</li>
+<li>文本编码器：一个基于 Transformer 的模型，将文本编码为向量表示</li>
+</ul>
+</li>
+<li><strong>训练数据</strong>：CLIP 使用从互联网上收集的 4 亿图像-文本对进行训练，这种大规模数据使其能够学习到丰富的视觉概念和语言关系。</li>
+<li><strong>训练过程</strong>：在每个训练批次中，CLIP 计算 N 个图像和 N 个对应文本之间的余弦相似度，形成一个 N×N 的矩阵，并使用交叉熵损失函数来最大化对角线元素（正样本对）的相似度。</li>
+<li><strong>零样本能力</strong>：CLIP 的一个主要创新点在于其零样本迁移能力。通过将分类任务转换为文本-图像匹配问题，CLIP 可以直接应用于新的视觉任务，而无需额外的训练。</li>
+</ol>
+<h3 id="blip-相关细节">BLIP 相关细节</h3>
+<p>BLIP (Bootstrapping Language-Image Pre-training) 是一种多模态模型，它在 CLIP 的基础上进行了扩展和改进。BLIP 由 Salesforce Research 在 2022 年提出，主要目标是解决视觉-语言预训练中的数据噪声问题并增强模型的生成能力。以下是 BLIP 的基本方法：</p>
+<ol>
+<li>
+<p><strong>多任务预训练框架</strong>：BLIP 同时训练三种不同类型的任务：</p>
+<ul>
+<li>
+<p>图像-文本对比学习（类似 CLIP）</p>
+</li>
+<li>
+<p>图像-文本匹配（判断图像和文本是否匹配）</p>
+</li>
+<li>
+<p>图像-文本生成（根据图像生成描述文本）</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>模型架构</strong>：</p>
+<ul>
+<li>
+<p>图像编码器：通常采用 ViT 作为视觉骨干网络</p>
+</li>
+<li>
+<p>文本编码器/解码器：使用双向（编码器）和单向（解码器）Transformer 模块处理文本(encoder/decoder)</p>
+</li>
+<li>
+<p>多模态融合：通过注意力机制实现图像和文本特征的交互</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>引导式语言-图像预训练</strong>：</p>
+<ul>
+<li>
+<p>BLIP 引入了一种新型的&quot;引导&quot;预训练策略</p>
+</li>
+<li>
+<p>使用模型自身生成的伪标签来提升带噪图像-文本数据的质量</p>
+</li>
+<li>
+<p>包含一个&quot;字幕器&quot;（生成描述）和一个&quot;过滤器&quot;（过滤低质量描述）</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>CapFilt</strong>：一种自举策略，用于改进网络上收集的嘈杂图像-文本对:</p>
+<ul>
+<li>使用当前模型为图像生成新的描述（Caption）</li>
+<li>过滤（Filter）掉低质量的网络收集的描述</li>
+<li>这个过程迭代进行，逐步提升训练数据质量</li>
+</ul>
+</li>
+<li>
+<p><strong>统一的视觉-语言理解和生成</strong>：</p>
+<ul>
+<li>BLIP 能够同时处理理解任务（如图像-文本检索）和生成任务（如图像字幕生成）</li>
+<li>可以通过冻结部分网络参数进行高效微调</li>
+</ul>
+</li>
+</ol>
+<h3 id="clip-与-blip-的区别">CLIP 与 BLIP 的区别</h3>
+<p>BLIP 与 CLIP 的主要区别在于：BLIP 是多任务框架，同时支持对比学习、匹配和生成任务，而 CLIP 仅专注于对比学习；BLIP 引入了 CapFilt 自举策略来提升训练数据质量，解决网络数据噪声问题；BLIP 采用双向和单向 Transformer 结合的架构，能同时处理理解和生成任务，而 CLIP 只有编码能力，不具备文本生成功能；BLIP 更适合图像字幕生成等需要文本生成的应用场景。</p>
+<h3 id="llava-模型的相关细节">LLAVA 模型的相关细节</h3>
+<p>LLAVA (Large Language and Vision Assistant) 是一种多模态 AI 模型，结合了大型语言模型（LLM）和视觉编码器的能力。以下是 LLAVA 的主要技术细节：</p>
+<ol>
+<li>
+<p><strong>架构设计</strong>：</p>
+<ul>
+<li>
+<p>视觉编码器：通常使用 CLIP 的视觉编码器（如 ViT）提取图像特征</p>
+</li>
+<li>
+<p>语言模型：基于 LLaMA 等大型语言模型作为语言骨干</p>
+</li>
+<li>
+<p>连接层：使用一个投影层将视觉特征映射到语言模型的嵌入空间</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>训练方法</strong>：</p>
+<ul>
+<li>
+<p>两阶段训练：首先在<strong>图像-文本对上预训练视觉-语言连接</strong>，然后在<strong>多模态指令数据上进行微调</strong></p>
+</li>
+<li>
+<p>指令微调：使用<strong>包含图像和相关指令-回复对的数据集</strong>进行监督微调</p>
+</li>
+<li>
+<p>基础模型固定：通常冻结视觉编码器和大部分语言模型参数，<strong>只训练连接层和少量参数</strong></p>
+</li>
+<li>
+<p><strong>预训练任务</strong>：</p>
+<ul>
+<li>LLAVA 的预训练阶段主要是学习<strong>将图像特征与语言模型的嵌入空间对齐</strong></li>
+<li>使用<strong>图像-文本对</strong>（如图像及其描述）训练模型生成与图像内容相关的文本</li>
+<li>核心任务是<strong>给定图像作为输入</strong>，<strong>模型需要生成相应的描述文本</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>数据集</strong>：</p>
+<ul>
+<li>
+<p>使用 **CC3M（Conceptual Captions）**等数据集进行预训练</p>
+</li>
+<li>
+<p>利用 COCO 等数据集生成高质量的图像描述数据</p>
+</li>
+<li>
+<p>构建指令跟随数据集，包含多种视觉任务，如描述图像、回答问题、分析场景等</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>关键创新</strong>：</p>
+<ul>
+<li>
+<p>轻量级连接：通过简单的投影层实现视觉和语言模态的桥接，无需大量额外参数</p>
+</li>
+<li>
+<p>指令微调策略：有效利用有限的高质量多模态指令数据</p>
+</li>
+<li>
+<p>零样本泛化：能够处理训练中未见过的视觉任务和指令类型</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>应用能力</strong>：</p>
+<ul>
+<li>
+<p>图像描述和分析</p>
+</li>
+<li>
+<p>视觉问答（VQA）</p>
+</li>
+<li>
+<p>多模态推理和理解</p>
+</li>
+<li>
+<p>遵循视觉相关指令的对话</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="大模型杂项">大模型杂项</h2>
+<h3 id="模型架构">模型架构</h3>
+<h4 id="多头注意力的作用是什么-从并行计算的角度解释一下">多头注意力的作用是什么?从并行计算的角度解释一下</h4>
+<p>​	多头注意力的作用是增强模型的表达能力，<em>多头注意力允许模型同时关注输入序列的不同位置和不同表示子空间</em>，捕捉更为丰富的语义信息。</p>
+<p>​	从并行角度出发：引入多头注意力机制后，每个注意力头独立且并行地执行自己的查询(Query)、键(Key)和值(Value)的线性变换，并计算注意力权重。这些独立的计算可以在GPU/TPU上同时执行，大幅提高了训练和推理速度。</p>
+<h4 id="rlhf阐述-ppo解释-dpo怎么从ppo来的-请进行阐述">rlhf阐述，ppo解释，dpo怎么从ppo来的，请进行阐述</h4>
+<ol>
+<li>RLHF 包含三个核心步骤：
+<ol>
+<li>预训练语言模型</li>
+<li>构建人类偏好数据集并训练奖励模型；</li>
+<li>使用强化学习算法（PPO）基于奖励模型来优化语言模型；</li>
+</ol>
+</li>
+<li>PPO的核心是一个经过裁剪的目标函数，用于限制每次策略更新的幅度。
+<ol>
+<li>对于语言模型来说，这个目标函数为： $L^{CLIP(θ)} = E[min(r_t(θ)A_t, clip(r_t(θ), 1-ε, 1+ε)A_t)]$ 其中$$r_t(θ)$$是新旧策略的概率比，$A_t$是优势函数，$ε$是裁剪参数。</li>
+<li><strong>KL散度约束</strong>：PPO通常还会添加一个KL散度项，限制新策略与原始策略的偏离程度，防止模型偏离原始的语言建模能力。</li>
+<li><strong>实现复杂性</strong>：PPO需要多次采样、计算奖励、估计优势函数等步骤，实现和调试都相对复杂。</li>
+</ol>
+</li>
+<li>DPO（Direct Preference Optimization）从PPO的演化
+<ol>
+<li><strong>理论等价性</strong>：DPO的关键洞见是在某些条件下，可以将PPO的强化学习目标重新表述为一个直接的偏好优化问题。</li>
+<li><strong>数学推导</strong>：DPO从最优贝叶斯奖励推断出发，证明了可以直接从人类偏好数据中学习，而不需要显式训练奖励模型。具体来说，DPO将PPO的目标函数重写为： $L_{DPO(π_θ; π_ref)} = E_(x,y_w,y_l)~D[log σ(β log(π_θ(y_w|x)/π_ref(y_w|x)) - β log(π_θ(y_l|x)/π_ref(y_l|x)))]$ 其中$π_θ$是当前策略，$π_ref$是参考策略，$y_w$和$y_l$分别是人类偏好的&quot;胜者&quot;和&quot;败者&quot;回答，$β$是温度参数。</li>
+<li><strong>实现简化</strong>：DPO直接使用人类偏好数据对（更好的回答vs较差的回答）进行训练，不需要:显式构建和训练奖励模型、执行强化学习的采样和优势估计、处理复杂的PPO训练循环。</li>
+<li><strong>计算效率</strong>：DPO比PPO更高效，训练过程更稳定，因为它将RLHF简化为一个监督学习问题，直接从人类偏好数据学习。</li>
+</ol>
+</li>
+</ol>
+<h4 id="如何评估大模型的性能-你认为哪些指标最重要">如何评估大模型的性能？你认为哪些指标最重要？</h4>
+<ol>
+<li><strong>基准测试分数</strong>：MMLU（多领域知识）、BBH（推理能力）、HumanEval（编程能力）等标准化测试结果</li>
+<li><strong>幻觉率</strong>：模型产生错误信息的频率，通过事实一致性检查评估</li>
+<li><strong>指令遵循能力</strong>：模型正确理解并执行用户请求的程度</li>
+<li><strong>上下文学习能力</strong>：利用少量示例快速适应新任务的能力</li>
+<li><strong>推理延迟与吞吐量</strong>：实际应用中的响应速度和处理能力</li>
+<li><strong>安全性与对齐度</strong>：拒绝有害请求的能力和符合人类价值观的程度</li>
+<li><strong>真实世界任务评估</strong>：通过人类评估员对模型在实际应用场景中表现的评分</li>
+</ol>
+<h4 id="moe-mixture-of-experts-架构的优势和实现挑战">MoE (Mixture of Experts) 架构的优势和实现挑战</h4>
+<p>MoE (Mixture of Experts) 架构的优势：</p>
+<ol>
+<li>计算效率提升：每次前向只激活部分专家，减少计算量</li>
+<li>模型容量扩展：可大幅增加参数量而不等比增加计算资源</li>
+<li>领域特化能力：不同专家可专注于不同任务或知识领域</li>
+<li>性能与效率平衡：训练更大规模模型的经济可行方式</li>
+<li>动态适应性：智能路由机制可根据输入动态选择合适专家</li>
+</ol>
+<p>实现挑战：</p>
+<ol>
+<li>路由决策优化：设计高效路由器避免专家使用不均衡问题</li>
+<li>计算负载均衡：防止部分专家过载，其他专家闲置</li>
+<li>通信开销大：分布式训练时专家间通信可能成为瓶颈</li>
+<li>训练不稳定性：路由决策梯度和专家权重更新交互复杂</li>
+<li>推理部署复杂：比传统Transformer部署更复杂，需特殊优化</li>
+<li>异构硬件适配：在不同算力设备上部署需特殊策略</li>
+</ol>
+<p>MoE代表了大模型扩展的重要方向，通过&quot;稀疏激活&quot;实现更高效的参数利用，但其工程实现复杂度也显著提高。</p>
+<h4 id="如何提高大模型的对话能力和指令遵循能力">如何提高大模型的对话能力和指令遵循能力</h4>
+<p>提高大模型对话能力和指令遵循能力的关键方法包括：<strong>高质量指令数据集构建</strong>，<strong>涵盖多样化指令和对话场景</strong>；<strong>采用人类反馈强化学习(RLHF)</strong>，<strong>通过人类偏好训练奖励模型并优化策略</strong>；引入对抗训练，创建难以遵循的指令来针对性提升；<strong>使用思维链(CoT)提示训练</strong>，强化逐步推理能力；<strong>构建多轮对话数据，提升连贯性和上下文理解</strong>；<strong>隐式提示学习</strong>，例如P-tuning等技术；<strong>多样化评估体系设计，实时反馈模型弱点</strong>；红蓝对抗评估，发现并修复指令漏洞；<strong>混合专家系统整合</strong>，在不同任务间动态切换解决方案。</p>
+<h4 id="如何处理和准备大规模语料库用于预训练">如何处理和准备大规模语料库用于预训练？</h4>
+<p><strong>数据收集与整合</strong></p>
+<ul>
+<li>多源数据汇集（网页、书籍、学术文献、代码库等）</li>
+<li>设计合理的域间平衡策略，避免单一来源过度主导</li>
+</ul>
+<p><strong>数据清洗</strong></p>
+<ul>
+<li>去除低质量内容（垃圾文本、重复内容、模板生成文本）</li>
+<li>针对性过滤不适内容和有害信息</li>
+<li>使用启发式规则和质量模型进行筛选</li>
+</ul>
+<p><strong>数据处理</strong></p>
+<ul>
+<li>分词和词元化，构建高效词表</li>
+<li>文档级别分割与混洗</li>
+<li>去重（精确、近似和语义层面）</li>
+<li>多语言处理（语言识别、编码标准化）</li>
+</ul>
+<p><strong>数据格式化</strong></p>
+<ul>
+<li>构建高效的训练格式（如TFRecord、WebDataset）</li>
+<li>实现高效的数据加载与预取流水线</li>
+<li>序列长度优化与动态打包</li>
+</ul>
+<p><strong>数据质量保障</strong></p>
+<ul>
+<li>抽样人工评估与自动质量评分</li>
+<li>领域分布监控</li>
+<li>潜在偏见识别与缓解</li>
+</ul>
+<h4 id="dp-与-ddp">DP 与 DDP</h4>
+<p><strong>数据并行（Data Parallel，DP）<strong>是PyTorch中的一种</strong>单进程多线程并行</strong>训练方法，通过torch.nn.DataParallel实现。它将<strong>模型复制到多个GPU上</strong>，<strong>将输入数据分成多份分配给各GPU</strong>，<strong>每个GPU独立计算其分配数据的梯度</strong>，<strong>然后在主GPU（通常是GPU 0）上汇总所有梯度并更新模型参数</strong>，最后将更新后的模型参数复制回所有GPU。DP实现简单，只需将模型包装在nn.DataParallel()中即可使用，适合快速原型开发和小规模实验。它不需要修改原有代码结构，可以动态适应可用GPU数量，但主GPU需要存储所有梯度，成为性能和内存瓶颈。</p>
+<p><strong>分布式数据并行（Distributed Data Parallel，DDP）<strong>是PyTorch中的</strong>多进程并行</strong>训练方法，通过torch.nn.parallel.DistributedDataParallel实现。<strong>DDP为每个GPU分配一个独立的Python进程，每个进程维护完整的模型副本和优化器状态</strong>。在反向传播中，<strong>DDP使用高效的环形全归约（ring-allreduce）算法在所有进程间同步梯度，确保所有模型副本保持同步</strong>。实现DDP需要初始化进程组、设置本地排名、创建分布式采样器等步骤，虽然代码较为复杂，但可以实现接近线性的扩展性，支持单机多GPU和多机多GPU训练，并能与混合精度训练、梯度累积等高级技术无缝集成。</p>
+<p>DP与DDP的主要区别在于架构模式、通信效率和扩展性。<strong>DP采用单进程多线程模式，所有操作都在同一Python进程中进行，通信效率低，主GPU成为瓶颈，扩展性有限，不适合大规模训练</strong>。而**DDP采用多进程模式，每个GPU运行独立进程，通过高效的通信原语实现梯度同步，消除了中心化瓶颈，内存使用更均衡，扩展性更好。**在实际性能上，当GPU数量增加时，DDP的性能优势愈发显著：在8GPU配置下，DP通常只能获得4-5倍的加速比，而DDP可以达到接近线性的7.5-7.8倍加速比。此外，DDP支持多节点训练，而DP仅限于单机使用。因此，虽然DDP配置更复杂，但对于大型模型训练或需要高效利用计算资源的场景，DDP是明显更优的选择。</p>
+<h4 id="分布式训练策略-如数据并行-模型并行-流水线并行-及其实现考虑">分布式训练策略（如数据并行、模型并行、流水线并行）及其实现考虑</h4>
+<p><strong>数据并行(Data Parallel)</strong>：</p>
+<ul>
+<li>原理：每个设备复制完整模型，处理不同数据批次</li>
+<li>优势：实现简单，扩展性好</li>
+<li>挑战：梯度同步通信开销大，单设备显存需容纳整个模型</li>
+<li>实现考虑：优化All-Reduce操作效率，设计混合精度梯度累积策略</li>
+</ul>
+<p><strong>模型并行(Tensor Parallel)</strong>：</p>
+<ul>
+<li>原理：将单个张量/层计算分割到多设备</li>
+<li>优势：解决超大层无法装入单设备显存问题</li>
+<li>挑战：设备间通信密集，需精心设计分割策略</li>
+<li>实现考虑：注意力矩阵分割方式，减少设备间同步点</li>
+</ul>
+<p><strong>流水线并行(Pipeline Parallel)</strong>：</p>
+<ul>
+<li>原理：按层分组分配到不同设备，形成流水线</li>
+<li>优势：平衡计算与通信，支持更深模型</li>
+<li>挑战：流水线气泡降低设备利用率</li>
+<li>实现考虑：微批次大小选择，交织调度策略优化</li>
+</ul>
+<p><strong>混合并行</strong>：</p>
+<ul>
+<li>原理：组合上述策略以最大化扩展性和效率</li>
+<li>实现考虑：ZeRO优化器分片，3D并行策略组合</li>
+</ul>
+<h3 id="模型微调">模型微调</h3>
+<h4 id="预训练-微调范式的优势是什么">预训练-微调范式的优势是什么？</h4>
+<p>预训练-微调范式优势：利用大规模无标注数据捕获通用语言知识，再针对特定任务调整，节省计算资源，加速收敛，提高性能，克服数据稀缺问题。</p>
+<p>常见微调方法：</p>
+<ol>
+<li>全参数微调：调整模型所有参数，计算资源需求大</li>
+<li>LoRA：在原始权重旁添加低秩矩阵，仅更新少量参数</li>
+<li>P-tuning/Prompt-tuning：仅更新输入端的连续提示向量</li>
+<li>Adapter-tuning：在层间插入小型可训练模块，冻结原模型</li>
+<li>QLoRA：结合量化技术与LoRA，进一步降低显存需求</li>
+<li>Prefix-tuning：在自注意力层前添加可训练的前缀向量</li>
+</ol>
+<h4 id="阐述一下-lora-微调的原理和方法">阐述一下 Lora 微调的原理和方法；</h4>
+<p>基本原理</p>
+<ol>
+<li>
+<p><strong>低秩假设</strong>：LoRA假设预训练权重矩阵的更新可以通过低秩分解来近似表示。</p>
+</li>
+<li>
+<p><strong>数学表达</strong>：对于原始的预训练权重矩阵 W ∈ ℝ^(d×k)，LoRA不直接更新W，而是将更新参数化为：</p>
+<p>W + ΔW = W + BA</p>
+<p>其中 B ∈ ℝ^(d×r) 和 A ∈ ℝ^(r×k)，r &laquo; min(d,k) 是一个很小的秩值（通常为8、16或32）。</p>
+</li>
+<li>
+<p><strong>前向传播</strong>：对于输入 x，输出计算为：</p>
+<p>h = Wx + BAx = Wx + h_Δ</p>
+</li>
+<li>
+<p><strong>冻结预训练权重</strong>：原始权重 W 在训练过程中保持冻结，只有 A 和 B 参与梯度更新。</p>
+</li>
+</ol>
+<p>实施方法</p>
+<ol>
+<li>
+<p><strong>选择目标层</strong>：通常应用于注意力权重矩阵（查询、键、值投影）和前馈网络，不是所有层都需要应用LoRA。</p>
+</li>
+<li>
+<p><strong>初始化</strong>：B通常用高斯初始化，A通常初始化为零，这样在开始训练时ΔW=0。</p>
+</li>
+<li>
+<p><strong>缩放因子</strong>：引入一个缩放超参数α，使得更新变为:</p>
+<p>W + α(BA)/r</p>
+<p>这样调整可以更好地控制更新的大小。</p>
+</li>
+<li>
+<p><strong>训练和合并</strong>：</p>
+<ul>
+<li>在训练期间只更新A和B</li>
+<li>推理时可以将BA直接加到W上形成一个合并后的权重矩阵，不增加推理延迟</li>
+</ul>
+</li>
+</ol>
+<h4 id="peft-是什么-请阐述一下">peft 是什么？请阐述一下。</h4>
+<p>​	PEFT（Parameter-Efficient Fine-Tuning）是一种用于大型预训练模型的参数高效微调技术。它的核心思想是在保持模型性能的同时，只调整或添加极少量的参数，大大降低了计算资源需求。</p>
+<p>PEFT 主要包括以下几种常见方法：</p>
+<pre><code>1. LoRA (Low-Rank Adaptation) - 通过添加低秩分解矩阵来近似模型权重的更新，而不是直接更新所有权重。只需训练这些小型的低秩矩阵，显著减少了需要更新的参数数量。
+
+2. Prompt Tuning - 在输入层添加可学习的连续提示向量，仅训练这些提示向量而保持预训练模型参数冻结。
+
+3. Prefix Tuning - 类似于Prompt Tuning，但在每个Transformer层都添加了可训练的前缀向量。
+
+4. Adapter - 在Transformer层之间插入小型可训练的神经网络层，主模型参数保持不变。
+
+5. QLoRA - 结合了量化技术和LoRA，使用4位量化加载模型，然后应用LoRA进行微调。
+</code></pre>
+<h4 id="大规模语言模型训练中的常见挑战及解决方案-如显存限制-训练不稳定性">大规模语言模型训练中的常见挑战及解决方案（如显存限制、训练不稳定性）</h4>
+<p><strong>显存限制</strong>：</p>
+<ol>
+<li>混合精度训练：使用FP16/BF16加速并节省显存</li>
+<li>梯度检查点：牺牲计算换取显存，仅存储部分激活值</li>
+<li>模型并行：将模型分割到多个设备上</li>
+<li>ZeRO优化：将优化器状态、梯度和参数分布在多设备上</li>
+</ol>
+<p><strong>训练不稳定性</strong>：</p>
+<ol>
+<li>学习率调度：使用热身策略和衰减机制</li>
+<li>梯度裁剪：防止梯度爆炸</li>
+<li>LayerNorm与初始化：优化残差连接的放缩方式</li>
+<li>Adam优化器变体：AdamW、8-bit Adam等</li>
+</ol>
+<p><strong>训练效率</strong>：</p>
+<ol>
+<li>数据并行：多设备复制模型，分批处理数据</li>
+<li>流水线并行：模型层级划分到不同设备</li>
+<li>张量并行：将单个运算分散到多设备</li>
+<li>高效通信：NCCL、NVLink等通信优化</li>
+</ol>
+<h4 id="kv-cache-的工作原理及其对推理性能的影响">KV Cache 的工作原理及其对推理性能的影响</h4>
+<p>KV Cache的工作原理是在自回归生成过程中缓存并重用已计算的Key和Value矩阵，避免重复计算。当生成新token时，<strong>模型仅需计算新token的K和V并追加到缓存中，而不必重新计算整个序列的注意力参数。</strong></p>
+<h4 id="模型量化技术的原理及实现方法">模型量化技术的原理及实现方法</h4>
+<p>模型量化技术的原理是将模型权重和激活值从高精度（如FP32/FP16）转换为低精度表示（如INT8/INT4），降低计算和存储需求。</p>
+<p>实现方法：</p>
+<ol>
+<li><strong>后训练量化(PTQ)</strong>：训练后直接转换，无需重训练
+<ul>
+<li>线性量化：将浮点值映射到整数范围</li>
+<li>最小最大值缩放：基于权重分布确定量化范围</li>
+<li>校准：使用少量数据校准量化参数</li>
+</ul>
+</li>
+<li><strong>量化感知训练(QAT)</strong>：训练时模拟量化效果
+<ul>
+<li>前向传播时应用量化操作</li>
+<li>反向传播时使用直通估计(STE)处理不可微的量化操作</li>
+<li>学习适应量化噪声的权重分布</li>
+</ul>
+</li>
+<li><strong>混合精度量化</strong>：
+<ul>
+<li>对敏感层保留高精度</li>
+<li>非敏感层使用低精度</li>
+<li>基于重要性分析选择量化程度</li>
+</ul>
+</li>
+<li><strong>非均匀量化</strong>：
+<ul>
+<li>权重聚类(如K-means)后分配不同位宽</li>
+<li>基于权重分布密度进行自适应量化</li>
+</ul>
+</li>
+</ol>
+<h3 id="模型推理">模型推理</h3>
+<h4 id="如何评估-prompt-好坏-如何优化-prompt">如何评估 prompt 好坏？如何优化 Prompt?</h4>
+<p>评估prompt的好坏主要基于几个关键维度：</p>
+<ol>
+<li>
+<p><strong>任务完成度</strong> - prompt是否能引导模型生成符合预期的输出，解决特定问题</p>
+</li>
+<li>
+<p><strong>一致性与可靠性</strong> - 相同或相似的prompt是否能够稳定地产生类似质量的结果</p>
+</li>
+<li>
+<p><strong>效率</strong> - prompt是否简洁明了，避免不必要的冗长内容，同时提供足够的上下文信息</p>
+</li>
+<li>
+<p><strong>泛化能力</strong> - prompt是否能够处理同一类问题的不同变体</p>
+</li>
+<li>
+<p><strong>评估指标</strong> - 根据具体任务，可以使用自动化指标(如BLEU, ROUGE, Perplexity)或人工评估</p>
+</li>
+</ol>
+<p>优化方法：</p>
+<ol>
+<li>结构化优化
+<ol>
+<li><strong>明确角色与期望</strong> - 定义模型应该扮演的角色，清晰阐述期望输出格式</li>
+<li><strong>任务分解</strong> - 将复杂任务分解为多个步骤，引导模型逐步思考</li>
+<li><strong>添加思维链</strong> - 在prompt中包含&quot;让我们一步一步思考&quot;等引导语，促使模型展示推理过程</li>
+<li><strong>提供示例</strong> - 使用少样本学习(Few-shot learning)，在prompt中包含高质量的示例</li>
+</ol>
+</li>
+<li>迭代优化
+<ol>
+<li><strong>A/B测试</strong> - 比较不同prompt变体的效果，保留表现更好的版本</li>
+<li><strong>系统性实验</strong> - 控制变量法测试prompt的不同元素(如长度、格式、示例数量)</li>
+<li><strong>错误分析</strong> - 分析模型在哪些情况下表现不佳，针对性地修改prompt</li>
+<li><strong>使用提示工程模式</strong> - 应用已被证明有效的提示模式，如&quot;我将扮演X角色，你将扮演Y角色&quot;</li>
+</ol>
+</li>
+<li>高级优化
+<ol>
+<li><strong>反向提示工程</strong> - 从理想输出反推有效prompt</li>
+<li><strong>自动化提示优化</strong> - 使用强化学习或遗传算法自动搜索最优prompt</li>
+<li><strong>提示链接</strong> - 将多个prompt串联起来，将前一步的输出作为后一步的输入</li>
+<li><strong>使用自反思</strong> - 在prompt中引导模型评估自己的回答并改进</li>
+<li><strong>上下文学习</strong> - 通过在上下文中提供更多相关信息来提高模型理解</li>
+</ol>
+</li>
+</ol>
+<h2 id="transformers-细节">Transformers 细节</h2>
+<h3 id="手写-transformers-架构">手写 Transformers 架构</h3>
+<p>Transformer架构的关键组件包括：多头自注意力机制（计算序列中每个元素与其他元素的关联度）；<strong>位置编码</strong>（注入位置信息）；<strong>残差连接与层归一化</strong>（防止梯度消失并稳定训练）；<strong>前馈神经网络</strong>（增强表达能力）<strong>；编码器-解码器结构</strong>（编码器处理输入序列，解码器生成输出）。其工作原理是<strong>通过自注意力机制并行捕获序列中的长距离依赖关系，解决了RNN的序列处理瓶颈，大幅提高了模型性能与训练效率</strong>。</p>
+<blockquote>
+<ol>
+<li>
+<p><strong>MultiHeadAttention 类</strong>：实现了多头注意力机制，将输入投影到多个子空间进行并行的注意力计算，然后拼接结果。</p>
+</li>
+<li>
+<p><strong>PositionwiseFeedForward 类</strong>：实现了位置前馈网络，由两个线性变换和一个 ReLU 激活函数组成。</p>
+</li>
+<li>
+<p><strong>PositionalEncoding 类</strong>：使用正弦和余弦函数实现位置编码，为序列中的每个位置添加位置信息。</p>
+</li>
+<li>
+<p><strong>EncoderLayer 类</strong>：编码器层，包含自注意力机制和前馈网络，还有残差连接和层归一化。</p>
+</li>
+<li>
+<p><strong>DecoderLayer 类</strong>：解码器层，包含自注意力、交叉注意力和前馈网络，同样使用残差连接和层归一化。</p>
+</li>
+<li>
+<p><strong>Transformer 类</strong>：整合了所有组件，包括编码器、解码器、嵌入层和输出层。</p>
+</li>
+</ol>
+</blockquote>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 37
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 38
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 39
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 40
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 41
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 42
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 43
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 44
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 45
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 46
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 47
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 48
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 49
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 50
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 51
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 52
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 53
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 54
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 55
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 56
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 57
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 58
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 59
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 60
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 61
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 62
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 63
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 64
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 65
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 66
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 67
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 68
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 69
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 70
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 71
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 72
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 73
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 74
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 75
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 76
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 77
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 78
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 79
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 80
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 81
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 82
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 83
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 84
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 85
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 86
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 87
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 88
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 89
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 90
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 91
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 92
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 93
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 94
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 95
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 96
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 97
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 98
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 99
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">100
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">101
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">102
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">103
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">104
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">105
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">106
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">107
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">108
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">109
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">110
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">111
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">112
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">113
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">114
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">115
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">116
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">117
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">118
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">119
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">120
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">121
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">122
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">123
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">124
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">125
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">126
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">127
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">128
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">129
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">130
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">131
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">132
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">133
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">134
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">135
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">136
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">137
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">138
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">139
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">140
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">141
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">142
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">143
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">144
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">145
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">146
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">147
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">148
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">149
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">150
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">151
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">152
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">153
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">154
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">155
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">156
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">157
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">158
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">159
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">160
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">161
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">162
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">163
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">164
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">165
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">166
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">167
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">168
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">169
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">170
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">171
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">172
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">173
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">174
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">175
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">176
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">177
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">178
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">179
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">180
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">181
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">182
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">183
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">184
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">185
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">186
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">187
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">188
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">189
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">190
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">191
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">192
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">193
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">194
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">195
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">196
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">197
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">198
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">199
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">200
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">201
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">202
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">203
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">204
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">205
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">206
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">207
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">208
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">209
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">210
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">211
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">212
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">213
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">214
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">215
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">216
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">217
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">218
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">219
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">220
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">221
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">import</span> <span style="color:#0cf;font-weight:bold">torch</span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">import</span> <span style="color:#0cf;font-weight:bold">torch.nn</span> <span style="color:#069;font-weight:bold">as</span> <span style="color:#0cf;font-weight:bold">nn</span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">import</span> <span style="color:#0cf;font-weight:bold">math</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">class</span> <span style="color:#0a8;font-weight:bold">MultiHeadAttention</span>(nn<span style="color:#555">.</span>Module):
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">def</span> __init__(self, d_model, num_heads):
+</span></span><span style="display:flex;"><span>        <span style="color:#366">super</span>(MultiHeadAttention, self)<span style="color:#555">.</span>__init__()
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>num_heads <span style="color:#555">=</span> num_heads
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>d_model <span style="color:#555">=</span> d_model
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">assert</span> d_model <span style="color:#555">%</span> num_heads <span style="color:#555">==</span> <span style="color:#f60">0</span>, <span style="color:#c30">&#34;d_model must be divisible by num_heads&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>d_k <span style="color:#555">=</span> d_model <span style="color:#555">//</span> num_heads
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 创建Q, K, V的线性投影层</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>q_linear <span style="color:#555">=</span> nn<span style="color:#555">.</span>Linear(d_model, d_model)
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>k_linear <span style="color:#555">=</span> nn<span style="color:#555">.</span>Linear(d_model, d_model)
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>v_linear <span style="color:#555">=</span> nn<span style="color:#555">.</span>Linear(d_model, d_model)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>out_linear <span style="color:#555">=</span> nn<span style="color:#555">.</span>Linear(d_model, d_model)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">def</span> <span style="color:#c0f">forward</span>(self, q, k, v, mask<span style="color:#555">=</span><span style="color:#069;font-weight:bold">None</span>):
+</span></span><span style="display:flex;"><span>        batch_size <span style="color:#555">=</span> q<span style="color:#555">.</span>size(<span style="color:#f60">0</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 线性变换</span>
+</span></span><span style="display:flex;"><span>        q <span style="color:#555">=</span> self<span style="color:#555">.</span>q_linear(q)<span style="color:#555">.</span>view(batch_size, <span style="color:#555">-</span><span style="color:#f60">1</span>, self<span style="color:#555">.</span>num_heads, self<span style="color:#555">.</span>d_k)<span style="color:#555">.</span>transpose(<span style="color:#f60">1</span>, <span style="color:#f60">2</span>)
+</span></span><span style="display:flex;"><span>        k <span style="color:#555">=</span> self<span style="color:#555">.</span>k_linear(k)<span style="color:#555">.</span>view(batch_size, <span style="color:#555">-</span><span style="color:#f60">1</span>, self<span style="color:#555">.</span>num_heads, self<span style="color:#555">.</span>d_k)<span style="color:#555">.</span>transpose(<span style="color:#f60">1</span>, <span style="color:#f60">2</span>)
+</span></span><span style="display:flex;"><span>        v <span style="color:#555">=</span> self<span style="color:#555">.</span>v_linear(v)<span style="color:#555">.</span>view(batch_size, <span style="color:#555">-</span><span style="color:#f60">1</span>, self<span style="color:#555">.</span>num_heads, self<span style="color:#555">.</span>d_k)<span style="color:#555">.</span>transpose(<span style="color:#f60">1</span>, <span style="color:#f60">2</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 注意力计算</span>
+</span></span><span style="display:flex;"><span>        scores <span style="color:#555">=</span> torch<span style="color:#555">.</span>matmul(q, k<span style="color:#555">.</span>transpose(<span style="color:#555">-</span><span style="color:#f60">2</span>, <span style="color:#555">-</span><span style="color:#f60">1</span>)) <span style="color:#555">/</span> math<span style="color:#555">.</span>sqrt(self<span style="color:#555">.</span>d_k)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 应用mask（如果提供）</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">if</span> mask <span style="color:#000;font-weight:bold">is</span> <span style="color:#000;font-weight:bold">not</span> <span style="color:#069;font-weight:bold">None</span>:
+</span></span><span style="display:flex;"><span>            scores <span style="color:#555">=</span> scores<span style="color:#555">.</span>masked_fill(mask <span style="color:#555">==</span> <span style="color:#f60">0</span>, <span style="color:#555">-</span><span style="color:#f60">1e9</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># softmax获取注意力权重</span>
+</span></span><span style="display:flex;"><span>        attn <span style="color:#555">=</span> torch<span style="color:#555">.</span>softmax(scores, dim<span style="color:#555">=-</span><span style="color:#f60">1</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 应用注意力权重</span>
+</span></span><span style="display:flex;"><span>        output <span style="color:#555">=</span> torch<span style="color:#555">.</span>matmul(attn, v)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 转换回原始形状</span>
+</span></span><span style="display:flex;"><span>        output <span style="color:#555">=</span> output<span style="color:#555">.</span>transpose(<span style="color:#f60">1</span>, <span style="color:#f60">2</span>)<span style="color:#555">.</span>contiguous()<span style="color:#555">.</span>view(batch_size, <span style="color:#555">-</span><span style="color:#f60">1</span>, self<span style="color:#555">.</span>d_model)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 最终的线性层</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">return</span> self<span style="color:#555">.</span>out_linear(output)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">class</span> <span style="color:#0a8;font-weight:bold">PositionwiseFeedForward</span>(nn<span style="color:#555">.</span>Module):
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">def</span> __init__(self, d_model, d_ff):
+</span></span><span style="display:flex;"><span>        <span style="color:#366">super</span>(PositionwiseFeedForward, self)<span style="color:#555">.</span>__init__()
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>fc1 <span style="color:#555">=</span> nn<span style="color:#555">.</span>Linear(d_model, d_ff)
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>fc2 <span style="color:#555">=</span> nn<span style="color:#555">.</span>Linear(d_ff, d_model)
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>relu <span style="color:#555">=</span> nn<span style="color:#555">.</span>ReLU()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">def</span> <span style="color:#c0f">forward</span>(self, x):
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">return</span> self<span style="color:#555">.</span>fc2(self<span style="color:#555">.</span>relu(self<span style="color:#555">.</span>fc1(x)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">class</span> <span style="color:#0a8;font-weight:bold">PositionalEncoding</span>(nn<span style="color:#555">.</span>Module):
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">def</span> __init__(self, d_model, max_seq_length<span style="color:#555">=</span><span style="color:#f60">5000</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#366">super</span>(PositionalEncoding, self)<span style="color:#555">.</span>__init__()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 创建简单的位置编码矩阵</span>
+</span></span><span style="display:flex;"><span>        pe <span style="color:#555">=</span> torch<span style="color:#555">.</span>zeros(max_seq_length, d_model)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 位置索引</span>
+</span></span><span style="display:flex;"><span>        position <span style="color:#555">=</span> torch<span style="color:#555">.</span>arange(<span style="color:#f60">0</span>, max_seq_length)<span style="color:#555">.</span>unsqueeze(<span style="color:#f60">1</span>)<span style="color:#555">.</span>float()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 生成不同频率的正弦和余弦</span>
+</span></span><span style="display:flex;"><span>        div_term <span style="color:#555">=</span> torch<span style="color:#555">.</span>pow(<span style="color:#f60">10000</span>, torch<span style="color:#555">.</span>arange(<span style="color:#f60">0</span>, d_model, <span style="color:#f60">2</span>)<span style="color:#555">.</span>float() <span style="color:#555">/</span> d_model)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 偶数位置使用正弦，奇数位置使用余弦</span>
+</span></span><span style="display:flex;"><span>        pe[:, <span style="color:#f60">0</span>::<span style="color:#f60">2</span>] <span style="color:#555">=</span> torch<span style="color:#555">.</span>sin(position <span style="color:#555">/</span> div_term)
+</span></span><span style="display:flex;"><span>        pe[:, <span style="color:#f60">1</span>::<span style="color:#f60">2</span>] <span style="color:#555">=</span> torch<span style="color:#555">.</span>cos(position <span style="color:#555">/</span> div_term)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 注册为buffer以便模型保存和加载</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>register_buffer(<span style="color:#c30">&#39;pe&#39;</span>, pe<span style="color:#555">.</span>unsqueeze(<span style="color:#f60">0</span>))
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">def</span> <span style="color:#c0f">forward</span>(self, x):
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 添加位置编码到输入</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">return</span> x <span style="color:#555">+</span> self<span style="color:#555">.</span>pe[:, :x<span style="color:#555">.</span>size(<span style="color:#f60">1</span>)]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">class</span> <span style="color:#0a8;font-weight:bold">EncoderLayer</span>(nn<span style="color:#555">.</span>Module):
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">def</span> __init__(self, d_model, num_heads, d_ff, dropout<span style="color:#555">=</span><span style="color:#f60">0.1</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#366">super</span>(EncoderLayer, self)<span style="color:#555">.</span>__init__()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>self_attn <span style="color:#555">=</span> MultiHeadAttention(d_model, num_heads)
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>feed_forward <span style="color:#555">=</span> PositionwiseFeedForward(d_model, d_ff)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>norm1 <span style="color:#555">=</span> nn<span style="color:#555">.</span>LayerNorm(d_model)
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>norm2 <span style="color:#555">=</span> nn<span style="color:#555">.</span>LayerNorm(d_model)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>dropout <span style="color:#555">=</span> nn<span style="color:#555">.</span>Dropout(dropout)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">def</span> <span style="color:#c0f">forward</span>(self, x, mask<span style="color:#555">=</span><span style="color:#069;font-weight:bold">None</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 自注意力层 + 残差连接 + 层归一化</span>
+</span></span><span style="display:flex;"><span>        attn_output <span style="color:#555">=</span> self<span style="color:#555">.</span>self_attn(x, x, x, mask)
+</span></span><span style="display:flex;"><span>        x <span style="color:#555">=</span> self<span style="color:#555">.</span>norm1(x <span style="color:#555">+</span> self<span style="color:#555">.</span>dropout(attn_output))
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 前馈网络 + 残差连接 + 层归一化</span>
+</span></span><span style="display:flex;"><span>        ff_output <span style="color:#555">=</span> self<span style="color:#555">.</span>feed_forward(x)
+</span></span><span style="display:flex;"><span>        x <span style="color:#555">=</span> self<span style="color:#555">.</span>norm2(x <span style="color:#555">+</span> self<span style="color:#555">.</span>dropout(ff_output))
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">return</span> x
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">class</span> <span style="color:#0a8;font-weight:bold">DecoderLayer</span>(nn<span style="color:#555">.</span>Module):
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">def</span> __init__(self, d_model, num_heads, d_ff, dropout<span style="color:#555">=</span><span style="color:#f60">0.1</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#366">super</span>(DecoderLayer, self)<span style="color:#555">.</span>__init__()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>self_attn <span style="color:#555">=</span> MultiHeadAttention(d_model, num_heads)
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>cross_attn <span style="color:#555">=</span> MultiHeadAttention(d_model, num_heads)
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>feed_forward <span style="color:#555">=</span> PositionwiseFeedForward(d_model, d_ff)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>norm1 <span style="color:#555">=</span> nn<span style="color:#555">.</span>LayerNorm(d_model)
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>norm2 <span style="color:#555">=</span> nn<span style="color:#555">.</span>LayerNorm(d_model)
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>norm3 <span style="color:#555">=</span> nn<span style="color:#555">.</span>LayerNorm(d_model)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>dropout <span style="color:#555">=</span> nn<span style="color:#555">.</span>Dropout(dropout)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">def</span> <span style="color:#c0f">forward</span>(self, x, enc_output, src_mask<span style="color:#555">=</span><span style="color:#069;font-weight:bold">None</span>, tgt_mask<span style="color:#555">=</span><span style="color:#069;font-weight:bold">None</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 自注意力层</span>
+</span></span><span style="display:flex;"><span>        self_attn_output <span style="color:#555">=</span> self<span style="color:#555">.</span>self_attn(x, x, x, tgt_mask)
+</span></span><span style="display:flex;"><span>        x <span style="color:#555">=</span> self<span style="color:#555">.</span>norm1(x <span style="color:#555">+</span> self<span style="color:#555">.</span>dropout(self_attn_output))
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 编码器-解码器注意力层</span>
+</span></span><span style="display:flex;"><span>        cross_attn_output <span style="color:#555">=</span> self<span style="color:#555">.</span>cross_attn(x, enc_output, enc_output, src_mask)
+</span></span><span style="display:flex;"><span>        x <span style="color:#555">=</span> self<span style="color:#555">.</span>norm2(x <span style="color:#555">+</span> self<span style="color:#555">.</span>dropout(cross_attn_output))
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 前馈网络</span>
+</span></span><span style="display:flex;"><span>        ff_output <span style="color:#555">=</span> self<span style="color:#555">.</span>feed_forward(x)
+</span></span><span style="display:flex;"><span>        x <span style="color:#555">=</span> self<span style="color:#555">.</span>norm3(x <span style="color:#555">+</span> self<span style="color:#555">.</span>dropout(ff_output))
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">return</span> x
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">class</span> <span style="color:#0a8;font-weight:bold">Transformer</span>(nn<span style="color:#555">.</span>Module):
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">def</span> __init__(self, src_vocab_size, tgt_vocab_size, d_model<span style="color:#555">=</span><span style="color:#f60">512</span>, num_heads<span style="color:#555">=</span><span style="color:#f60">8</span>, 
+</span></span><span style="display:flex;"><span>                 num_encoder_layers<span style="color:#555">=</span><span style="color:#f60">6</span>, num_decoder_layers<span style="color:#555">=</span><span style="color:#f60">6</span>, d_ff<span style="color:#555">=</span><span style="color:#f60">2048</span>, dropout<span style="color:#555">=</span><span style="color:#f60">0.1</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#366">super</span>(Transformer, self)<span style="color:#555">.</span>__init__()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 词嵌入层</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>src_embedding <span style="color:#555">=</span> nn<span style="color:#555">.</span>Embedding(src_vocab_size, d_model)
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>tgt_embedding <span style="color:#555">=</span> nn<span style="color:#555">.</span>Embedding(tgt_vocab_size, d_model)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 位置编码</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>positional_encoding <span style="color:#555">=</span> PositionalEncoding(d_model)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 编码器层</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>encoder_layers <span style="color:#555">=</span> nn<span style="color:#555">.</span>ModuleList([
+</span></span><span style="display:flex;"><span>            EncoderLayer(d_model, num_heads, d_ff, dropout) 
+</span></span><span style="display:flex;"><span>            <span style="color:#069;font-weight:bold">for</span> _ <span style="color:#000;font-weight:bold">in</span> <span style="color:#366">range</span>(num_encoder_layers)
+</span></span><span style="display:flex;"><span>        ])
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 解码器层</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>decoder_layers <span style="color:#555">=</span> nn<span style="color:#555">.</span>ModuleList([
+</span></span><span style="display:flex;"><span>            DecoderLayer(d_model, num_heads, d_ff, dropout) 
+</span></span><span style="display:flex;"><span>            <span style="color:#069;font-weight:bold">for</span> _ <span style="color:#000;font-weight:bold">in</span> <span style="color:#366">range</span>(num_decoder_layers)
+</span></span><span style="display:flex;"><span>        ])
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 最终的线性层和softmax</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>output_linear <span style="color:#555">=</span> nn<span style="color:#555">.</span>Linear(d_model, tgt_vocab_size)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>dropout <span style="color:#555">=</span> nn<span style="color:#555">.</span>Dropout(dropout)
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>d_model <span style="color:#555">=</span> d_model
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">def</span> <span style="color:#c0f">encode</span>(self, src, src_mask<span style="color:#555">=</span><span style="color:#069;font-weight:bold">None</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 源序列嵌入和位置编码</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic">#“* math.sqrt(self.d_model)“的目的是：1.缩放嵌入向量的方差：当我们初始化词嵌入向量时，通常使用均值为0、方差为1的分布（如正态分布）；2.平衡嵌入和位置编码的贡献</span>
+</span></span><span style="display:flex;"><span>        src <span style="color:#555">=</span> self<span style="color:#555">.</span>dropout(self<span style="color:#555">.</span>positional_encoding(self<span style="color:#555">.</span>src_embedding(src) <span style="color:#555">*</span> math<span style="color:#555">.</span>sqrt(self<span style="color:#555">.</span>d_model)))
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 通过编码器层</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">for</span> encoder_layer <span style="color:#000;font-weight:bold">in</span> self<span style="color:#555">.</span>encoder_layers:
+</span></span><span style="display:flex;"><span>            src <span style="color:#555">=</span> encoder_layer(src, src_mask)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">return</span> src
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">def</span> <span style="color:#c0f">decode</span>(self, tgt, enc_output, src_mask<span style="color:#555">=</span><span style="color:#069;font-weight:bold">None</span>, tgt_mask<span style="color:#555">=</span><span style="color:#069;font-weight:bold">None</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 目标序列嵌入和位置编码</span>
+</span></span><span style="display:flex;"><span>        tgt <span style="color:#555">=</span> self<span style="color:#555">.</span>dropout(self<span style="color:#555">.</span>positional_encoding(self<span style="color:#555">.</span>tgt_embedding(tgt) <span style="color:#555">*</span> math<span style="color:#555">.</span>sqrt(self<span style="color:#555">.</span>d_model)))
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 通过解码器层</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">for</span> decoder_layer <span style="color:#000;font-weight:bold">in</span> self<span style="color:#555">.</span>decoder_layers:
+</span></span><span style="display:flex;"><span>            tgt <span style="color:#555">=</span> decoder_layer(tgt, enc_output, src_mask, tgt_mask)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">return</span> tgt
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">def</span> <span style="color:#c0f">forward</span>(self, src, tgt, src_mask<span style="color:#555">=</span><span style="color:#069;font-weight:bold">None</span>, tgt_mask<span style="color:#555">=</span><span style="color:#069;font-weight:bold">None</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 编码阶段</span>
+</span></span><span style="display:flex;"><span>        enc_output <span style="color:#555">=</span> self<span style="color:#555">.</span>encode(src, src_mask)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 解码阶段</span>
+</span></span><span style="display:flex;"><span>        dec_output <span style="color:#555">=</span> self<span style="color:#555">.</span>decode(tgt, enc_output, src_mask, tgt_mask)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#09f;font-style:italic"># 最终的线性变换和softmax</span>
+</span></span><span style="display:flex;"><span>        output <span style="color:#555">=</span> self<span style="color:#555">.</span>output_linear(dec_output)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">return</span> output
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"># 创建Transformer模型的简单示例</span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">def</span> <span style="color:#c0f">create_transformer_model</span>():
+</span></span><span style="display:flex;"><span>    src_vocab_size <span style="color:#555">=</span> <span style="color:#f60">10000</span>
+</span></span><span style="display:flex;"><span>    tgt_vocab_size <span style="color:#555">=</span> <span style="color:#f60">10000</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    model <span style="color:#555">=</span> Transformer(
+</span></span><span style="display:flex;"><span>        src_vocab_size<span style="color:#555">=</span>src_vocab_size,
+</span></span><span style="display:flex;"><span>        tgt_vocab_size<span style="color:#555">=</span>tgt_vocab_size,
+</span></span><span style="display:flex;"><span>        d_model<span style="color:#555">=</span><span style="color:#f60">512</span>,
+</span></span><span style="display:flex;"><span>        num_heads<span style="color:#555">=</span><span style="color:#f60">8</span>,
+</span></span><span style="display:flex;"><span>        num_encoder_layers<span style="color:#555">=</span><span style="color:#f60">6</span>,
+</span></span><span style="display:flex;"><span>        num_decoder_layers<span style="color:#555">=</span><span style="color:#f60">6</span>,
+</span></span><span style="display:flex;"><span>        d_ff<span style="color:#555">=</span><span style="color:#f60">2048</span>,
+</span></span><span style="display:flex;"><span>        dropout<span style="color:#555">=</span><span style="color:#f60">0.1</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> model
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="自注意力机制相比传统rnn-lstm的优势">自注意力机制相比传统RNN/LSTM的优势</h3>
+<p>自注意力机制相比传统RNN/LSTM的优势：</p>
+<ol>
+<li><strong>并行计算</strong>：可同时处理序列中的所有元素，显著提高训练速度</li>
+<li><strong>长距离依赖</strong>：直接建立序列中任意位置间的连接，克服长序列梯度消失问题</li>
+<li><strong>全局视野</strong>：每个位置都能直接获取全序列信息，不受距离限制</li>
+<li>可解释性：注意力权重提供可视化解释模型决策的方式</li>
+<li>计算效率：特别是在长序列处理上，自注意力避免了RNN的循环依赖</li>
+<li>灵活性：可通过多头注意力捕获不同特征子空间的信息模式</li>
+</ol>
+<h3 id="解释-masked-self-attention-的目的及实现方式">解释 Masked Self-Attention 的目的及实现方式</h3>
+<p>Masked Self-Attention的目的是防止信息泄露，确保模型在生成序列时只能看到当前位置之前的信息，而不能看到未来信息，这对自回归式生成至关重要。实现方式是在计算注意力分数后、应用softmax前，将未来位置（上三角部分）的注意力分数设为负无穷（如-1e9）。这样softmax后，未来位置的权重接近零，从而屏蔽了对未来信息的访问。在解码器训练中，通常使用下三角掩码矩阵来实现，保证位置i只能关注位置0到i的信息。</p>
+<h2 id="llm-大模型相关指标">LLM 大模型相关指标</h2>
+<h3 id="准确率类指标">准确率类指标</h3>
+<h4 id="准确率-accuracy">准确率（Accuracy）</h4>
+<ol>
+<li><strong>含义</strong>：正确预测的样本数量与总样本数量的比值</li>
+<li><strong>作用</strong>：提供模型整体性能的基本度量</li>
+<li><strong>计算方法</strong>：$\text{Accuracy} = \frac{\text{正确预测数量}}{\text{总样本数量}}$</li>
+<li><strong>优点</strong>：简单直观，易于理解和计算</li>
+<li><strong>缺点</strong>：在数据不平衡情况下可能产生误导；无法区分不同类型的错误</li>
+</ol>
+<h4 id="精确率-precision">精确率（Precision）</h4>
+<ol>
+<li><strong>含义</strong>：真正例数量与所有被预测为正例数量的比值</li>
+<li><strong>作用</strong>：衡量模型预测为正例时的准确程度</li>
+<li><strong>计算方法</strong>：$\text{Precision} = \frac{\text{真正例(TP)}}{\text{真正例(TP) + 假正例(FP)}} $</li>
+<li><strong>优点</strong>：在减少假阳性重要的场景中很有用</li>
+<li><strong>缺点</strong>：不考虑假阴性(FN)；可能通过极度保守的预测获得高精确率</li>
+</ol>
+<h4 id="召回率-recall">召回率（Recall）</h4>
+<ol>
+<li><strong>含义</strong>：真正例数量与所有实际正例数量的比值</li>
+<li><strong>作用</strong>：衡量模型发现真实正例的能力</li>
+<li><strong>计算方法</strong>：$\text{Recall} = \frac{\text{真正例(TP)}}{\text{真正例(TP) + 假负例(FN)}} $</li>
+<li><strong>优点</strong>：在减少漏报重要的场景中很有用</li>
+<li><strong>缺点</strong>：不考虑假阳性；可能通过预测过多正例获得高召回率</li>
+</ol>
+<h4 id="f1分数-f1-score">F1分数（F1 Score）</h4>
+<ol>
+<li><strong>含义</strong>：精确率和召回率的调和平均值</li>
+<li><strong>作用</strong>：平衡精确率和召回率，提供综合评估</li>
+<li><strong>计算方法</strong>：$\text{F1} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}$</li>
+<li><strong>优点</strong>：综合考虑精确率和召回率；在数据不平衡情况下比准确率更有效</li>
+<li><strong>缺点</strong>：可能在某些应用中需要偏向精确率或召回率的权衡</li>
+</ol>
+<h3 id="语言生成质量指标">语言生成质量指标</h3>
+<h4 id="困惑度-perplexity">困惑度（Perplexity）</h4>
+<ol>
+<li><strong>含义</strong>：评估语言模型预测文本的不确定性程度</li>
+<li><strong>作用</strong>：测量模型对测试数据的预测能力</li>
+<li><strong>计算方法</strong>：$\text{Perplexity} = 2^{-\frac{1}{N}\sum_{i=1}^{N}\log_2 P(w_i|w_1,...,w_{i-1})} $</li>
+<li><strong>优点</strong>：自动化评估；不需要参考答案</li>
+<li><strong>缺点</strong>：较低的困惑度不一定对应高质量的文本；跨模型比较困难</li>
+<li><strong>注意</strong>：困惑度计算时的分母实际上是计算了模型<strong>预测整个文本序列的平均信息量（或称为交叉熵）</strong>。值越大意味着模型对文本的预测能力越强（不确定性越小）。但是困惑度公式对这个分母取负号再以2为底取指数，将其转换为更直观的度量 - 困惑度值越小，表示模型预测能力越强。</li>
+</ol>
+<h4 id="bleu-bilingual-evaluation-understudy">BLEU（Bilingual Evaluation Understudy）</h4>
+<ol>
+<li><strong>含义</strong>：评估<strong>生成文本与参考文本</strong>的n-gram重叠度</li>
+<li><strong>作用</strong>：主要用于评估机器翻译和文本生成质量</li>
+<li><strong>计算方法</strong>：基于n-gram精确率，带有简短惩罚：$\text{BLEU} = \text{BP} \times \exp\left(\sum_{n=1}^{N} w_n \log p_n\right)$</li>
+<li><strong>优点</strong>：广泛使用；相对容易计算</li>
+<li><strong>缺点</strong>：仅基于精确匹配；忽略语义和上下文；需要多个参考</li>
+</ol>
+<h4 id="rouge-recall-oriented-understudy-for-gisting-evaluation">ROUGE（Recall-Oriented Understudy for Gisting Evaluation）</h4>
+<ul>
+<li><strong>含义</strong>：评估<strong>生成摘要与参考摘要</strong>的相似度</li>
+<li><strong>作用</strong>：主要用于评估文本摘要质量</li>
+<li><strong>计算方法</strong>：多个变体，如ROUGE-N（n-gram重叠）、ROUGE-L（最长公共子序列）</li>
+<li><strong>优点</strong>：针对摘要任务优化；考虑召回率</li>
+<li><strong>缺点</strong>：过于关注字面匹配；对同义表达不敏感</li>
+</ul>
+<h4 id="meteor">METEOR</h4>
+<ul>
+<li><strong>含义</strong>：考虑<strong>同义词匹配的文本生成</strong>评估指标</li>
+<li><strong>作用</strong>：解决BLEU只考虑精确匹配的局限性</li>
+<li><strong>计算方法</strong>：基于单词映射的F分数，考虑同义词、词干和释义</li>
+<li><strong>优点</strong>：捕捉同义词和词干变化；与人类判断相关性更高</li>
+<li><strong>缺点</strong>：计算复杂；语言资源依赖</li>
+</ul>
+<h4 id="bertscore">BERTScore</h4>
+<ul>
+<li><strong>含义</strong>：使用BERT表示计算生成文本与参考文本的相似度</li>
+<li><strong>作用</strong>：通过语义相似性评估生成文本质量</li>
+<li><strong>计算方法</strong>：使用BERT嵌入计算生成文本和参考文本的逐词余弦相似度</li>
+<li><strong>优点</strong>：考虑上下文和语义；与人类判断更一致</li>
+<li><strong>缺点</strong>：计算密集；结果可能难以解释；依赖预训练模型</li>
+</ul>
+<h3 id="推理能力指标">推理能力指标</h3>
+<h4 id="通过率-pass-k">通过率（Pass@k）</h4>
+<ul>
+<li><strong>含义</strong>：在k次尝试中至少一次解决问题的概率</li>
+<li><strong>作用</strong>：评估模型在编程等任务中的问题解决能力</li>
+<li><strong>计算方法</strong>：$\text{Pass@k} = \mathbb{E}\left[1 - \frac{\binom{n-c}{k}}{\binom{n}{k}}\right] $，其中c是正确解决的次数，n是总尝试次数</li>
+<li><strong>优点</strong>：考虑模型生成多个可能答案的能力；实用性强</li>
+<li><strong>缺点</strong>：计算需要多次生成；可能需要自动评估系统</li>
+</ul>
+<h4 id="解决率-solve-rate">解决率（Solve Rate）</h4>
+<ul>
+<li><strong>含义</strong>：成功解决问题的比例</li>
+<li><strong>作用</strong>：直接评估模型解决特定问题的能力</li>
+<li><strong>计算方法</strong>：$\text{Solve Rate} = \frac{\text{成功解决的问题数}}{\text{总问题数}}$</li>
+<li><strong>优点</strong>：简单直观；适用于各种推理任务</li>
+<li><strong>缺点</strong>：需要明确的成功/失败标准；二元判断可能过于简化</li>
+</ul>
+<h3 id="对话评估指标">对话评估指标</h3>
+<h4 id="响应相关性-response-relevance">响应相关性（Response Relevance）</h4>
+<ul>
+<li><strong>含义</strong>：回答与问题的相关程度</li>
+<li><strong>作用</strong>：评估模型是否理解并回答了用户问题</li>
+<li><strong>计算方法</strong>：通常使用嵌入相似度或人工评分</li>
+<li><strong>优点</strong>：直接评估对话核心能力</li>
+<li><strong>缺点</strong>：自动计算困难；可能需要人工评估</li>
+</ul>
+<h4 id="一致性-consistency">一致性（Consistency）</h4>
+<ul>
+<li><strong>含义</strong>：回答的内部一致性和与对话历史的一致性</li>
+<li><strong>作用</strong>：评估模型维持连贯对话的能力</li>
+<li><strong>计算方法</strong>：检测矛盾陈述或使用NLI模型评估一致性</li>
+<li><strong>优点</strong>：评估长期记忆和逻辑推理能力</li>
+<li><strong>缺点</strong>：自动评估复杂；需要考虑多轮对话上下文</li>
+</ul>
+<h4 id="信息丰富度-informativeness">信息丰富度（Informativeness）</h4>
+<ul>
+<li><strong>含义</strong>：<strong>回答包含的有用信息量</strong></li>
+<li><strong>作用</strong>：评估回答内容的价值和丰富程度</li>
+<li><strong>计算方法</strong>：通常基于信息熵、新词比例或人工评分</li>
+<li><strong>优点</strong>：评估回答质量的重要维度</li>
+<li><strong>缺点</strong>：难以客观量化；可能依赖人工评估</li>
+</ul>
+<h3 id="知识与事实准确性指标">知识与事实准确性指标</h3>
+<h4 id="事实准确率-factual-accuracy">事实准确率（Factual Accuracy）</h4>
+<ul>
+<li><strong>含义</strong>：生成内容中事实陈述的准确程度</li>
+<li><strong>作用</strong>：评估模型输出信息的可靠性</li>
+<li><strong>计算方法</strong>：与事实数据库比对或专家评估</li>
+<li><strong>优点</strong>：直接评估知识质量；减少虚假信息</li>
+<li><strong>缺点</strong>：自动评估困难；需要可靠的事实基准</li>
+</ul>
+<h4 id="校准错误率-calibration-error">校准错误率（Calibration Error）</h4>
+<ul>
+<li><strong>含义</strong>：模型预测置信度与实际准确率的偏差</li>
+<li><strong>作用</strong>：评估模型对自身知识边界的认知</li>
+<li><strong>计算方法</strong>：$\text{ECE} = \sum_{i=1}^{N} \frac{|B_i|}{n} |\text{acc}(B_i) - \text{conf}(B_i)| $</li>
+<li><strong>优点</strong>：评估模型能否&quot;知道自己不知道&quot;</li>
+<li><strong>缺点</strong>：计算需要明确的置信度估计；大模型中实现复杂</li>
+</ul>
+<h3 id="综合指标">综合指标</h3>
+<h4 id="mmlu分数">MMLU分数</h4>
+<ul>
+<li><strong>含义</strong>：在<strong>多任务理解评估</strong>中的平均准确率</li>
+<li><strong>作用</strong>：评估模型在57个学科领域的知识和推理能力</li>
+<li><strong>计算方法</strong>：多项选择题的平均准确率</li>
+<li><strong>优点</strong>：覆盖广泛知识领域；标准化测试</li>
+<li><strong>缺点</strong>：仅限多选题形式；可能不反映实际应用能力</li>
+</ul>
+<h4 id="helm分数">HELM分数</h4>
+<ul>
+<li><strong>含义</strong>：在<strong>多个维度的综合评分</strong></li>
+<li><strong>作用</strong>：全面评估语言模型能力</li>
+<li><strong>计算方法</strong>：多个维度（如准确性、校准性、鲁棒性等）的加权平均</li>
+<li><strong>优点</strong>：多维度评估；考虑不同应用场景</li>
+<li><strong>缺点</strong>：综合评分可能掩盖特定维度的弱点；维度权重选择主观性</li>
+</ul>
+<h4 id="elo评分">Elo评分</h4>
+<ul>
+<li><strong>含义</strong>：基于<strong>多模型比较的相对能力排名分数</strong></li>
+<li><strong>作用</strong>：为模型提供一个排名系统</li>
+<li><strong>计算方法</strong>：基于ELO对弈系统，$\text{New Elo}_A = \text{Old Elo}_A + K \times (S_A - E_A) $</li>
+<li><strong>优点</strong>：相对排名直观；考虑比较对手强度</li>
+<li><strong>缺点</strong>：只提供相对排名而非绝对指标；依赖评估数据和比较设置</li>
+</ul>
+
+
+
+  <footer>
+    <script src="https://immmmm.com/waterfall.min.js"></script>
+    <script src="https://immmmm.com/imgStatus.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+      var photosAll = document.getElementsByTagName('gallery') || '';
+      if(photosAll){
+        for(var i=0;i < photosAll.length;i++){
+          photosAll[i].innerHTML = '<div class="gallery-photos">'+photosAll[i].innerHTML+'</div>'
+          var photosIMG = photosAll[i].getElementsByTagName('img')
+          for(var j=0;j < photosIMG.length;j++){
+            wrap(photosIMG[j], document.createElement('div'));
+          }
+        }
+      }
+      function wrap(el, wrapper) {
+        wrapper.className = "gallery-photo";
+        el.parentNode.insertBefore(wrapper, el);
+        wrapper.appendChild(el);
+      }
+      let galleryPhotos = document.querySelectorAll('.gallery-photos') || ''
+      if(galleryPhotos){
+        imgStatus.watch('.gallery-photo img', function(imgs) {
+          if(imgs.isDone()){
+            for(var i=0;i < galleryPhotos.length;i++){
+              waterfall(galleryPhotos[i]);
+              let pagePhoto = galleryPhotos[i].querySelectorAll('.gallery-photo');
+              for(var j=0;j < pagePhoto.length;j++){pagePhoto[j].className += " visible"};
+            }
+          }
+        });
+        window.addEventListener('resize', function () {
+          for(var i=0;i < galleryPhotos.length;i++){
+            waterfall(galleryPhotos[i]);
+          }
+        });
+      }
+    });
+    </script>
+  
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/posts/2025/02/llm-%E9%9D%A2%E8%AF%95-numpy%E6%89%8B%E5%86%99-top-p-%E5%92%8C-top-k-%E7%AE%97%E6%B3%95/">[LLM 面试] Numpy手写 Top P 和 Top K 算法</a></span>
+  <span class="nav-next"><a href="/posts/2025/02/llm-%E9%9D%A2%E8%AF%95%E6%89%8B%E6%92%95-batchnorm-%E5%92%8C-layernorm/">[LLM 面试]手撕 BatchNorm 和 LayerNorm</a> &rarr;</span>
+</nav>
+
+  <hr>
+  
+    <div class="pagination__title" style="margin-bottom: 30px;">
+  <span class="pagination__title-h">留下你的足迹👣</span>
+</div>
+  <div id="tcomment"></div>
+  <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.40/dist/twikoo.all.min.js"></script>
+  <script>
+    twikoo.init({
+    envId: 'https://mytwico.netlify.app/.netlify/functions/twikoo/', 
+    el: '#tcomment', 
+    
+    
+    
+  })
+  </script>
+  
+  
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/tex.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  <hr>
+  <div class="copyright">© <a href="https://jasaxion.github.io">Jasaxion</a> | since 2021</div>
+  
+  </footer>
+  </article>
+  
+  </body>
+</html>
+

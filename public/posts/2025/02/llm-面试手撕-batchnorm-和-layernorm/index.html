@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="icon" type="image/png" href="favicons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="favicons/favicon.svg" />
+    <link rel="shortcut icon" href="favicons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png" />
+    <link rel="manifest" href="favicons/site.webmanifest" />
+    
+    
+    <title>[LLM 面试]手撕 BatchNorm 和 LayerNorm - Jasaxion一只大雄</title>
+    <meta property="og:title" content="[LLM 面试]手撕 BatchNorm 和 LayerNorm - Jasaxion一只大雄">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="referrer" content="never" />
+
+    
+    
+    <link rel="stylesheet" href="/css/custom.css"></link>
+    <script type="text/javascript" src="/js/view-image.js"></script>
+    <script>
+    
+    window.ViewImage && ViewImage.init('.main img:not(.avatar,.tk-avatar-img)')
+    </script>
+    <script src="/js/custom-markdown-parser.js"></script>
+    <script  src="https://jsd.cdn.zzko.cn/npm/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+    <script>window.addEventListener('load', () => {  quicklink.listen();});</script>
+    
+    
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="[LLM 面试]手撕 BatchNorm 和 LayerNorm">
+      <meta property="og:description" content="[LLM 面试]手撕 BatchNorm 和 LayerNorm">
+      
+    
+
+    
+    
+    <meta name="twitter:image" content="https://pve.digikamc.cn:8343/i/2025/02/26/z7liw7-0.png">
+    
+    
+
+    
+    <meta property="keywords" content ="面试, 经验, ">
+    
+
+    
+    
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+  </head>
+
+  
+  <body class="posts">
+    <header class="masthead">
+      <h1><a href="/">Jasaxion一只大雄</a></h1>
+
+<p class="tagline">风打，碎琉璃； 打不碎的，是那阳光漫地。The wind strikes, shattering the glazed glass; Yet unbroken remains the sunlight spilling across the earth.</p>
+
+      <nav class="menu">
+  <input id="menu-check" type="checkbox" hidden/>
+  <label id="menu-label" for="menu-check" class="unselectable" hidden>
+    <span class="icon close-icon">✕</span>
+    <span class="icon open-icon">☰</span>
+    <span class="text">Menu</span>
+  </label>
+  <ul>
+  
+  
+  <li><a href="/posts/">归档 / Posts</a></li>
+  
+  <li><a href="/resume/">关于我 / CV</a></li>
+  
+  <li><a href="/tags/tech/">技术目录 / Tech</a></li>
+  
+  <li><a href="/tags/notes">我的笔记 / Note</a></li>
+  
+  <li><a href="/tags/read/">科研与阅读 / Read</a></li>
+  
+  <li><a href="/whisper/">碎碎念 / Whisper</a></li>
+  
+  
+  </ul>
+</nav>
+
+      
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>[LLM 面试]手撕 BatchNorm 和 LayerNorm</h1>
+
+
+
+<h3>
+
+
+
+
+
+
+2025-02-26
+</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+
+
+
+
+<h1 id="批量归一化-batch-normalization-bn">批量归一化 (Batch Normalization, BN)</h1>
+<p>批量归一化是由Sergey Ioffe和Christian Szegedy在2015年提出的技术，目的是解决深度神经网络训练中的内部协变量偏移问题。</p>
+<p>BN的计算过程如下：</p>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">def</span> <span style="color:#c0f">batch_norm</span>(x, gamma, beta, eps<span style="color:#555">=</span><span style="color:#f60">1e-5</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#09f;font-style:italic"># x: 输入数据，形状为[N, D]，N为批量大小，D为特征维度</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#09f;font-style:italic"># gamma, beta: 可学习的缩放和偏移参数</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#09f;font-style:italic"># 步骤1: 计算批量均值</span>
+</span></span><span style="display:flex;"><span>    batch_mean <span style="color:#555">=</span> np<span style="color:#555">.</span>mean(x, axis<span style="color:#555">=</span><span style="color:#f60">0</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#09f;font-style:italic"># 步骤2: 计算批量方差</span>
+</span></span><span style="display:flex;"><span>    batch_var <span style="color:#555">=</span> np<span style="color:#555">.</span>var(x, axis<span style="color:#555">=</span><span style="color:#f60">0</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#09f;font-style:italic"># 步骤3: 标准化</span>
+</span></span><span style="display:flex;"><span>    x_norm <span style="color:#555">=</span> (x <span style="color:#555">-</span> batch_mean) <span style="color:#555">/</span> np<span style="color:#555">.</span>sqrt(batch_var <span style="color:#555">+</span> eps)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#09f;font-style:italic"># 步骤4: 缩放和偏移</span>
+</span></span><span style="display:flex;"><span>    out <span style="color:#555">=</span> gamma <span style="color:#555">*</span> x_norm <span style="color:#555">+</span> beta
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> out
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>BN的特点：</p>
+<ul>
+<li>沿着批量维度计算统计量（均值和方差）</li>
+<li>对于CNN，通常应用于[N, C, H, W]的数据，统计维度为[N, H, W]</li>
+<li>训练时使用小批量统计量，测试时使用整个训练集的运行统计量</li>
+<li>优点：加速训练、允许更高学习率、减少对初始化的敏感性</li>
+<li>缺点：对小批量size敏感，RNN中效果不佳</li>
+</ul>
+<h1 id="层归一化-layer-normalization-ln">层归一化 (Layer Normalization, LN)</h1>
+<p>层归一化是由Jimmy Lei Ba等人在2016年提出的，旨在解决BN在RNN和小批量情况下的问题。</p>
+<p>LN的计算过程如下：</p>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#069;font-weight:bold">def</span> <span style="color:#c0f">layer_norm</span>(x, gamma, beta, eps<span style="color:#555">=</span><span style="color:#f60">1e-5</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#09f;font-style:italic"># x: 输入数据，形状为[N, D]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#09f;font-style:italic"># gamma, beta: 可学习的缩放和偏移参数，形状为[D]</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#09f;font-style:italic"># 步骤1: 计算每个样本的均值</span>
+</span></span><span style="display:flex;"><span>    mean <span style="color:#555">=</span> np<span style="color:#555">.</span>mean(x, axis<span style="color:#555">=</span><span style="color:#f60">1</span>, keepdims<span style="color:#555">=</span><span style="color:#069;font-weight:bold">True</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#09f;font-style:italic"># 步骤2: 计算每个样本的方差</span>
+</span></span><span style="display:flex;"><span>    var <span style="color:#555">=</span> np<span style="color:#555">.</span>var(x, axis<span style="color:#555">=</span><span style="color:#f60">1</span>, keepdims<span style="color:#555">=</span><span style="color:#069;font-weight:bold">True</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#09f;font-style:italic"># 步骤3: 标准化</span>
+</span></span><span style="display:flex;"><span>    x_norm <span style="color:#555">=</span> (x <span style="color:#555">-</span> mean) <span style="color:#555">/</span> np<span style="color:#555">.</span>sqrt(var <span style="color:#555">+</span> eps)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#09f;font-style:italic"># 步骤4: 缩放和偏移</span>
+</span></span><span style="display:flex;"><span>    out <span style="color:#555">=</span> gamma <span style="color:#555">*</span> x_norm <span style="color:#555">+</span> beta
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">return</span> out
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>LN的特点：</p>
+<ul>
+<li>沿着特征维度计算统计量，而不是批量维度</li>
+<li>对于每个样本独立计算归一化参数</li>
+<li>训练和测试阶段行为一致，不需要维护运行统计量</li>
+<li>优点：适用于RNN和小批量场景，不依赖批量大小</li>
+<li>缺点：在CNN中效果可能不如BN</li>
+</ul>
+<h1 id="bn与ln的关键区别">BN与LN的关键区别</h1>
+<ol>
+<li>
+<p><strong>归一化维度</strong>：</p>
+<ul>
+<li>BN：对批量中的每个特征独立归一化（跨样本）</li>
+<li>LN：对每个样本的所有特征进行归一化（跨特征）</li>
+</ul>
+</li>
+<li>
+<p><strong>应用场景</strong>：</p>
+<ul>
+<li>BN：适合CNN等固定大小输入的网络 CV 因为不同通道之间可能存在关联，CV来说BN更好</li>
+<li>LN：适合RNN、Transformer等变长序列模型 NLP天然优势</li>
+</ul>
+</li>
+<li>
+<p><strong>计算依赖</strong>：</p>
+<ul>
+<li>BN：依赖批量数据的统计特性，批量大小影响结果</li>
+<li>LN：只依赖单个样本的统计特性，与批量大小无关</li>
+</ul>
+</li>
+<li>
+<p><strong>训练/测试行为</strong>：</p>
+<ul>
+<li>BN：训练和测试阶段行为不同（训练用批量统计量，测试用全局统计量）</li>
+<li>LN：训练和测试阶段行为一致</li>
+</ul>
+</li>
+</ol>
+<p>这两种归一化技术都是深度学习中的基础组件，在不同场景下各有优势。如今还有其他变体如Instance Normalization、Group Normalization等，它们在特定任务中可能表现更佳。</p>
+<img src="https://pve.digikamc.cn:8343/i/2025/02/26/z7liw7-0.png" alt="image-20250226212905061" style="zoom:50%;" />
+
+
+
+  <footer>
+    <script src="https://immmmm.com/waterfall.min.js"></script>
+    <script src="https://immmmm.com/imgStatus.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+      var photosAll = document.getElementsByTagName('gallery') || '';
+      if(photosAll){
+        for(var i=0;i < photosAll.length;i++){
+          photosAll[i].innerHTML = '<div class="gallery-photos">'+photosAll[i].innerHTML+'</div>'
+          var photosIMG = photosAll[i].getElementsByTagName('img')
+          for(var j=0;j < photosIMG.length;j++){
+            wrap(photosIMG[j], document.createElement('div'));
+          }
+        }
+      }
+      function wrap(el, wrapper) {
+        wrapper.className = "gallery-photo";
+        el.parentNode.insertBefore(wrapper, el);
+        wrapper.appendChild(el);
+      }
+      let galleryPhotos = document.querySelectorAll('.gallery-photos') || ''
+      if(galleryPhotos){
+        imgStatus.watch('.gallery-photo img', function(imgs) {
+          if(imgs.isDone()){
+            for(var i=0;i < galleryPhotos.length;i++){
+              waterfall(galleryPhotos[i]);
+              let pagePhoto = galleryPhotos[i].querySelectorAll('.gallery-photo');
+              for(var j=0;j < pagePhoto.length;j++){pagePhoto[j].className += " visible"};
+            }
+          }
+        });
+        window.addEventListener('resize', function () {
+          for(var i=0;i < galleryPhotos.length;i++){
+            waterfall(galleryPhotos[i]);
+          }
+        });
+      }
+    });
+    </script>
+  
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/posts/2025/02/%E5%AE%9E%E4%B9%A0%E9%9D%A2%E8%AF%95llm-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%B2%97%E4%BD%8D%E5%AE%9E%E4%B9%A0%E8%80%83%E7%82%B9rl-%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%A4%9A%E6%A8%A1%E6%80%81-%E4%B8%80/">[实习面试]LLM 大模型岗位实习考点[RL 强化学习|多模态] （一）</a></span>
+  <span class="nav-next"><a href="/posts/2025/02/llm%E6%8C%87%E5%AE%9A%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E4%B8%8E-llm-ocr-%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%94%A8%E6%8A%80%E6%9C%AF/">LLM指定格式输出与 LLM OCR 技术实用技术</a> &rarr;</span>
+</nav>
+
+  <hr>
+  
+    <div class="pagination__title" style="margin-bottom: 30px;">
+  <span class="pagination__title-h">留下你的足迹👣</span>
+</div>
+  <div id="tcomment"></div>
+  <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.40/dist/twikoo.all.min.js"></script>
+  <script>
+    twikoo.init({
+    envId: 'https://mytwico.netlify.app/.netlify/functions/twikoo/', 
+    el: '#tcomment', 
+    
+    
+    
+  })
+  </script>
+  
+  
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/tex.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  <hr>
+  <div class="copyright">© <a href="https://jasaxion.github.io">Jasaxion</a> | since 2021</div>
+  
+  </footer>
+  </article>
+  
+  </body>
+</html>
+
