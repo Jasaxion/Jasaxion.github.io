@@ -6,8 +6,15 @@
     <description>Recent content in Notes on Jasaxion一只大雄</description>
     <generator>Hugo</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 27 Feb 2025 15:02:32 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 01 Mar 2025 16:57:22 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/notes/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[2025|面经]商汤大模型见习研究员-offer</title>
+      <link>http://localhost:1313/posts/2025/03/2025%E9%9D%A2%E7%BB%8F%E5%95%86%E6%B1%A4%E5%A4%A7%E6%A8%A1%E5%9E%8B%E8%A7%81%E4%B9%A0%E7%A0%94%E7%A9%B6%E5%91%98-offer/</link>
+      <pubDate>Sat, 01 Mar 2025 16:57:22 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025/03/2025%E9%9D%A2%E7%BB%8F%E5%95%86%E6%B1%A4%E5%A4%A7%E6%A8%A1%E5%9E%8B%E8%A7%81%E4%B9%A0%E7%A0%94%E7%A9%B6%E5%91%98-offer/</guid>
+      <description>&lt;h2 id=&#34;起因&#34;&gt;起因&lt;/h2&gt;&#xA;&lt;p&gt;​&#x9;哇啦啦啦，研一下一开学，乌拉拉的一片人去实习了，本来我的意愿也不是很浓的，但最后左思右想后，还是决定也去尝试找一下实习，工程实习宁可不做，希望可以有一些成果产出的，科研类型的实习肯定优先。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>LLM指定格式输出与 LLM OCR 技术实用技术</title>
       <link>http://localhost:1313/posts/2025/02/llm%E6%8C%87%E5%AE%9A%E6%A0%BC%E5%BC%8F%E8%BE%93%E5%87%BA%E4%B8%8E-llm-ocr-%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%94%A8%E6%8A%80%E6%9C%AF/</link>

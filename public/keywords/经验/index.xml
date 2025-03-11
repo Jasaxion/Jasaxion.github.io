@@ -6,8 +6,15 @@
     <description>Recent content in 经验 on Jasaxion一只大雄</description>
     <generator>Hugo</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 26 Feb 2025 20:36:40 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 01 Mar 2025 16:57:22 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/keywords/%E7%BB%8F%E9%AA%8C/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[2025|面经]商汤大模型见习研究员-offer</title>
+      <link>http://localhost:1313/posts/2025/03/2025%E9%9D%A2%E7%BB%8F%E5%95%86%E6%B1%A4%E5%A4%A7%E6%A8%A1%E5%9E%8B%E8%A7%81%E4%B9%A0%E7%A0%94%E7%A9%B6%E5%91%98-offer/</link>
+      <pubDate>Sat, 01 Mar 2025 16:57:22 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025/03/2025%E9%9D%A2%E7%BB%8F%E5%95%86%E6%B1%A4%E5%A4%A7%E6%A8%A1%E5%9E%8B%E8%A7%81%E4%B9%A0%E7%A0%94%E7%A9%B6%E5%91%98-offer/</guid>
+      <description>&lt;h2 id=&#34;起因&#34;&gt;起因&lt;/h2&gt;&#xA;&lt;p&gt;​&#x9;哇啦啦啦，研一下一开学，乌拉拉的一片人去实习了，本来我的意愿也不是很浓的，但最后左思右想后，还是决定也去尝试找一下实习，工程实习宁可不做，希望可以有一些成果产出的，科研类型的实习肯定优先。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>[LLM 面试]手撕 BatchNorm 和 LayerNorm</title>
       <link>http://localhost:1313/posts/2025/02/llm-%E9%9D%A2%E8%AF%95%E6%89%8B%E6%92%95-batchnorm-%E5%92%8C-layernorm/</link>
