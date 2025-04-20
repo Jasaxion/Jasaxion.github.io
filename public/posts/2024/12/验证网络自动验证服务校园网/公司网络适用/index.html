@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="icon" type="image/png" href="favicons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="favicons/favicon.svg" />
+    <link rel="shortcut icon" href="favicons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png" />
+    <link rel="manifest" href="favicons/site.webmanifest" />
+    
+    
+    <title>验证网络自动验证服务（校园网/公司网络适用） - Jasaxion一只大雄</title>
+    <meta property="og:title" content="验证网络自动验证服务（校园网/公司网络适用） - Jasaxion一只大雄">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="referrer" content="never" />
+
+    
+    
+    <link rel="stylesheet" href="/css/custom.css"></link>
+    <script type="text/javascript" src="/js/view-image.js"></script>
+    <script>
+    
+    window.ViewImage && ViewImage.init('.main img:not(.avatar,.tk-avatar-img)')
+    </script>
+    <script src="/js/custom-markdown-parser.js"></script>
+    <script  src="https://jsd.cdn.zzko.cn/npm/quicklink@2.3.0/dist/quicklink.umd.js"></script>
+    <script>window.addEventListener('load', () => {  quicklink.listen();});</script>
+    
+    
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="验证网络自动验证服务（校园网/公司网络适用）">
+      <meta property="og:description" content="验证网络自动验证服务（校园网/公司网络适用）">
+      
+    
+
+    
+    
+
+    
+    <meta property="keywords" content ="经验">
+    
+
+    
+    
+
+
+<link href='//cdn.bootcss.com/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+    
+  </head>
+
+  
+  <body class="posts">
+    <header class="masthead">
+      <h1><a href="/">Jasaxion一只大雄</a></h1>
+
+<p class="tagline">风打，碎琉璃； 打不碎的，是那阳光漫地。The wind strikes, shattering the glazed glass; Yet unbroken remains the sunlight spilling across the earth.</p>
+
+      <nav class="menu">
+  <input id="menu-check" type="checkbox" hidden/>
+  <label id="menu-label" for="menu-check" class="unselectable" hidden>
+    <span class="icon close-icon">✕</span>
+    <span class="icon open-icon">☰</span>
+    <span class="text">Menu</span>
+  </label>
+  <ul>
+  
+  
+  <li><a href="/posts/">归档 / Posts</a></li>
+  
+  <li><a href="/resume/">关于我 / CV</a></li>
+  
+  <li><a href="/tags/tech/">技术目录 / Tech</a></li>
+  
+  <li><a href="/tags/notes">我的笔记 / Note</a></li>
+  
+  <li><a href="/tags/read/">科研与阅读 / Read</a></li>
+  
+  <li><a href="/whisper/">碎碎念 / Whisper</a></li>
+  
+  
+  </ul>
+</nav>
+
+      
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>验证网络自动验证服务（校园网/公司网络适用）</h1>
+
+
+
+<h3>
+
+
+
+
+
+
+2024-12-22
+</h3>
+
+<hr>
+
+
+      </header>
+
+
+
+
+
+
+
+<h2 id="使用场景">使用场景</h2>
+<p>​	连接到校园网或公司认证网络时，有时候网络断开可能会导致需要重新进行 web 认证，真的很烦人，为了解决这一问题，实现一个自动验证的脚本，该脚本目前适用于 Ubuntu 系统</p>
+<h2 id="python-实现">Python 实现</h2>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 37
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 38
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 39
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 40
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 41
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 42
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 43
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 44
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 45
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 46
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 47
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 48
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 49
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 50
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 51
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 52
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 53
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 54
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 55
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 56
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 57
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 58
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 59
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 60
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 61
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 62
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 63
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 64
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 65
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 66
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 67
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 68
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 69
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 70
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 71
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 72
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 73
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 74
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 75
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 76
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 77
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 78
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 79
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 80
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 81
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 82
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 83
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 84
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 85
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 86
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 87
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 88
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 89
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 90
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 91
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 92
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 93
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 94
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 95
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 96
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 97
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 98
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 99
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">100
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">101
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">102
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">103
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">104
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">105
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">106
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">107
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">108
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">109
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">110
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#09f;font-style:italic">#!/usr/bin/env python3</span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">import</span> <span style="color:#0cf;font-weight:bold">requests</span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">import</span> <span style="color:#0cf;font-weight:bold">time</span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">import</span> <span style="color:#0cf;font-weight:bold">subprocess</span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">import</span> <span style="color:#0cf;font-weight:bold">logging</span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">from</span> <span style="color:#0cf;font-weight:bold">urllib.parse</span> <span style="color:#069;font-weight:bold">import</span> urlencode
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#09f;font-style:italic"># 配置日志</span>
+</span></span><span style="display:flex;"><span>logging<span style="color:#555">.</span>basicConfig(
+</span></span><span style="display:flex;"><span>    level<span style="color:#555">=</span>logging<span style="color:#555">.</span>INFO,
+</span></span><span style="display:flex;"><span>    <span style="color:#366">format</span><span style="color:#555">=</span><span style="color:#c30">&#39;</span><span style="color:#a00">%(asctime)s</span><span style="color:#c30"> - </span><span style="color:#a00">%(levelname)s</span><span style="color:#c30"> - </span><span style="color:#a00">%(message)s</span><span style="color:#c30">&#39;</span>,
+</span></span><span style="display:flex;"><span>    filename<span style="color:#555">=</span><span style="color:#c30">&#39;network_auth.log&#39;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">class</span> <span style="color:#0a8;font-weight:bold">NetworkAuthenticator</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">def</span> __init__(self, auth_url, username, password):
+</span></span><span style="display:flex;"><span>        <span style="color:#c30">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#c30">        初始化认证器
+</span></span></span><span style="display:flex;"><span><span style="color:#c30">        auth_url: 认证页面的URL
+</span></span></span><span style="display:flex;"><span><span style="color:#c30">        username: 用户名/学号
+</span></span></span><span style="display:flex;"><span><span style="color:#c30">        password: 密码
+</span></span></span><span style="display:flex;"><span><span style="color:#c30">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>auth_url <span style="color:#555">=</span> auth_url
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>username <span style="color:#555">=</span> username
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>password <span style="color:#555">=</span> password
+</span></span><span style="display:flex;"><span>        self<span style="color:#555">.</span>session <span style="color:#555">=</span> requests<span style="color:#555">.</span>Session()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">def</span> <span style="color:#c0f">check_internet</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#c30">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#c30">        检查是否能够访问互联网
+</span></span></span><span style="display:flex;"><span><span style="color:#c30">        返回 True 如果能访问，否则返回 False
+</span></span></span><span style="display:flex;"><span><span style="color:#c30">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#09f;font-style:italic"># 尝试访问百度（也可以换成其他可靠的网站）</span>
+</span></span><span style="display:flex;"><span>            response <span style="color:#555">=</span> requests<span style="color:#555">.</span>get(<span style="color:#c30">&#34;http://www.baidu.com&#34;</span>, timeout<span style="color:#555">=</span><span style="color:#f60">5</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#069;font-weight:bold">return</span> response<span style="color:#555">.</span>status_code <span style="color:#555">==</span> <span style="color:#f60">200</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">except</span> requests<span style="color:#555">.</span>RequestException:
+</span></span><span style="display:flex;"><span>            <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">def</span> <span style="color:#c0f">is_auth_page</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#c30">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#c30">        检查是否被重定向到认证页面
+</span></span></span><span style="display:flex;"><span><span style="color:#c30">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">try</span>:
+</span></span><span style="display:flex;"><span>            response <span style="color:#555">=</span> self<span style="color:#555">.</span>session<span style="color:#555">.</span>get(<span style="color:#c30">&#34;http://detectportal.firefox.com&#34;</span>, timeout<span style="color:#555">=</span><span style="color:#f60">5</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#069;font-weight:bold">return</span> <span style="color:#c30">&#34;login&#34;</span> <span style="color:#000;font-weight:bold">in</span> response<span style="color:#555">.</span>url<span style="color:#555">.</span>lower() <span style="color:#000;font-weight:bold">or</span> <span style="color:#c30">&#34;auth&#34;</span> <span style="color:#000;font-weight:bold">in</span> response<span style="color:#555">.</span>url<span style="color:#555">.</span>lower()
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">except</span> requests<span style="color:#555">.</span>RequestException:
+</span></span><span style="display:flex;"><span>            <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">def</span> <span style="color:#c0f">authenticate</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#c30">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#c30">        执行认证流程
+</span></span></span><span style="display:flex;"><span><span style="color:#c30">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">try</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#09f;font-style:italic"># 构造认证数据</span>
+</span></span><span style="display:flex;"><span>            auth_data <span style="color:#555">=</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#c30">&#39;username&#39;</span>: self<span style="color:#555">.</span>username,
+</span></span><span style="display:flex;"><span>                <span style="color:#c30">&#39;password&#39;</span>: self<span style="color:#555">.</span>password,
+</span></span><span style="display:flex;"><span>                <span style="color:#c30">&#39;action&#39;</span>: <span style="color:#c30">&#39;login&#39;</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#09f;font-style:italic"># 发送认证请求</span>
+</span></span><span style="display:flex;"><span>            response <span style="color:#555">=</span> self<span style="color:#555">.</span>session<span style="color:#555">.</span>post(
+</span></span><span style="display:flex;"><span>                self<span style="color:#555">.</span>auth_url,
+</span></span><span style="display:flex;"><span>                data<span style="color:#555">=</span>auth_data,
+</span></span><span style="display:flex;"><span>                headers<span style="color:#555">=</span>{<span style="color:#c30">&#39;Content-Type&#39;</span>: <span style="color:#c30">&#39;application/x-www-form-urlencoded&#39;</span>},
+</span></span><span style="display:flex;"><span>                timeout<span style="color:#555">=</span><span style="color:#f60">10</span>
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            <span style="color:#069;font-weight:bold">if</span> response<span style="color:#555">.</span>status_code <span style="color:#555">==</span> <span style="color:#f60">200</span>:
+</span></span><span style="display:flex;"><span>                logging<span style="color:#555">.</span>info(<span style="color:#c30">&#34;认证请求成功发送&#34;</span>)
+</span></span><span style="display:flex;"><span>                <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">True</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#069;font-weight:bold">else</span>:
+</span></span><span style="display:flex;"><span>                logging<span style="color:#555">.</span>error(<span style="color:#c30">f</span><span style="color:#c30">&#34;认证失败，状态码: </span><span style="color:#a00">{</span>response<span style="color:#555">.</span>status_code<span style="color:#a00">}</span><span style="color:#c30">&#34;</span>)
+</span></span><span style="display:flex;"><span>                <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">False</span>
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">except</span> requests<span style="color:#555">.</span>RequestException <span style="color:#069;font-weight:bold">as</span> e:
+</span></span><span style="display:flex;"><span>            logging<span style="color:#555">.</span>error(<span style="color:#c30">f</span><span style="color:#c30">&#34;认证过程出错: </span><span style="color:#a00">{</span><span style="color:#366">str</span>(e)<span style="color:#a00">}</span><span style="color:#c30">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#069;font-weight:bold">return</span> <span style="color:#069;font-weight:bold">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">def</span> <span style="color:#c0f">monitor_and_auth</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#c30">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#c30">        持续监控网络状态并在需要时进行认证
+</span></span></span><span style="display:flex;"><span><span style="color:#c30">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#069;font-weight:bold">while</span> <span style="color:#069;font-weight:bold">True</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#069;font-weight:bold">if</span> <span style="color:#000;font-weight:bold">not</span> self<span style="color:#555">.</span>check_internet():
+</span></span><span style="display:flex;"><span>                logging<span style="color:#555">.</span>info(<span style="color:#c30">&#34;检测到网络不可用&#34;</span>)
+</span></span><span style="display:flex;"><span>                <span style="color:#069;font-weight:bold">if</span> self<span style="color:#555">.</span>is_auth_page():
+</span></span><span style="display:flex;"><span>                    logging<span style="color:#555">.</span>info(<span style="color:#c30">&#34;检测到需要认证&#34;</span>)
+</span></span><span style="display:flex;"><span>                    <span style="color:#069;font-weight:bold">if</span> self<span style="color:#555">.</span>authenticate():
+</span></span><span style="display:flex;"><span>                        logging<span style="color:#555">.</span>info(<span style="color:#c30">&#34;认证成功&#34;</span>)
+</span></span><span style="display:flex;"><span>                    <span style="color:#069;font-weight:bold">else</span>:
+</span></span><span style="display:flex;"><span>                        logging<span style="color:#555">.</span>error(<span style="color:#c30">&#34;认证失败&#34;</span>)
+</span></span><span style="display:flex;"><span>            time<span style="color:#555">.</span>sleep(<span style="color:#f60">43200</span>)  <span style="color:#09f;font-style:italic"># 每12 小时检查一次</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">def</span> <span style="color:#c0f">main</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#09f;font-style:italic"># 配置信息</span>
+</span></span><span style="display:flex;"><span>    AUTH_URL <span style="color:#555">=</span> <span style="color:#c30">&#34;https://net.tsinghua.edu.cn/auth/login&#34;</span>  <span style="color:#09f;font-style:italic"># 根据实际情况修改</span>
+</span></span><span style="display:flex;"><span>    USERNAME <span style="color:#555">=</span> <span style="color:#c30">&#34;你的学号&#34;</span>
+</span></span><span style="display:flex;"><span>    PASSWORD <span style="color:#555">=</span> <span style="color:#c30">&#34;你的密码&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    authenticator <span style="color:#555">=</span> NetworkAuthenticator(AUTH_URL, USERNAME, PASSWORD)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">try</span>:
+</span></span><span style="display:flex;"><span>        authenticator<span style="color:#555">.</span>monitor_and_auth()
+</span></span><span style="display:flex;"><span>    <span style="color:#069;font-weight:bold">except</span> <span style="color:#c00;font-weight:bold">KeyboardInterrupt</span>:
+</span></span><span style="display:flex;"><span>        logging<span style="color:#555">.</span>info(<span style="color:#c30">&#34;程序被用户终止&#34;</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span><span style="color:#069;font-weight:bold">if</span> __name__ <span style="color:#555">==</span> <span style="color:#c30">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    main()
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="使用方法">使用方法</h2>
+<p>使用方法：</p>
+<ol>
+<li>首先安装所需的依赖：</li>
+</ol>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip3 install requests
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>修改脚本中的配置信息：</li>
+</ol>
+<ul>
+<li>AUTH_URL：认证页面的 URL</li>
+<li>USERNAME：你的学号</li>
+<li>PASSWORD：你的密码</li>
+</ul>
+<ol start="3">
+<li>给脚本添加执行权限：</li>
+</ol>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>chmod +x network_auth.py
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="4">
+<li>运行脚本：</li>
+</ol>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./network_auth.py
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>为了让脚本在后台运行，你可以使用：</p>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>nohup ./network_auth.py &amp;
+</span></span></code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<h2 id="挂载为系统服务">挂载为系统服务</h2>
+<h3 id="设置系统启动单元">设置系统启动单元</h3>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>[Unit]
+</span></span><span style="display:flex;"><span>Description=Automatic Network Authentication Service
+</span></span><span style="display:flex;"><span>After=network.target
+</span></span><span style="display:flex;"><span>Wants=network-online.target
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[Service]
+</span></span><span style="display:flex;"><span>Type=simple
+</span></span><span style="display:flex;"><span>User=YOUR_USERNAME
+</span></span><span style="display:flex;"><span>Group=YOUR_USERNAME
+</span></span><span style="display:flex;"><span>Environment=&#34;USERNAME=your_student_id&#34;
+</span></span><span style="display:flex;"><span>Environment=&#34;PASSWORD=your_password&#34;
+</span></span><span style="display:flex;"><span>ExecStart=/usr/local/bin/network_auth.py
+</span></span><span style="display:flex;"><span>Restart=always
+</span></span><span style="display:flex;"><span>RestartSec=30
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[Install]
+</span></span><span style="display:flex;"><span>WantedBy=multi-user.target
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>首先，将之前的 Python 脚本移动到系统目录：</li>
+</ol>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo mv network_auth.py /usr/local/bin/
+</span></span><span style="display:flex;"><span>sudo chmod +x /usr/local/bin/network_auth.py
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>创建 systemd 服务配置文件：</li>
+</ol>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo nano /etc/systemd/system/network-auth.service
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>将上面创建的配置内容复制到这个文件中。</p>
+<ol start="3">
+<li>
+<p>修改配置文件中的参数：</p>
+<ul>
+<li>将 <code>YOUR_USERNAME</code> 替换为你的 Linux 用户名</li>
+<li>设置环境变量中的学号和密码</li>
+</ul>
+</li>
+<li>
+<p>重新加载 systemd 配置：</p>
+</li>
+</ol>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo systemctl daemon-reload
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="5">
+<li>启用并启动服务：</li>
+</ol>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo systemctl <span style="color:#366">enable</span> network-auth
+</span></span><span style="display:flex;"><span>sudo systemctl start network-auth
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="6">
+<li>检查服务状态：</li>
+</ol>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo systemctl status network-auth
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="7">
+<li>查看服务日志：</li>
+</ol>
+<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>journalctl -u network-auth -f
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>服务配置说明：</p>
+<ul>
+<li><code>After=network.target</code>：确保在网络服务启动后再启动此服务</li>
+<li><code>Wants=network-online.target</code>：表明此服务需要网络连接</li>
+<li><code>Type=simple</code>：最基本的服务类型</li>
+<li><code>Restart=always</code>：服务崩溃时自动重启</li>
+<li><code>RestartSec=300</code>：重启间隔为 300 秒</li>
+<li>使用环境变量存储敏感信息，比直接写在脚本中更安全</li>
+</ul>
+<p>如果你想要修改配置：</p>
+<ol>
+<li>编辑服务文件</li>
+<li>重新加载配置：<code>sudo systemctl daemon-reload</code></li>
+<li>重启服务：<code>sudo systemctl restart network-auth</code></li>
+</ol>
+</blockquote>
+
+
+
+  <footer>
+    <script src="https://immmmm.com/waterfall.min.js"></script>
+    <script src="https://immmmm.com/imgStatus.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+      var photosAll = document.getElementsByTagName('gallery') || '';
+      if(photosAll){
+        for(var i=0;i < photosAll.length;i++){
+          photosAll[i].innerHTML = '<div class="gallery-photos">'+photosAll[i].innerHTML+'</div>'
+          var photosIMG = photosAll[i].getElementsByTagName('img')
+          for(var j=0;j < photosIMG.length;j++){
+            wrap(photosIMG[j], document.createElement('div'));
+          }
+        }
+      }
+      function wrap(el, wrapper) {
+        wrapper.className = "gallery-photo";
+        el.parentNode.insertBefore(wrapper, el);
+        wrapper.appendChild(el);
+      }
+      let galleryPhotos = document.querySelectorAll('.gallery-photos') || ''
+      if(galleryPhotos){
+        imgStatus.watch('.gallery-photo img', function(imgs) {
+          if(imgs.isDone()){
+            for(var i=0;i < galleryPhotos.length;i++){
+              waterfall(galleryPhotos[i]);
+              let pagePhoto = galleryPhotos[i].querySelectorAll('.gallery-photo');
+              for(var j=0;j < pagePhoto.length;j++){pagePhoto[j].className += " visible"};
+            }
+          }
+        });
+        window.addEventListener('resize', function () {
+          for(var i=0;i < galleryPhotos.length;i++){
+            waterfall(galleryPhotos[i]);
+          }
+        });
+      }
+    });
+    </script>
+  
+<nav class="post-nav">
+  <span class="nav-prev">&larr; <a href="/posts/2024/12/conda-%E6%8C%87%E5%AE%9A%E5%AE%89%E8%A3%85%E7%9B%AE%E5%BD%95%E5%AE%8C%E5%85%A8%E4%BF%AE%E6%94%B9huggingface/torch%E7%AD%89%E6%A1%86%E6%9E%B6%E7%9A%84.cache%E7%9B%AE%E5%BD%95/">Conda 指定安装目录｜完全修改huggingface/torch等框架的.cache目录</a></span>
+  <span class="nav-next"><a href="/posts/2025/02/llm-%E9%9D%A2%E8%AF%95-numpy%E6%89%8B%E5%86%99-top-p-%E5%92%8C-top-k-%E7%AE%97%E6%B3%95/">[LLM 面试] Numpy手写 Top P 和 Top K 算法</a> &rarr;</span>
+</nav>
+
+  <hr>
+  
+    <div class="pagination__title" style="margin-bottom: 30px;">
+  <span class="pagination__title-h">留下你的足迹👣</span>
+</div>
+  <div id="tcomment"></div>
+  <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.40/dist/twikoo.all.min.js"></script>
+  <script>
+    twikoo.init({
+    envId: 'https://mytwico.netlify.app/.netlify/functions/twikoo/', 
+    el: '#tcomment', 
+    
+    
+    
+  })
+  </script>
+  
+  
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/tex.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  <hr>
+  <div class="copyright">© <a href="https://jasaxion.github.io">Jasaxion</a> | since 2021</div>
+  
+  </footer>
+  </article>
+  
+  </body>
+</html>
+

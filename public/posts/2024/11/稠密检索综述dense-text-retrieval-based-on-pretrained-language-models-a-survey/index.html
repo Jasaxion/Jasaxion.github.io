@@ -11,8 +11,8 @@
     <link rel="manifest" href="favicons/site.webmanifest" />
     
     
-    <title>语音与信号处理学习笔记 - Jasaxion一只大雄</title>
-    <meta property="og:title" content="语音与信号处理学习笔记 - Jasaxion一只大雄">
+    <title>【稠密检索】【综述】Dense Text Retrieval Based on Pretrained Language Models: A Survey - Jasaxion一只大雄</title>
+    <meta property="og:title" content="【稠密检索】【综述】Dense Text Retrieval Based on Pretrained Language Models: A Survey - Jasaxion一只大雄">
     
     <meta name="twitter:card" content="summary">
     <meta name="referrer" content="never" />
@@ -37,8 +37,8 @@
 
     
       
-      <meta property="description" content="语音与信号处理学习笔记">
-      <meta property="og:description" content="语音与信号处理学习笔记">
+      <meta property="description" content="【稠密检索】【综述】Dense Text Retrieval Based on Pretrained Language Models: A Survey">
+      <meta property="og:description" content="【稠密检索】【综述】Dense Text Retrieval Based on Pretrained Language Models: A Survey">
       
     
 
@@ -46,16 +46,11 @@
     
 
     
-    <meta property="keywords" content ="语音信号, voice and signal, 选修课">
+    <meta property="keywords" content ="检索, 综述, 论文阅读">
     
 
     
     
-
-
-<link href='//cdn.bootcss.com/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
-
-
 
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/fonts.css" />
@@ -102,7 +97,7 @@
     <article class="main">
       <header class="title">
       
-<h1>语音与信号处理学习笔记</h1>
+<h1>【稠密检索】【综述】Dense Text Retrieval Based on Pretrained Language Models: A Survey</h1>
 
 
 
@@ -113,7 +108,7 @@
 
 
 
-2024-11-25
+2024-11-30
 </h3>
 
 <hr>
@@ -128,58 +123,9 @@
 
 
 <blockquote>
-<p>选修专业课|授课老师：吴志勇</p>
+<p>paper: Dense Text Retrieval Based on Pretrained Language Models: A Survey</p>
+<p>link: <a href="https://dl.acm.org/doi/abs/10.1145/3637870">https://dl.acm.org/doi/abs/10.1145/3637870</a></p>
 </blockquote>
-<ol>
-<li>声音的产生</li>
-</ol>
-<div class="highlight"><div style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>graph LR
-</span></span><span style="display:flex;"><span>d[音高]--&gt;b[基频]
-</span></span><span style="display:flex;"><span>z[音色]--&gt;s[频率分布（谐波，共振峰）]
-</span></span><span style="display:flex;"><span>w[音强]--&gt;o[振幅（能量）]
-</span></span></code></pre></td></tr></table>
-</div>
-</div><ol start="2">
-<li>
-<p>语谱：不包含随时间T 变化的信息；</p>
-<ul>
-<li>用来区分不同的音素；</li>
-<li>不同音素具有不同的频谱特征；</li>
-</ul>
-</li>
-<li>
-<p>语谱图：由多个时间 T 的语谱组成的。</p>
-<ul>
-<li>描述信号包含的频率成分和他们的幅度；</li>
-<li>宽带语谱图：频率分辨率取300-400Hz，时间分辨率2-5ms，良好的时间分辨率，频率分辨率较差；</li>
-<li>窄带语谱图：频率分辨率取50-100Hz，时间分辨率5-10ms，良好的频率分辨率，时间分辨率较差；</li>
-</ul>
-</li>
-<li>
-<p>音频数字化：把模拟音频信号转换成有限个数表示的离散序列，也就是实现音频数字化。涉及抽样、量化、编码</p>
-<ul>
-<li><strong>抽样</strong>：当把模拟声音变成数字声音时，每隔一个时间间隔在模拟声音波形上取一个幅度值，这称之为抽样。该时间间隔称为<strong>抽样周期</strong>（倒数为<strong>采样频率</strong>）</li>
-<li><strong>量化</strong>：在数字音频中，用数字来表示音频幅度时，只能把无穷多个电压幅度用有限个数字表示。也就是把某一幅度范围内的电压用一个数字表示，称之为<strong>量化</strong>。良好时所采用的数字上限为<strong>量化精度</strong>。</li>
-<li><strong>编码</strong>：对原始的音频数据进行压缩，便于存储和传输。</li>
-</ul>
-</li>
-<li>
-<p>奈奎斯特抽样定理</p>
-<p>要从抽样信号中无失真地回复（重建、还原）原信号，<strong>采样频率必须大于等于两倍信号谱的最高频率</strong>（<strong>截止频率</strong>）；</p>
-<ul>
-<li>如果采样频率没有大于2倍信号最高频率，可能会发生混叠</li>
-</ul>
-</li>
-<li></li>
-</ol>
 
 
 
@@ -224,8 +170,8 @@
     </script>
   
 <nav class="post-nav">
-  <span class="nav-prev">&larr; <a href="/posts/2024/11/%E5%8A%A8%E6%89%8B%E5%AD%A6-transformers/">动手学 Transformers</a></span>
-  <span class="nav-next"><a href="/posts/2024/11/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0vector-database-101/">向量数据库学习（Vector Database 101）</a> &rarr;</span>
+  <span class="nav-prev">&larr; <a href="/posts/2024/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E9%9D%A2%E8%AF%95%E6%89%8B%E6%8E%A8-bert-%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%8F%82%E6%95%B0%E9%87%8F/">[大模型面试]手推 Bert 模型的参数量</a></span>
+  <span class="nav-next"><a href="/posts/2024/12/conda-%E6%8C%87%E5%AE%9A%E5%AE%89%E8%A3%85%E7%9B%AE%E5%BD%95%E5%AE%8C%E5%85%A8%E4%BF%AE%E6%94%B9huggingface/torch%E7%AD%89%E6%A1%86%E6%9E%B6%E7%9A%84.cache%E7%9B%AE%E5%BD%95/">Conda 指定安装目录｜完全修改huggingface/torch等框架的.cache目录</a> &rarr;</span>
 </nav>
 
   <hr>
@@ -246,19 +192,6 @@
   </script>
   
   
-
-
-
-<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
-
-
-
-<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/r.min.js"></script>
-<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/yaml.min.js"></script>
-<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/tex.min.js"></script>
-<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
-
-
 
   
   <hr>
