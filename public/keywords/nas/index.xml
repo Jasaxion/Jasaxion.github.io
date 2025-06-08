@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>NAS on Jasaxion一只大雄</title>
+    <title>Nas on Jasaxion一只大雄</title>
     <link>http://localhost:1313/keywords/nas/</link>
-    <description>Recent content in NAS on Jasaxion一只大雄</description>
+    <description>Recent content in Nas on Jasaxion一只大雄</description>
     <generator>Hugo</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 26 Nov 2024 09:50:31 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 08 Jun 2025 15:12:56 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/keywords/nas/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>折腾日记—NAS 焕新（飞牛OS）</title>
+      <link>http://localhost:1313/posts/2025/06/%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B0nas-%E7%84%95%E6%96%B0%E9%A3%9E%E7%89%9Bos/</link>
+      <pubDate>Sun, 08 Jun 2025 15:12:56 +0800</pubDate>
+      <guid>http://localhost:1313/posts/2025/06/%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B0nas-%E7%84%95%E6%96%B0%E9%A3%9E%E7%89%9Bos/</guid>
+      <description>&lt;p&gt;从去年开始就关注了飞牛 OS，发现这个 nas 系统真的非常不错，但一直没空去更新，最近这段时间想着给老家的 nas 彻底焕新，就开始了本次的折腾日记。&lt;/p&gt;&#xA;&lt;p&gt;新购部件：&lt;/p&gt;</description>
+    </item>
     <item>
       <title>PVE系统为 NAS-ZimaOS虚拟机 docker 容器网站「EasyImage简单图床」配置 SSL 证书（https 访问）</title>
       <link>http://localhost:1313/posts/2024/11/pve%E7%B3%BB%E7%BB%9F%E4%B8%BA-nas-zimaos%E8%99%9A%E6%8B%9F%E6%9C%BA-docker-%E5%AE%B9%E5%99%A8%E7%BD%91%E7%AB%99easyimage%E7%AE%80%E5%8D%95%E5%9B%BE%E5%BA%8A%E9%85%8D%E7%BD%AE-ssl-%E8%AF%81%E4%B9%A6https-%E8%AE%BF%E9%97%AE/</link>
