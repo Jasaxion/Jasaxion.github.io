@@ -19,6 +19,10 @@ footnotereturnlinkcontents = "↩"
     email = 'jasaxion@gmail.com'
     phone = '+86 15973758519'
 
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'
+
 [params.twikoo]
 	enable = true
 
