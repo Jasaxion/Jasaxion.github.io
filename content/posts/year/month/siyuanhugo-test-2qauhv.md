@@ -1,11 +1,5 @@
 ---
-title: Siyuan-Hugo 测试
-slug: siyuanhugo-test-2qauhv
-url: /post/siyuanhugo-test-2qauhv.html
-date: '2025-08-11 14:46:38+08:00'
-lastmod: '2025-08-11 17:38:07+08:00'
-toc: true
-isCJKLanguage: true
+{}
 ---
 
 
