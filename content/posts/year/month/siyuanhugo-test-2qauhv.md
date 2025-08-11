@@ -1,7 +1,12 @@
 ---
->-
-  date = '2025-08-11 14:46:38+08:00' draft = false title = 'test' tags = 'notes'
-  show_toc = false twikoo = false keywords = ['test'] description = "test"
+title: test
+slug: siyuanhugo-test-2qauhv.md
+draft: false
+url: /post/github-personal-blog-l8hug.html
+date: '2025-08-11 14:31:13+08:00'
+lastmod: '2025-08-11 17:50:27+08:00'
+toc: true
+isCJKLanguage: true
 ---
 
 
