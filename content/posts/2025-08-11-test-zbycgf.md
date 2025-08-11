@@ -103,8 +103,4 @@ tech
 read
 ```
 
-图像上传测试
-
-![image](https://pve.digikamc.cn:56806/assets/image-20250811202702-em5v1ya.png)
-
-![image](https://pve.digikamc.cn:56806/assets/image-20250811204657-knkk110.png)​
+‍
