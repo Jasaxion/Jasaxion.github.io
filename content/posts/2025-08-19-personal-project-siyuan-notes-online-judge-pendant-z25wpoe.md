@@ -48,21 +48,21 @@ isCJKLanguage: true
 
 - 美观的代码编辑界面
 
-![image](https://pve.digikamc.cn:8343/i/2025/08/19/notn0r-0.png "相对美观的界面，支持输入/输出调试，显示时空开销")​
+![image](assets/image-20250819142505-7jgmlnz.png "相对美观的界面，支持输入/输出调试，显示时空开销")​
 
 - 支持测试用例输入输出判题
 
-![image](https://pve.digikamc.cn:56806/assets/image-20250819142552-18heo7n.png)​
+![image](assets/image-20250819142552-18heo7n.png)​
 
 - 支持非常多的语言以及自定义增加编程语言（需要 Judge0 后端支持）
 
-![image](https://pve.digikamc.cn:56806/assets/image-20250819142613-j8q2am4.png "使用")​
+![image](assets/image-20250819142613-j8q2am4.png "使用 Judge0 API 支持非常多语言")​
 
-![image](https://pve.digikamc.cn:56806/assets/image-20250819142634-mrweu2j.png "可以自行添加新的语言")​
+![image](assets/image-20250819142634-mrweu2j.png "可以自行添加新的语言")​
 
 - 编译信息输出
 
-![image](https://pve.digikamc.cn:56806/assets/image-20250819142730-afxngvq.png "编译问题输出")​
+![image](assets/image-20250819142730-afxngvq.png "编译问题输出")​
 
 ## 安装方法
 
