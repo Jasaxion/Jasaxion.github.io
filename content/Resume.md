@@ -45,31 +45,32 @@ twikoo = false
 <div style="margin: 0.2em 0 1em 1.2em; line-height: 1.7em; font-size: 0.96em;">
   <div style="margin-bottom: 0.6em;">
     • <strong>MathSmith: Towards Extremely Hard Mathematical Reasoning by Forging Synthetic Problems with a Reinforced Policy</strong><br>
-    <span style="margin-left: 1.5em; color: #555;">(Proceedings, 2025)</span><br>
-    <a href="https://arxiv.org/abs/2508.05592" target="_blank" style="margin-left: 1.5em; color: #0066cc;">arXiv:2508.05592</a>
+    <span style="margin-left: 1.5em; color: #555;">(Proceedings, 2025)</span>
+    <span style="margin-left: 0.6em;">· <a href="https://arxiv.org/abs/2508.05592" target="_blank" rel="noopener noreferrer" style="color: #0066cc;">arXiv:2508.05592</a></span>
   </div>
 
   <div style="margin-bottom: 0.6em;">
     • <strong>A Hierarchical Framework for Measuring Scientific Paper Innovation via Large Language Models</strong><br>
-    <span style="margin-left: 1.5em; color: #555;">(Information Science, 2025)</span><br>
-    <a href="https://arxiv.org/abs/2504.14620" target="_blank" style="margin-left: 1.5em; color: #0066cc;">arXiv:2504.14620</a>
+    <span style="margin-left: 1.5em; color: #555;">(Information Science, 2025)</span>
+    <span style="margin-left: 0.6em;">· <a href="https://arxiv.org/abs/2504.14620" target="_blank" rel="noopener noreferrer" style="color: #0066cc;">arXiv:2504.14620</a></span>
   </div>
 
   <div style="margin-bottom: 0.6em;">
     • <strong>LexSemBridge: Fine-Grained Dense Representation Enhancement through Token-Aware Embedding Augmentation</strong><br>
     <span style="margin-left: 1.5em; color: #555;">(ECAI 2025)</span>
+    <span style="margin-left: 0.6em;">· <a href="https://arxiv.org/abs/2508.17858" target="_blank" rel="noopener noreferrer" style="color: #0066cc;">arXiv:2508.17858</a></span>
   </div>
 
   <div style="margin-bottom: 0.6em;">
     • <strong>IRSC: A Zero-shot Evaluation Benchmark for Information Retrieval through Semantic Comprehension in Retrieval-Augmented Generation Scenarios</strong><br>
-    <span style="margin-left: 1.5em; color: #555;">(NLPCC 2025)</span><br>
-    <a href="https://arxiv.org/abs/2409.15763" target="_blank" style="margin-left: 1.5em; color: #0066cc;">arXiv:2409.15763</a>
+    <span style="margin-left: 1.5em; color: #555;">(NLPCC 2025)</span>
+    <span style="margin-left: 0.6em;">· <a href="https://arxiv.org/abs/2409.15763" target="_blank" rel="noopener noreferrer" style="color: #0066cc;">arXiv:2409.15763</a></span>
   </div>
 
   <div>
     • <strong>QAEA-DR: A Unified Text Augmentation Framework for Dense Retrieval</strong><br>
-    <span style="margin-left: 1.5em; color: #555;">(IEEE Transactions on Knowledge and Data Engineering, TKDE 2025)</span><br>
-    <a href="https://ieeexplore.ieee.org/abstract/document/10891728/" target="_blank" style="margin-left: 1.5em; color: #0066cc;">DOI: 10.1109/TKDE.2025.3543203</a>
+    <span style="margin-left: 1.5em; color: #555;">(IEEE Transactions on Knowledge and Data Engineering, TKDE 2025)</span>
+    <span style="margin-left: 0.6em;">· <a href="https://ieeexplore.ieee.org/abstract/document/10891728/" target="_blank" rel="noopener noreferrer" style="color: #0066cc;">DOI: 10.1109/TKDE.2025.3543203</a></span>
   </div>
 </div>
 
@@ -82,26 +83,47 @@ twikoo = false
   <div>• MathorCup National Second Prize, 2022</div>
 </div>
 
-<h2 style="text-align: left; margin: 1em 0 0.3em;">💻 Internships</h2>
-<div style="margin: 0.2em 0 1em 1.2em; line-height: 1.6em;">
-  <div>
-    • <strong>SenseTime Research</strong> – LLM Algorithm Intern, Model Foundation Group, Shenzhen (Mar–Sep 2025)<br>
-    <span style="margin-left: 1.2em;">Focused on <strong>post-training optimization</strong> of large language models for <strong>mathematical reasoning</strong>.</span><br>
-    <span style="margin-left: 1.2em;">Designed <strong>RL-based hard-problem synthesis</strong> strategies and constructed a large-scale “MathSmith” dataset to enhance model robustness.</span><br>
-    <span style="margin-left: 1.2em;">Converted research into an academic paper as <strong>first author</strong>, integrating high-quality data synthesis and fine-tuning experiments.</span>
+<h2 style="text-align: left; margin: 1.2em 0 0.6em;">💻 Internships</h2>
+
+<div style="display: flex; flex-direction: column; gap: 1em; margin-left: 0.5em;">
+
+  <!-- SenseTime -->
+  <div style="border: 1px solid #e0e0e0; border-radius: 10px; padding: 0.8em 1.2em; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div><strong>SenseTime Research</strong> – LLM Algorithm Intern, Model Foundation Group, Shenzhen</div>
+      <div style="color: #777;">Mar–Sep 2025</div>
+    </div>
+    <ul style="margin: 0.4em 0 0.2em 1.2em; line-height: 1.6em; color: #333;">
+      <li>Focused on <strong>post-training optimization</strong> of large language models for <strong>mathematical reasoning</strong>.</li>
+      <li>Designed <strong>RL-based hard-problem synthesis</strong> strategies and built a large-scale “<em>MathSmith</em>” dataset to improve reasoning robustness.</li>
+      <li>Converted research into a <strong>first-author publication</strong>, integrating data synthesis and fine-tuning experiments.</li>
+    </ul>
   </div>
-  <br>
-  <div>
-    • <strong>XinDan Tech</strong> – RAG Algorithm Intern, Enterprise LLM System, Shenzhen (Dec 2023–Mar 2024)<br>
-    <span style="margin-left: 1.2em;">Developed enterprise-grade <strong>Retrieval-Augmented Generation (RAG)</strong> pipelines with LangChain and embedding fine-tuning.</span><br>
-    <span style="margin-left: 1.2em;">Implemented <strong>OCR + multimodal fusion</strong> for document understanding and contributed to system design and client delivery.</span>
+
+  <!-- XinDan -->
+  <div style="border: 1px solid #e0e0e0; border-radius: 10px; padding: 0.8em 1.2em; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div><strong>XinDan Tech</strong> – RAG Algorithm Intern, Enterprise LLM System, Shenzhen</div>
+      <div style="color: #777;">Dec 2023–Mar 2024</div>
+    </div>
+    <ul style="margin: 0.4em 0 0.2em 1.2em; line-height: 1.6em; color: #333;">
+      <li>Developed enterprise-grade <strong>Retrieval-Augmented Generation (RAG)</strong> pipelines with LangChain and embedding fine-tuning.</li>
+      <li>Implemented <strong>OCR + multimodal fusion</strong> for document understanding and contributed to system design and delivery.</li>
+    </ul>
   </div>
-  <br>
-  <div>
-    • <strong>Huawei MindSpore & ISCAS</strong> – Open Source Intern, Online (Aug–Nov 2023)<br>
-    <span style="margin-left: 1.2em;">Built an <strong>AST-based PyTorch→MindSpore conversion</strong> module, enhancing interoperability and developer usability.</span><br>
-    <span style="margin-left: 1.2em;">Strengthened understanding of <strong>AI framework architecture</strong> and open-source contribution workflows.</span>
+
+  <!-- Huawei MindSpore -->
+  <div style="border: 1px solid #e0e0e0; border-radius: 10px; padding: 0.8em 1.2em; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div><strong>Huawei MindSpore & ISCAS</strong> – Open Source Intern, Online</div>
+      <div style="color: #777;">Aug–Nov 2023</div>
+    </div>
+    <ul style="margin: 0.4em 0 0.2em 1.2em; line-height: 1.6em; color: #333;">
+      <li>Built an <strong>AST-based PyTorch→MindSpore conversion</strong> module, enhancing framework interoperability and automation.</li>
+      <li>Strengthened understanding of <strong>AI framework architecture</strong> and open-source collaboration workflows.</li>
+    </ul>
   </div>
+
 </div>
 
 <h2 style="text-align: left; margin: 1em 0 0.3em;">🎨 Miscellaneous</h2>
