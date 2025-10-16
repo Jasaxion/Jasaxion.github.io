@@ -35,6 +35,7 @@ twikoo = false
 <hr style="border: none; border-top: 1px solid #ccc; margin: 0.3em 0 0.8em 0;">
 <h2 style="text-align: left; margin: 1em 0 0.3em;">🔥 News</h2>
 <div style="margin: 0.2em 0 1em 1.2em;">
+  <div>• 2025.10: <strong>HSPIM</strong> accepted to Information Science🎉</div>
   <div>• 2025.07: <strong>LexSemBridge</strong> accepted to ECAI 25 🎉</div>
   <div>• 2025.06: <strong>IRSC Benchmark</strong> accepted to NLPCC 25 🎉</div>
   <div>• 2025.02: <strong>QAEA-DR</strong> accepted to IEEE TKDE 🎉</div>
@@ -42,6 +43,8 @@ twikoo = false
 
 <h2 style="text-align: left; margin: 1em 0 0.3em;">📝 Publications</h2>
 <div style="margin: 0.2em 0 1em 1.2em;">
+   <div>• (Proceeding) <a href="" target="https://arxiv.org/abs/2508.05592"><strong>MathSmith: Towards Extremely Hard Mathematical Reasoning by Forging Synthetic Problems with a Reinforced Policy</strong></a> – https://arxiv.org/abs/2508.05592</div>
+   <div>• (Information Science) <a href="" target="https://arxiv.org/abs/2504.14620"><strong>A Hierarchical Framework for Measuring Scientific Paper Innovation via Large Language Models</strong></a> – https://arxiv.org/abs/2504.14620</div>
    <div>• (ECAI 2025) <a href="" target="_blank"><strong>LexSemBridge: Fine-Grained Dense Representation Enhancement through Token-Aware Embedding Augmentation</strong></a> – </div>
    <div>• (NLPCC 2025) <a href="https://arxiv.org/abs/2409.15763" target="_blank"><strong>IRSC: A Zero-shot Evaluation Benchmark for Information Retrieval through Semantic Comprehension in Retrieval-Augmented Generation Scenarios</strong></a> – https://arxiv.org/abs/2409.15763</div>
   <div>• (TKDE 2025) <a href="https://ieeexplore.ieee.org/abstract/document/10891728/" target="_blank"><strong>QAEA-DR: A Unified Text Augmentation Framework for Dense Retrieval</strong></a> – DOI: 10.1109/TKDE.2025.3543203</div>
@@ -53,14 +56,32 @@ twikoo = false
   <div>• National Scholarship in China (×3): 2021, 2022, 2023</div>
   <div>• Gratitude Scholarship for Chinese Scientists, 2023</div>
   <div>• MCM Finalist (Top 1%), 2023</div>
+  <div>• China University Big Data Challenge National Second Prize, 2022</div>
   <div>• MathorCup National Second Prize, 2022</div>
 </div>
 
 <h2 style="text-align: left; margin: 1em 0 0.3em;">💻 Internships</h2>
-<div style="margin: 0.2em 0 1em 1.2em;">
-  <div>• <strong>XinDan Tech</strong> – RAG intern, enterprise LLM system, OCR+MM fusion (Dec 2023–Mar 2024)</div>
-  <div>• <strong>Huawei MindSpore & ISCAS</strong> – AST-based PyTorch→MindSpore module (Aug–Nov 2023)</div>
+<div style="margin: 0.2em 0 1em 1.2em; line-height: 1.5em;">
+  <div>
+    • <strong>SenseTime Research</strong> – LLM Algorithm Intern, Model Foundation Group, Shenzhen (Mar–Sep 2025)<br>
+    <span style="margin-left: 1.2em;">– Focused on improving LLM mathematical reasoning via high-quality hard-problem synthesis and post-training optimization.</span><br>
+    <span style="margin-left: 1.2em;">– Designed RL-based problem generation strategies, building a “MathSmith” dataset that boosted open benchmark performance.</span><br>
+    <span style="margin-left: 1.2em;">– Translated core internship work into the first-author academic paper <em>MathSmith</em> and gained extensive fine-tuning and data synthesis experience.</span>
+  </div>
+  <br>
+  <div>
+    • <strong>XinDan Tech</strong> – RAG Algorithm Intern, Enterprise LLM System, Shenzhen (Dec 2023–Mar 2024)<br>
+    <span style="margin-left: 1.2em;">– Developed enterprise-level Retrieval-Augmented Generation (RAG) backend systems with LangChain and embedding model fine-tuning.</span><br>
+    <span style="margin-left: 1.2em;">– Explored RAG-fusion, reranking, OCR + multimodal document processing, and contributed to project design and client demonstrations.</span>
+  </div>
+  <br>
+  <div>
+    • <strong>Huawei MindSpore & ISCAS</strong> – Open Source Intern, PyTorch→MindSpore AST Conversion Module (Aug–Nov 2023)<br>
+    <span style="margin-left: 1.2em;">– Participated in MindSpore framework usability development, implementing AST-based PyTorch-to-MindSpore automatic conversion tools.</span><br>
+    <span style="margin-left: 1.2em;">– Deepened understanding of both PyTorch and MindSpore frameworks, improving MindSpore’s accessibility for developers.</span>
+  </div>
 </div>
+
 
 <h2 style="text-align: left; margin: 1em 0 0.3em;">🎨 Miscellaneous</h2>
 <p style="margin: 0.2em 0 0 1.2em; line-height: 1.5;">
